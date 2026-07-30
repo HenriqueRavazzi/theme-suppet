@@ -1,0 +1,232 @@
+{%- comment -%}
+  Suppet ticker — porte da faixa da LP estática (.ticker em Suppet/css/style.css:103-110).
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+
+  Diferença para a announcement-bar nativa: aqui cada frase é um bloco e o
+  separador ✦ aparece entre TODAS elas, não só entre as repetições.
+
+  A trilha é duplicada no Liquid (não no JS, como faz a LP) para o
+  translateX(-50%) emendar sem salto. A cópia é aria-hidden.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign messages = section.blocks | where: 'type', 'message'
+  assign motion = section.settings.enable_motion
+
+  comment
+    A LP não declara line-height na faixa, então herda 'normal' (~1.36 no
+    Nunito Sans) e a altura sai por acidente. Aqui a altura é o parâmetro e o
+    line-height é derivado dela, para o resultado ser previsível.
+  endcomment
+  assign pad = section.settings.padding_y
+  assign line_h = section.settings.bar_height | minus: pad | minus: pad
+  if line_h < 10
+    assign line_h = 10
+  endif
+-%}
+
+{%- if messages.size > 0 -%}
+  <style>
+    #SuppetTicker-{{ uid }} {
+      background: {{ section.settings.background_color }};
+      color: {{ section.settings.text_color }};
+      overflow: hidden;
+      white-space: nowrap;
+      padding: {{ pad }}px 0;
+      font-family: var(--main-font-stack);
+      font-size: {{ section.settings.font_size }}px;
+      line-height: {{ line_h }}px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    #SuppetTicker-{{ uid }} .sk-track {
+      display: inline-flex;
+      {% if motion %}
+        animation: sk-scroll-{{ uid }} {{ section.settings.speed }}s linear infinite;
+      {% endif %}
+    }
+
+    #SuppetTicker-{{ uid }} .sk-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 22px;
+      opacity: 0.92;
+    }
+
+    #SuppetTicker-{{ uid }} .sk-item::after {
+      content: '\2726';
+      margin-left: 22px;
+      color: {{ section.settings.separator_color }};
+      opacity: 1;
+    }
+
+    #SuppetTicker-{{ uid }} a.sk-item:hover {
+      opacity: 1;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    @keyframes sk-scroll-{{ uid }} {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    {%- if motion -%}
+      /* Faixa que nunca para é problema de acessibilidade: congela e centraliza. */
+      @media (prefers-reduced-motion: reduce) {
+        #SuppetTicker-{{ uid }} .sk-track {
+          animation: none;
+        }
+        #SuppetTicker-{{ uid }} .sk-copy {
+          display: none;
+        }
+      }
+    {%- else -%}
+      #SuppetTicker-{{ uid }} .sk-copy {
+        display: none;
+      }
+    {%- endif -%}
+  </style>
+
+  <div
+    id="SuppetTicker-{{ uid }}"
+    class="suppet-ticker"
+    {% if section.settings.aria_label != blank %}
+      role="region"
+      aria-label="{{ section.settings.aria_label | escape }}"
+    {% endif %}
+  >
+    <div class="sk-track">
+      {%- for block in messages -%}
+        {%- if block.settings.link != blank -%}
+          <a class="sk-item" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+            {{- block.settings.text -}}
+          </a>
+        {%- else -%}
+          <span class="sk-item" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%}Cópia que fecha o loop — invisível para leitores de tela.{%- endcomment -%}
+      <span class="sk-copy" aria-hidden="true" style="display:inline-flex">
+        {%- for block in messages -%}
+          <span class="sk-item">{{ block.settings.text }}</span>
+        {%- endfor -%}
+      </span>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Suppet ticker",
+  "tag": "div",
+  "class": "suppet-ticker-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Rótulo de acessibilidade",
+      "default": "Destaques da campanha"
+    },
+    { "type": "header", "content": "Movimento" },
+    {
+      "type": "checkbox",
+      "id": "enable_motion",
+      "label": "Rolar a faixa",
+      "info": "Desmarcado: a faixa fica parada, mostrando as frases uma vez.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Duração de um ciclo",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "unit": "s",
+      "default": 26
+    },
+    { "type": "header", "content": "Aparência" },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fundo",
+      "default": "#16233B"
+    },
+    { "type": "color", "id": "text_color", "label": "Texto", "default": "#FFFFFF" },
+    {
+      "type": "color",
+      "id": "separator_color",
+      "label": "Cor do separador ✦",
+      "default": "#DD6E1F"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Tamanho do texto",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "bar_height",
+      "label": "Altura total da faixa",
+      "min": 26,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Respiro acima e abaixo",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 9
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Frase",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Frete grátis em compras acima de R$ 199,00"
+        },
+        { "type": "url", "id": "link", "label": "Link (opcional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Suppet ticker",
+      "blocks": [
+        { "type": "message", "settings": { "text": "Frete grátis em compras acima de R$ 199,00" } },
+        { "type": "message", "settings": { "text": "10% OFF com o cupom SUPPET10" } },
+        { "type": "message", "settings": { "text": "Suplementos Super Premium DrogaVET" } },
+        { "type": "message", "settings": { "text": "Ative o super do seu pet" } }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

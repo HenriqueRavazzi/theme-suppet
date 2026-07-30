@@ -1,0 +1,186 @@
+{
+  "sections": {
+    "image-with-text-overlay": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "shape-divider-image-with-text-overlay-0": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "above",
+            "target_section_color_scheme": "scheme1",
+            "style": "waves-3-patterned_1200x84",
+            "flip_horizontal": false,
+            "enable_animation": false,
+            "animation_direction": ""
+          }
+        },
+        "shape-divider-image-with-text-overlay-1": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "below",
+            "target_section_color_scheme": "scheme1",
+            "style": "waves-3-patterned_1200x84",
+            "flip_horizontal": true,
+            "enable_animation": false,
+            "animation_direction": ""
+          }
+        }
+      },
+      "block_order": [
+        "shape-divider-image-with-text-overlay-0",
+        "shape-divider-image-with-text-overlay-1"
+      ],
+      "settings": {
+        "display_on_card": false,
+        "display_content_below_image_on_mobile": true,
+        "style": "full",
+        "height": "pt-two-thirds-screen-height",
+        "place_content": "place-content-center-start",
+        "text_align": "text-left",
+        "title": "Ative o super do <em>seu pet</em>",
+        "heading_size": "heading-feature",
+        "richtext": "Suplementos super premium para uma vida mais longa, ativa e feliz — um sachê por dia.",
+        "cta_url": "",
+        "cta_text": "Ver os produtos",
+        "color_scheme": "scheme3",
+        "use_gradient_background": false
+      }
+    },
+    "rich-text": {
+      "type": "rich-text",
+      "settings": {
+        "title": "Nossa missão",
+        "heading_size": "heading-standard",
+        "rich_text": "<p>Na Suppet, acreditamos que todo pet merece envelhecer bem. Por isso desenvolvemos suplementos mastigáveis super premium que cabem na rotina de verdade: sem pó, sem briga na hora de oferecer e com sabor que o cão aceita de primeira. Cada fórmula nasce da experiência da DrogaVET com manipulação veterinária e é pensada para apoiar uma necessidade específica — imunidade, articulações, digestão ou equilíbrio emocional.</p>",
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-2/3",
+        "button_link": "",
+        "button_label": "Ver os produtos",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "image-with-text-0": {
+      "type": "image-with-text",
+      "blocks": {
+        "shape-divider-image-with-text0-0": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "above",
+            "target_section_color_scheme": "scheme1",
+            "style": "waves-2-patterned_1200x43",
+            "flip_horizontal": false,
+            "enable_animation": false,
+            "animation_direction": ""
+          }
+        }
+      },
+      "block_order": ["shape-divider-image-with-text0-0"],
+      "settings": {
+        "display_on_card": false,
+        "crop": "",
+        "image_shape": "scalloped_circle_5",
+        "blob_type": 1,
+        "rotate_image": 0,
+        "image_position": "left",
+        "image_size": "half",
+        "disable_media_style": false,
+        "title": "Nossa história",
+        "heading_size": "heading-standard",
+        "richtext": "<p>A Suppet nasceu dentro da DrogaVET, em Campo Largo, no Paraná, de uma pergunta simples que ouvíamos todo dia no balcão: por que suplementar um cão precisa ser tão complicado? Da manipulação veterinária veio o conhecimento das fórmulas; da convivência com tutores e clínicas veio o resto — a percepção de que um suplemento só funciona se o pet aceitar e o tutor conseguir manter a rotina. Foi assim que chegamos ao sachê mastigável super premium.</p>",
+        "text_alignment": "text-left",
+        "button_link": "",
+        "button_label": "Ver os produtos",
+        "color_scheme": "scheme2",
+        "use_gradient_background": false
+      }
+    },
+    "image-with-text-1": {
+      "type": "image-with-text",
+      "blocks": {
+        "sticker-image-with-text-0": {
+          "type": "sticker",
+          "settings": {
+            "width": 150,
+            "half_width_on_mobile": false,
+            "text": "O super<br>nº 1!",
+            "shape": "star_1",
+            "sticker_font_size": "1.563rem",
+            "horizontal_position": 90,
+            "vertical_position": 16,
+            "rotate": 14,
+            "show_sticker_on_mobile": true,
+            "show_sticker_on_desktop": true,
+            "rotation_animation": "none",
+            "enable_parallax": false,
+            "parallax_speed": 3,
+            "color_scheme": "scheme4",
+            "color": "bg-scheme-accent-1 text-scheme-accent-1-contrast"
+          }
+        },
+        "shape-divider-image-with-text1-0": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "above",
+            "target_section_color_scheme": "scheme2",
+            "style": "waves-2-patterned_1200x43",
+            "flip_horizontal": false,
+            "enable_animation": false,
+            "animation_direction": ""
+          }
+        },
+        "shape-divider-image-with-text1-1": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "below",
+            "target_section_color_scheme": "scheme1",
+            "style": "tilt-1-shape_1440x101",
+            "flip_horizontal": false,
+            "enable_animation": false,
+            "animation_direction": ""
+          }
+        }
+      },
+      "block_order": [
+        "sticker-image-with-text-0",
+        "shape-divider-image-with-text1-0",
+        "shape-divider-image-with-text1-1"
+      ],
+      "settings": {
+        "display_on_card": false,
+        "crop": "",
+        "image_shape": "scalloped_square_2",
+        "blob_type": 1,
+        "rotate_image": 6,
+        "image_position": "right",
+        "image_size": "half",
+        "disable_media_style": false,
+        "title": "Conheça o nosso super-herói: <em>Pancho</em>",
+        "heading_size": "heading-standard",
+        "richtext": "<p>Pancho é o rosto da campanha Suppet e o lembrete diário de por que fazemos o que fazemos. Ele representa cada cão que corre atrás da bolinha, sobe no sofá sem pedir licença e envelhece do lado de quem ama.<br/><br/>A ideia por trás dele é simples: todo pet já é um super-herói para o tutor. O que a suplementação faz é ajudar esse super a durar mais — com mais disposição, mais mobilidade e mais equilíbrio, um sachê por dia.</p>",
+        "text_alignment": "text-left",
+        "button_link": "",
+        "button_label": "Ver os produtos",
+        "color_scheme": "scheme4",
+        "use_gradient_background": false
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "title": "Ganhe 10% OFF na primeira compra",
+        "richtext": "<p>Cadastre seu e-mail e receba o cupom SUPPET10, além das novidades da linha em primeira mão.</p>",
+        "display_on_card": false,
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": [
+    "image-with-text-overlay",
+    "rich-text",
+    "image-with-text-0",
+    "image-with-text-1",
+    "newsletter"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "aside",
+  "name": "Overlay",
+  "sections": {
+    "age-check": {
+      "type": "age-check",
+      "settings": {
+        "enable": false,
+        "logo_max_width": 100,
+        "title": "Verificação de idade",
+        "text": "Você tem 18 anos ou mais?",
+        "display_on_card": true,
+        "mode": "buttons",
+        "yes_button_text": "Sim",
+        "no_button_text": "Não",
+        "date_format": "dd-mm-yyyy",
+        "minimum_age": 18,
+        "redirect_link": "",
+        "color_scheme": "scheme1",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": ["age-check"]
+}

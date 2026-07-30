@@ -1,0 +1,73 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "tagline-and-social-links-0": {
+          "type": "tagline_and_social_links",
+          "settings": {
+            "tagline": "Suppet é a linha de suplementos super premium mastigáveis da DrogaVET — reforço imunológico, proteção articular, equilíbrio digestivo e emocional para o seu pet. Suplemento alimentar. Uso veterinário — para cães.",
+            "show_social_icons": true
+          }
+        },
+        "menus-0": {
+          "type": "menus",
+          "settings": {
+            "show_menu_headings": false,
+            "linklist_1": "main-menu",
+            "linklist_2": "footer",
+            "linklist_3": ""
+          }
+        },
+        "newsletter-0": {
+          "type": "newsletter",
+          "settings": {
+            "newsletter_heading": "Receba o cupom SUPPET10"
+          }
+        },
+        "shape-divider-footer-0": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "above",
+            "target_section_color_scheme": "scheme1",
+            "style": "waves-3-patterned_1200x84",
+            "flip_horizontal": false,
+            "enable_animation": false,
+            "animation_direction": ""
+          }
+        }
+      },
+      "block_order": [
+        "tagline-and-social-links-0",
+        "menus-0",
+        "newsletter-0",
+        "shape-divider-footer-0"
+      ],
+      "settings": {
+        "show_payment_icons": true,
+        "show_country_selector": true,
+        "show_locale_selector": true,
+        "color_scheme": "scheme3",
+        "use_gradient_background": false
+      }
+    },
+    "hero-logo": {
+      "type": "hero-logo",
+      "settings": {
+        "home_page_only": false,
+        "mobile_text_scale": 6,
+        "desktop_text_scale": 10,
+        "alignment": "center",
+        "logo_max_width": 100,
+        "disable_vertical_spacing": false,
+        "enable_overlay": false,
+        "overlay_offset": 100,
+        "color_scheme": "scheme3",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": ["footer", "hero-logo"]
+}

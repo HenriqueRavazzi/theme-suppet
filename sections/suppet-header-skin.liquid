@@ -1,0 +1,378 @@
+{%- comment -%}
+  Suppet header skin — porte da aparência do header da LP (.site-header em
+  Suppet/css/style.css:113-150). Arquivo NOVO: não é sobrescrito por
+  atualizações do tema Shapes.
+
+  Esta seção NÃO renderiza markup: ela só emite CSS que reveste o header
+  nativo. Foi feita assim de propósito — reescrever sections/header.liquid
+  (2.000+ linhas, com mega menu, drawer, busca preditiva e carrinho)
+  significaria perder tudo isso e quebrar no próximo update do tema.
+
+  Gancho de CSS: .shopify-section-group-header-group, classe que a própria
+  Shopify aplica a toda seção dentro do grupo "header".
+
+  NÃO inclui o comportamento de encolher/ficar translúcido no scroll
+  (.site-header.shrink na LP) — apenas forma e cores, conforme pedido.
+{%- endcomment -%}
+
+{%- liquid
+  assign nav_c = section.settings.nav_color
+  assign nav_hover = section.settings.nav_hover_color
+  assign underline = section.settings.underline_color
+  assign bg = section.settings.header_background
+-%}
+
+<style>
+  /* ---------- Fundo ----------
+     Sobrescreve a VARIÁVEL do esquema, não a classe .bg-scheme-background.
+     Assim o modificador de opacidade do tema (bg-scheme-background/0, usado
+     na faixa de overlay) continua funcionando. */
+  {%- if section.settings.override_background -%}
+    /* Precisa mirar o ELEMENTO que carrega data-color-scheme (header.liquid:673).
+       O css-bridge declara a variável nesse mesmo seletor, e custom property
+       declarada no elemento vence a herdada de um ancestral. */
+    .shopify-section-group-header-group[data-color-scheme],
+    .shopify-section-group-header-group [data-color-scheme] {
+      --color-scheme-background: {{ bg.red }}, {{ bg.green }}, {{ bg.blue }};
+    }
+  {%- endif -%}
+
+  /* ---------- Altura ----------
+     No desktop o tema usa 'py-2 lg:py-0': sem padding vertical, a altura sai
+     do item mais alto. A LP fixa 20px de padding + conteúdo de ~42px = ~82px.
+     Aqui a altura vira parâmetro, com o conteúdo centralizado. */
+  @media (min-width: 1024px) {
+    .shopify-section-group-header-group .px-section.py-2 {
+      min-height: {{ section.settings.header_height }}px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* A LP contém o header num .container de 1240px centralizado; o tema
+       espalha até max-w-site (1820px), colando logo e CTA nas bordas. */
+    .shopify-section-group-header-group .px-section.py-2 > * {
+      width: 100%;
+      max-width: {{ section.settings.content_max_width }}px;
+      margin-inline: auto;
+    }
+
+    /* O bloco do CTA tem py-2.5 próprio; sem zerar, é ele que passa a mandar
+       na altura e o min-height acima nunca aparece. */
+    .shopify-section-group-header-group div:has(> div > .push-btn) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  /* ---------- Tudo numa linha só ----------
+     O grupo da direita do tema tem flex-wrap, então o CTA cai para uma
+     segunda linha quando o espaço aperta. A LP mantém uma linha só. */
+  .shopify-section-group-header-group .flex.flex-wrap.items-center.justify-end {
+    flex-wrap: nowrap;
+  }
+
+  .shopify-section-group-header-group [x-ref='navigation'] > li > a {
+    white-space: nowrap;
+  }
+  /* ---------- Navegação ---------- */
+  {%- if section.settings.nav_align_left -%}
+    /* LP: nav logo após a logo, encostada à esquerda (o tema centraliza) */
+    .shopify-section-group-header-group [x-ref='navigation'] {
+      justify-content: flex-start;
+    }
+  {%- endif -%}
+
+  .shopify-section-group-header-group [x-ref='navigation'] {
+    gap: {{ section.settings.nav_gap }}px;
+  }
+
+  .shopify-section-group-header-group [x-ref='navigation'] > li > a {
+    position: relative;
+    padding: 6px 0;
+    font-weight: 700;
+    font-size: {{ section.settings.nav_font_size }}px;
+    color: {{ nav_c }};
+    transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* LP: sublinhado laranja que corre da esquerda para a direita no hover */
+  .shopify-section-group-header-group [x-ref='navigation'] > li > a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -2px;
+    height: 2px;
+    background: {{ underline }};
+    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .shopify-section-group-header-group [x-ref='navigation'] > li > a:hover {
+    color: {{ nav_hover }};
+  }
+
+  .shopify-section-group-header-group [x-ref='navigation'] > li > a:hover::after {
+    right: 0;
+  }
+
+  /* ---------- Ícones circulares (conta e carrinho) ---------- */
+  {%- if section.settings.circular_icons -%}
+    /* Alvo: icon_link_classes (header.liquid:173) = 'h-full flex items-center',
+       usada tanto pelo <a> da conta quanto pelo <button> do carrinho.
+       Qualifico por a/button de propósito: o <div> que envolve o carrinho tem
+       as mesmas classes e viraria um segundo círculo.
+       Não uso href porque as contas novas da Shopify apontam para shopify.com. */
+    .shopify-section-group-header-group a.h-full.flex.items-center,
+    .shopify-section-group-header-group button.h-full.flex.items-center {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      flex: none;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: {{ section.settings.icon_bg_color }};
+      border: 1px solid {{ section.settings.icon_border_color }};
+      color: {{ nav_hover }};
+      transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .shopify-section-group-header-group a.h-full.flex.items-center:hover,
+    .shopify-section-group-header-group button.h-full.flex.items-center:hover {
+      background: {{ section.settings.icon_bg_hover_color }};
+      transform: translateY(-2px);
+    }
+
+    /* O carrinho embrulha o ícone em <div class="relative my-auto"> — sem isto
+       o conteúdo fica encostado no canto em vez de centralizado. */
+    .shopify-section-group-header-group a.h-full.flex.items-center > *,
+    .shopify-section-group-header-group button.h-full.flex.items-center > * {
+      display: grid;
+      place-items: center;
+      margin: 0;
+    }
+
+    /* LP: ícone de 18px no círculo de 40px. O tema usa um wrapper h-7 w-7 (28px);
+       encolho o wrapper e deixo o svg preenchê-lo. */
+    .shopify-section-group-header-group a.h-full.flex.items-center .h-7.w-7,
+    .shopify-section-group-header-group button.h-full.flex.items-center .h-7.w-7 {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .shopify-section-group-header-group a.h-full.flex.items-center svg,
+    .shopify-section-group-header-group button.h-full.flex.items-center svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Contador do carrinho: fica na borda do círculo, não do ícone. */
+    .shopify-section-group-header-group button.h-full.flex.items-center .absolute {
+      top: -12px;
+      right: -12px;
+    }
+
+    /* LP: .header-actions gap 18px */
+    .shopify-section-group-header-group .flex.flex-wrap.items-center.justify-end {
+      gap: {{ section.settings.icon_gap }}px;
+    }
+  {%- endif -%}
+
+  /* ---------- CTA em pílula ---------- */
+  {%- if section.settings.style_cta -%}
+    .shopify-section-group-header-group .push-btn__surface {
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-family: var(--heading-font-stack);
+      font-weight: 700;
+      font-size: 13.5px;
+      /* Sem isto o rótulo quebra em "Comprar" / "agora" */
+      white-space: nowrap;
+    }
+
+    .shopify-section-group-header-group .push-btn {
+      flex: none;
+    }
+
+    .shopify-section-group-header-group .push-btn {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .shopify-section-group-header-group .push-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px -8px rgb(0 0 0 / 0.4);
+    }
+  {%- endif -%}
+
+  /* ---------- Borda inferior ---------- */
+  {%- if section.settings.show_bottom_border -%}
+    .shopify-section-group-header-group .site-header,
+    .shopify-section-group-header-group header {
+      border-bottom: 1px solid {{ section.settings.border_color }};
+    }
+  {%- endif -%}
+
+  @media (prefers-reduced-motion: reduce) {
+    .shopify-section-group-header-group [x-ref='navigation'] > li > a::after,
+    .shopify-section-group-header-group #CartButton,
+    .shopify-section-group-header-group .push-btn {
+      transition: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Suppet header skin",
+  "tag": "div",
+  "class": "suppet-header-skin",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Reveste o header nativo com a aparência da LP Suppet. Não renderiza conteúdo — só estilo. Mova/remova esta seção para desativar."
+    },
+    { "type": "header", "content": "Largura e altura" },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "info": "A LP usa 1240px centralizados. O tema, sem isto, espalha até 1820px.",
+      "min": 1100,
+      "max": 1820,
+      "step": 20,
+      "default": 1240,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "header_height",
+      "label": "Altura do header (desktop)",
+      "info": "Na LP são ~82px: 20px de respiro acima e abaixo de um conteúdo de 42px.",
+      "min": 56,
+      "max": 140,
+      "step": 2,
+      "default": 82,
+      "unit": "px"
+    },
+    { "type": "header", "content": "Fundo" },
+    {
+      "type": "checkbox",
+      "id": "override_background",
+      "label": "Usar cor de fundo própria",
+      "info": "Sobrepõe o esquema de cores no header inteiro, incluindo os painéis de menu.",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "header_background",
+      "label": "Fundo do header",
+      "info": "Na LP é rgba(14,27,51,.75) sobre o gradiente da hero. Ajuste até casar.",
+      "default": "#1C2A47"
+    },
+    { "type": "header", "content": "Navegação" },
+    {
+      "type": "checkbox",
+      "id": "nav_align_left",
+      "label": "Alinhar menu à esquerda (junto da logo)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "nav_gap",
+      "label": "Espaço entre itens",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "nav_font_size",
+      "label": "Tamanho do texto",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    { "type": "color", "id": "nav_color", "label": "Cor do menu", "default": "#DBDCE0" },
+    {
+      "type": "color",
+      "id": "nav_hover_color",
+      "label": "Cor no hover",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "underline_color",
+      "label": "Cor do sublinhado",
+      "default": "#DD6E1F"
+    },
+    { "type": "header", "content": "Ícones" },
+    {
+      "type": "checkbox",
+      "id": "circular_icons",
+      "label": "Ícones em círculo",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Fundo do círculo",
+      "default": "#1B2946"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_hover_color",
+      "label": "Fundo no hover",
+      "default": "#2A3A5C"
+    },
+    {
+      "type": "color",
+      "id": "icon_border_color",
+      "label": "Borda do círculo",
+      "default": "#2E3D5C"
+    },
+    {
+      "type": "range",
+      "id": "icon_gap",
+      "label": "Espaço entre ícones",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    { "type": "header", "content": "Botão CTA" },
+    {
+      "type": "checkbox",
+      "id": "style_cta",
+      "label": "Formato de pílula",
+      "info": "Aplica-se ao bloco \"Link em destaque\" do header.",
+      "default": true
+    },
+    { "type": "header", "content": "Borda" },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_border",
+      "label": "Linha embaixo do header",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Cor da linha",
+      "default": "#243052"
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}
