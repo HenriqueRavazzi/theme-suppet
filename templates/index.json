@@ -179,12 +179,12 @@
         "product-vitaforca": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "campo-de-vitaforca",
             "tagline": "Reforço Imunológico e Suporte Nutricional",
             "accent": "#d7282d",
-            "name": "Campo de Vitaforça",
-            "description": "Suplemento mastigável super premium que fortalece as defesas naturais do seu cão e entrega suporte nutricional completo — o campo de força que todo super-herói de quatro patas merece.",
-            "price": "R$ 119,90",
+            "name": "",
+            "description": "",
+            "price": "",
             "price_note": "caixa com 30 sachês",
             "link": ""
           }
@@ -192,12 +192,12 @@
         "product-condroprotetor": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "escudo-condroprotetor",
             "tagline": "Proteção para as Articulações",
             "accent": "#dd6e1f",
-            "name": "Escudo Condroprotetor",
-            "description": "Suplemento mastigável com condroitina e glucosamina para proteger as articulações e manter a mobilidade — o escudo que blinda cada passo, corrida e brincadeira do seu pet.",
-            "price": "R$ 119,90",
+            "name": "",
+            "description": "",
+            "price": "",
             "price_note": "caixa com 30 sachês",
             "link": ""
           }
@@ -205,12 +205,12 @@
         "product-anticopro": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "barreira-anticopro",
             "tagline": "Redução do Hábito de Ingestão das Fezes",
             "accent": "#3a7cae",
-            "name": "Barreira AntiCopro",
-            "description": "Suplemento mastigável formulado com prebióticos e probióticos que ajuda a reduzir o hábito de ingestão das fezes e favorece o equilíbrio da flora intestinal.",
-            "price": "R$ 119,90",
+            "name": "",
+            "description": "",
+            "price": "",
             "price_note": "caixa com 30 sachês",
             "link": ""
           }
@@ -218,12 +218,12 @@
         "product-estresse": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "neutralizador-de-estresse",
             "tagline": "Equilíbrio e Bem-Estar",
             "accent": "#2fa39c",
-            "name": "Neutralizador de Estresse",
-            "description": "Suplemento mastigável com L-triptofano e L-teanina que ajuda a promover calma, equilíbrio emocional e bem-estar em momentos de tensão, viagens ou mudanças de rotina.",
-            "price": "R$ 119,90",
+            "name": "",
+            "description": "",
+            "price": "",
             "price_note": "caixa com 30 sachês",
             "link": ""
           }
