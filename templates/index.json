@@ -211,6 +211,36 @@
         "use_gradient_background": false
       }
     },
+    "suppet-campaign": {
+      "type": "suppet-campaign",
+      "blocks": {
+        "list-item-0": { "type": "list_item", "settings": { "text": "Fórmulas super premium para cada necessidade" } },
+        "list-item-1": { "type": "list_item", "settings": { "text": "Compra guiada com carrinho e finalização pelo WhatsApp" } },
+        "list-item-2": { "type": "list_item", "settings": { "text": "Linha desenvolvida por especialistas DrogaVET" } },
+        "badge-0": { "type": "badge", "settings": { "text": "+ disposição" } },
+        "badge-1": { "type": "badge", "settings": { "text": "+ mobilidade" } },
+        "badge-2": { "type": "badge", "settings": { "text": "+ equilíbrio" } }
+      },
+      "block_order": ["list-item-0", "list-item-1", "list-item-2", "badge-0", "badge-1", "badge-2"],
+      "settings": {
+        "eyebrow": "Campanha Suppet",
+        "title": "Ative o super do seu pet",
+        "richtext": "<p>A campanha valoriza o vínculo entre tutores, pets e profissionais que fazem parte dessa jornada. Por isso, trouxemos elementos do universo visual da campanha para a LP, mantendo uma navegação leve, clara e orientada para compra.</p>",
+        "content_max_width": 1240,
+        "cta_primary_label": "Ver todos os produtos",
+        "cta_primary_url": "",
+        "cta_secondary_label": "Fale com a gente",
+        "cta_secondary_url": "https://wa.me/554132098989",
+        "product_tag": "Proteção articular",
+        "product_name": "Escudo Condroprotetor",
+        "product_subtitle": "Condroitina e glucosamina",
+        "product_link": "",
+        "accent": "#DD6E1F",
+        "brand_color": "#D7282D",
+        "color_scheme": "scheme2",
+        "use_gradient_background": false
+      }
+    },
     "text-columns-with-images": {
       "type": "text-columns-with-images",
       "blocks": {
@@ -265,52 +295,6 @@
         "show_index_on_blocks": true,
         "index_shape": "star_1",
         "color_scheme": "scheme1",
-        "use_gradient_background": false
-      }
-    },
-    "video-with-text-overlay": {
-      "type": "video-with-text-overlay",
-      "blocks": {
-        "shape-divider-video-with-text-overlay-0": {
-          "type": "shape_divider",
-          "settings": {
-            "target_section": "above",
-            "target_section_color_scheme": "scheme1",
-            "style": "waves-2-patterned_1200x43",
-            "flip_horizontal": false,
-            "enable_animation": false,
-            "animation_direction": ""
-          }
-        },
-        "shape-divider-video-with-text-overlay-1": {
-          "type": "shape_divider",
-          "settings": {
-            "target_section": "below",
-            "target_section_color_scheme": "scheme1",
-            "style": "waves-2-patterned_1200x43",
-            "flip_horizontal": false,
-            "enable_animation": false,
-            "animation_direction": ""
-          }
-        }
-      },
-      "block_order": [
-        "shape-divider-video-with-text-overlay-0",
-        "shape-divider-video-with-text-overlay-1"
-      ],
-      "settings": {
-        "crop": "vertical",
-        "crop_desktop": "widescreen",
-        "display_on_card": false,
-        "display_content_below_image_on_mobile": false,
-        "style": "full",
-        "place_content": "place-content-center-start",
-        "text_align": "text-left",
-        "title": "Ative o super do seu pet",
-        "heading_size": "heading-standard",
-        "richtext": "Conheça a campanha Suppet — feita para celebrar o vínculo entre tutores, pets e os profissionais que cuidam deles.",
-        "cta_text": "Sobre a DrogaVET",
-        "color_scheme": "scheme4",
         "use_gradient_background": false
       }
     },
@@ -703,8 +687,8 @@
     "suppet-hero",
     "suppet-benefits",
     "suppet-products",
+    "suppet-campaign",
     "text-columns-with-images",
-    "video-with-text-overlay",
     "image-with-highlights",
     "featured-collection",
     "featured-product",

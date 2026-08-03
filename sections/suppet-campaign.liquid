@@ -1,0 +1,485 @@
+{%- comment -%}
+  Suppet campaign (Ative o super do seu pet) — porte estático do bloco
+  ".campaign"/".campaign-carousel" da LP (Suppet/index.html + css/style.css,
+  seção id="campanha"). Sem carrossel/rotação: mostra só um produto fixo.
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign list_items = section.blocks | where: 'type', 'list_item'
+  assign badges = section.blocks | where: 'type', 'badge'
+-%}
+
+<style>
+  #SuppetCampaign-{{ uid }} .sc-container {
+    max-width: {{ section.settings.content_max_width | default: 1240 }}px;
+    margin-inline: auto;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: {{ section.settings.brand_color | default: '#D7282D' }};
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 3px;
+    border-radius: 3px;
+    background: currentColor;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-title {
+    margin-top: 12px;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-lead {
+    margin-top: 18px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgba(var(--color-scheme-text), 0.7);
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-list {
+    margin-top: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-list svg {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    color: {{ section.settings.brand_color | default: '#D7282D' }};
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-cta {
+    margin-top: 32px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 30px;
+    border-radius: 999px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-btn:active {
+    transform: scale(0.97);
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-btn-primary {
+    background: {{ section.settings.brand_color | default: '#D7282D' }};
+    color: #fff;
+    box-shadow: 0 10px 24px -8px rgba(215, 40, 45, 0.55);
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 30px -8px rgba(215, 40, 45, 0.6);
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-btn-navy {
+    background: #0e1b33;
+    color: #fff;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-btn-navy:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 26px -10px rgba(14, 27, 51, 0.5);
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-art {
+    position: relative;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-panel {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 32px;
+    min-height: 520px;
+    padding: 40px 42px 34px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(145deg, #10213f 0%, #0e1b33 58%, #172b4e 100%);
+    box-shadow: 0 40px 70px -30px rgba(16, 35, 66, 0.5);
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-rays {
+    position: absolute;
+    inset: -30%;
+    z-index: 0;
+    opacity: 0.28;
+    background: repeating-conic-gradient(from 0deg at 50% 40%, rgba(255, 255, 255, 0.28) 0deg 4deg, transparent 4deg 15deg);
+    -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 55%);
+    mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-glow {
+    position: absolute;
+    inset: -15%;
+    z-index: 0;
+    background: radial-gradient(circle at 50% 38%, {{ section.settings.accent | default: '#DD6E1F' }}55, transparent 62%);
+    pointer-events: none;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-media {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-media img {
+    width: 100%;
+    max-width: 300px;
+    max-height: 380px;
+    object-fit: contain;
+    filter: drop-shadow(0 28px 28px rgba(0, 0, 0, 0.34));
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-caption {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-caption .sc-tag {
+    display: inline-flex;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.13);
+    font-family: var(--heading-font-stack);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-caption strong {
+    display: block;
+    max-width: 340px;
+    margin-top: 14px;
+    font-family: var(--heading-font-stack);
+    font-size: clamp(24px, 2.6vw, 34px);
+    line-height: 1.05;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-caption small {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-badges {
+    position: absolute;
+    z-index: 2;
+    top: 20px;
+    right: -18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #SuppetCampaign-{{ uid }} .sc-badges span {
+    background: #0e1b33;
+    color: #fff;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 12px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    box-shadow: 0 14px 26px -12px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (max-width: 940px) {
+    #SuppetCampaign-{{ uid }} .sc-grid {
+      grid-template-columns: 1fr;
+    }
+    #SuppetCampaign-{{ uid }} .sc-art {
+      order: -1;
+    }
+    #SuppetCampaign-{{ uid }} .sc-badges {
+      right: 6px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    #SuppetCampaign-{{ uid }} .sc-panel {
+      min-height: 440px;
+      padding: 32px 26px 28px;
+    }
+    #SuppetCampaign-{{ uid }} .sc-media img {
+      max-width: 220px;
+      max-height: 280px;
+    }
+  }
+</style>
+
+<section
+  id="SuppetCampaign-{{ uid }}"
+  class="bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}"
+  data-color-scheme="{{ section.settings.color_scheme }}"
+>
+  <div class="section-content px-section py-section-vertical-spacing">
+    <div class="sc-container">
+      <div class="sc-grid">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="sc-eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.title != blank -%}
+            <h2 class="sc-title inline-heading-rte font-heading break-words">{{ section.settings.title }}</h2>
+          {%- endif -%}
+
+          {%- if section.settings.richtext != blank -%}
+            <div class="sc-lead rte font-main">{{ section.settings.richtext }}</div>
+          {%- endif -%}
+
+          {%- if list_items.size > 0 -%}
+            <ul class="sc-list">
+              {%- for block in list_items -%}
+                <li {{ block.shopify_attributes }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6L9 17l-5-5"></path>
+                  </svg>
+                  <span>{{ block.settings.text }}</span>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          {%- if section.settings.cta_primary_label != blank or section.settings.cta_secondary_label != blank -%}
+            <div class="sc-cta">
+              {%- if section.settings.cta_primary_label != blank -%}
+                <a href="{{ section.settings.cta_primary_url | default: '#' }}" class="sc-btn sc-btn-primary">
+                  {{- section.settings.cta_primary_label -}}
+                </a>
+              {%- endif -%}
+              {%- if section.settings.cta_secondary_label != blank -%}
+                <a href="{{ section.settings.cta_secondary_url | default: '#' }}" class="sc-btn sc-btn-navy">
+                  {{- section.settings.cta_secondary_label -}}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="sc-art">
+          <div class="sc-panel">
+            <div class="sc-rays"></div>
+            <div class="sc-glow"></div>
+
+            <div class="sc-media">
+              {%- if section.settings.product_image != blank -%}
+                {{
+                  section.settings.product_image
+                  | image_url: width: 600
+                  | image_tag: widths: '300, 450, 600', sizes: '300px', alt: section.settings.product_name, loading: 'lazy'
+                }}
+              {%- else -%}
+                <img
+                  src="{{ 'campaign-condroprotetor.webp' | asset_url }}"
+                  alt="{{ section.settings.product_name | default: 'Suppet' }}"
+                  loading="lazy"
+                  width="1422"
+                  height="1957"
+                >
+              {%- endif -%}
+            </div>
+
+            <div class="sc-caption">
+              {%- if section.settings.product_tag != blank -%}
+                <span class="sc-tag">{{ section.settings.product_tag }}</span>
+              {%- endif -%}
+              {%- if section.settings.product_name != blank -%}
+                <strong>{{ section.settings.product_name }}</strong>
+              {%- endif -%}
+              {%- if section.settings.product_subtitle != blank -%}
+                <small>{{ section.settings.product_subtitle }}</small>
+              {%- endif -%}
+            </div>
+          </div>
+
+          {%- if badges.size > 0 -%}
+            <div class="sc-badges">
+              {%- for block in badges -%}
+                <span {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Suppet campaign",
+  "tag": "section",
+  "class": "suppet-campaign-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Campanha Suppet"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Título",
+      "default": "Ative o super do seu pet"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Texto",
+      "default": "<p>A campanha valoriza o vínculo entre tutores, pets e profissionais que fazem parte dessa jornada. Por isso, trouxemos elementos do universo visual da campanha para a LP, mantendo uma navegação leve, clara e orientada para compra.</p>"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "min": 1100,
+      "max": 1820,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    { "type": "header", "content": "Botões" },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Botão principal",
+      "default": "Ver todos os produtos"
+    },
+    { "type": "url", "id": "cta_primary_url", "label": "Link do botão principal" },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Botão secundário",
+      "default": "Fale com a gente"
+    },
+    { "type": "url", "id": "cta_secondary_url", "label": "Link do botão secundário" },
+    { "type": "header", "content": "Produto em destaque" },
+    { "type": "image_picker", "id": "product_image", "label": "Imagem do pack" },
+    {
+      "type": "text",
+      "id": "product_tag",
+      "label": "Selo",
+      "default": "Proteção articular"
+    },
+    {
+      "type": "text",
+      "id": "product_name",
+      "label": "Nome do produto",
+      "default": "Escudo Condroprotetor"
+    },
+    {
+      "type": "text",
+      "id": "product_subtitle",
+      "label": "Legenda",
+      "default": "Condroitina e glucosamina"
+    },
+    { "type": "url", "id": "product_link", "label": "Link do produto" },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Cor do produto (glow)",
+      "default": "#DD6E1F"
+    },
+    { "type": "header", "content": "Cores" },
+    {
+      "type": "color",
+      "id": "brand_color",
+      "label": "Cor da marca (eyebrow, checklist, botão principal)",
+      "default": "#D7282D"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de cores",
+      "default": "scheme2"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_background",
+      "label": "Usar fundo gradiente",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "list_item",
+      "name": "Item da lista",
+      "settings": [{ "type": "text", "id": "text", "label": "Texto", "default": "Item da lista" }]
+    },
+    {
+      "type": "badge",
+      "name": "Selo flutuante",
+      "settings": [{ "type": "text", "id": "text", "label": "Texto", "default": "+ benefício" }]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Suppet campaign",
+      "blocks": [
+        { "type": "list_item", "settings": { "text": "Fórmulas super premium para cada necessidade" } },
+        { "type": "list_item", "settings": { "text": "Compra guiada com carrinho e finalização pelo WhatsApp" } },
+        { "type": "list_item", "settings": { "text": "Linha desenvolvida por especialistas DrogaVET" } },
+        { "type": "badge", "settings": { "text": "+ disposição" } },
+        { "type": "badge", "settings": { "text": "+ mobilidade" } },
+        { "type": "badge", "settings": { "text": "+ equilíbrio" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
