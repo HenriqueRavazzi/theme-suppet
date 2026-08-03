@@ -1,0 +1,283 @@
+{%- comment -%}
+  Suppet product related — porte do ".related__grid" + ".prod-card" da
+  LP estática (Suppet/produto.html + css/style.css). Lista os produtos
+  reais da linha, exceto o produto da página atual. Sem animações de
+  hover (sem lift/scale) — só o essencial de layout.
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign all_blocks = section.blocks | where: 'type', 'product'
+-%}
+
+<style>
+  #SuppetProductRelated-{{ uid }} .spr-container {
+    max-width: {{ section.settings.content_max_width | default: 1180 }}px;
+    margin-inline: auto;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: {{ section.settings.brand_color | default: '#D7282D' }};
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 3px;
+    border-radius: 3px;
+    background: currentColor;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-title {
+    margin-top: 12px;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+    margin-top: 40px;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card {
+    background: #fff;
+    color: #0e1b33;
+    border-radius: 28px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 44px -24px rgba(0, 0, 0, 0.5);
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__media {
+    position: relative;
+    height: 330px;
+    padding: 18px 18px 0;
+    background: #16264a;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 26px 28px rgba(0, 0, 0, 0.42));
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__body {
+    padding: 22px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__tagline {
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--spr-accent, #d7282d);
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__body h3 {
+    font-size: 20px;
+    color: #0e1b33;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #5b6b84;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 14px;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__price {
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    font-size: 19px;
+    color: #0e1b33;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__price span {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #5b6b84;
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__go {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: var(--spr-accent, #d7282d);
+  }
+
+  #SuppetProductRelated-{{ uid }} .spr-card__go svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 900px) {
+    #SuppetProductRelated-{{ uid }} .spr-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    #SuppetProductRelated-{{ uid }} .spr-card__media {
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    #SuppetProductRelated-{{ uid }} .spr-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<section
+  id="SuppetProductRelated-{{ uid }}"
+  class="bg-scheme-background text-scheme-text"
+  data-color-scheme="{{ section.settings.color_scheme }}"
+>
+  <div class="section-content px-section py-section-vertical-spacing">
+    <div class="spr-container">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="spr-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.title != blank -%}
+        <h2 class="spr-title inline-heading-rte font-heading break-words">{{ section.settings.title }}</h2>
+      {%- endif -%}
+
+      {%- if all_blocks.size > 0 -%}
+        <div class="spr-grid">
+          {%- assign shown = 0 -%}
+          {%- for block in all_blocks -%}
+            {%- assign p = all_products[block.settings.product] -%}
+            {%- if p != blank and p.handle == product.handle -%}
+              {%- continue -%}
+            {%- endif -%}
+            {%- if shown >= 3 -%}
+              {%- break -%}
+            {%- endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {%- liquid
+              assign card_name = p.title
+              assign card_desc = p.description | strip_html | truncatewords: 24
+              assign card_image = p.featured_image
+              assign card_link = p.url
+            -%}
+            <article class="spr-card" style="--spr-accent: {{ block.settings.accent }};">
+              <div class="spr-card__media">
+                {%- if card_image != blank -%}
+                  {{
+                    card_image
+                    | image_url: width: 500
+                    | image_tag: widths: '250, 350, 500', sizes: '280px', alt: card_name, loading: 'lazy'
+                  }}
+                {%- endif -%}
+              </div>
+              <div class="spr-card__body">
+                {%- if block.settings.tagline != blank -%}
+                  <p class="spr-card__tagline">{{ block.settings.tagline }}</p>
+                {%- endif -%}
+                {%- if card_name != blank -%}<h3>{{ card_name }}</h3>{%- endif -%}
+                {%- if card_desc != blank -%}<p class="spr-card__desc">{{ card_desc }}</p>{%- endif -%}
+                <div class="spr-card__foot">
+                  <div class="spr-card__price">
+                    {{ p.price | money }}
+                    {%- if block.settings.price_note != blank -%}
+                      <span>{{ block.settings.price_note }}</span>
+                    {%- endif -%}
+                  </div>
+                  <a href="{{ card_link | default: '#' }}" class="spr-card__go" aria-label="Ver {{ card_name }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Suppet product related",
+  "tag": "section",
+  "class": "suppet-product-related-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Complete a rotina" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Outros superpoderes Suppet" },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1180
+    },
+    { "type": "header", "content": "Cores" },
+    { "type": "color", "id": "brand_color", "label": "Cor da marca (eyebrow)", "default": "#D7282D" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Esquema de cores", "default": "scheme1" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produto",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produto da loja",
+          "info": "Nome, preço, imagem e link vêm deste produto. Não aparece quando é o produto da página atual."
+        },
+        { "type": "text", "id": "tagline", "label": "Selo", "default": "Superpoder" },
+        { "type": "color", "id": "accent", "label": "Cor do produto", "default": "#D7282D" },
+        { "type": "text", "id": "price_note", "label": "Legenda do preço", "default": "caixa com 30 sachês" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Suppet product related",
+      "blocks": [
+        { "type": "product", "settings": { "tagline": "Reforço Imunológico e Suporte Nutricional", "accent": "#D7282D" } },
+        { "type": "product", "settings": { "tagline": "Proteção para as Articulações", "accent": "#DD6E1F" } },
+        { "type": "product", "settings": { "tagline": "Redução do Hábito de Ingestão das Fezes", "accent": "#3A7CAE" } },
+        { "type": "product", "settings": { "tagline": "Equilíbrio e Bem-Estar", "accent": "#2FA39C" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

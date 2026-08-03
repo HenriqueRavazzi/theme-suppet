@@ -140,16 +140,57 @@
       }
     },
     "related-products": {
-      "type": "related-products",
+      "type": "suppet-product-related",
+      "blocks": {
+        "product-vitaforca": {
+          "type": "product",
+          "settings": {
+            "product": "campo-de-vitaforca",
+            "tagline": "Reforço Imunológico e Suporte Nutricional",
+            "accent": "#d7282d",
+            "price_note": "caixa com 30 sachês"
+          }
+        },
+        "product-condroprotetor": {
+          "type": "product",
+          "settings": {
+            "product": "escudo-condroprotetor",
+            "tagline": "Proteção para as Articulações",
+            "accent": "#dd6e1f",
+            "price_note": "caixa com 30 sachês"
+          }
+        },
+        "product-anticopro": {
+          "type": "product",
+          "settings": {
+            "product": "barreira-anticopro",
+            "tagline": "Redução do Hábito de Ingestão das Fezes",
+            "accent": "#3a7cae",
+            "price_note": "caixa com 30 sachês"
+          }
+        },
+        "product-estresse": {
+          "type": "product",
+          "settings": {
+            "product": "neutralizador-de-estresse",
+            "tagline": "Equilíbrio e Bem-Estar",
+            "accent": "#2fa39c",
+            "price_note": "caixa com 30 sachês"
+          }
+        }
+      },
+      "block_order": [
+        "product-vitaforca",
+        "product-condroprotetor",
+        "product-anticopro",
+        "product-estresse"
+      ],
       "settings": {
-        "display_on_card": false,
-        "enable_quick_buy": false,
-        "related_products_heading": "Complete a rotina do seu pet",
-        "max_products": "3",
-        "product_tiles_aspect_ratio": "aspect-w-3 aspect-h-4",
-        "image_shape": "default",
-        "color_scheme": "scheme1",
-        "use_gradient_background": false
+        "eyebrow": "Complete a rotina",
+        "title": "Outros superpoderes Suppet",
+        "content_max_width": 1180,
+        "brand_color": "#d7282d",
+        "color_scheme": "scheme1"
       }
     }
   },
