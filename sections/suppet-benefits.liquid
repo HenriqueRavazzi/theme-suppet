@@ -13,6 +13,9 @@
 <style>
   #SuppetBenefits-{{ uid }} {
     --sb-brand: {{ section.settings.brand_color | default: '#D7282D' }};
+    /* Na LP, o hover dos ícones desta seção (benefits__grid--kv) usa
+       --navy, não --red — diferente do grid de benefícios genérico. */
+    --sb-navy: #0e1b33;
   }
 
   #SuppetBenefits-{{ uid }} .sb-container {
@@ -189,7 +192,7 @@
 
   #SuppetBenefits-{{ uid }} .sb-card:hover .sb-ic {
     transform: rotate(-8deg) scale(1.08);
-    background: var(--sb-brand);
+    background: var(--sb-navy);
     color: #fff;
   }
 
