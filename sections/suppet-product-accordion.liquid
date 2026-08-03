@@ -10,6 +10,7 @@
 {%- liquid
   assign uid = section.id
   assign accordion_items = section.blocks | where: 'type', 'accordion_item'
+  assign nutrient_rows = section.blocks | where: 'type', 'nutrient_row'
 -%}
 
 <style>
@@ -97,10 +98,51 @@
 <section id="SuppetProductAccordion-{{ uid }}" class="bg-scheme-background text-scheme-text">
   <div class="section-content px-section py-section-vertical-spacing">
     <div class="spa-container">
-      {%- if accordion_items.size > 0 -%}
+      {%- if section.settings.show_guarantee_table or accordion_items.size > 0 -%}
         <div class="spa-accordion">
+          {%- if section.settings.show_guarantee_table -%}
+            <div class="spa-item is-open">
+              <button type="button" data-spa-toggle>
+                {{ section.settings.guarantee_title | default: 'Tabela de garantia (níveis mínimos)' }}
+                <svg class="spa-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M12 5v14M5 12h14"></path>
+                </svg>
+                <svg class="spa-icon-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M5 12h14"></path>
+                </svg>
+              </button>
+              <div class="spa-panel">
+                {%- if nutrient_rows.size > 0 -%}
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Nutriente</th>
+                        <th>Por kg de produto</th>
+                        <th>Por unidade (4g)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {%- for row in nutrient_rows -%}
+                        <tr {{ row.shopify_attributes }}>
+                          <td>{{ row.settings.nutrient }}</td>
+                          <td>{{ row.settings.per_kg }}</td>
+                          <td>{{ row.settings.per_unit }}</td>
+                        </tr>
+                      {%- endfor -%}
+                    </tbody>
+                  </table>
+                {%- else -%}
+                  <p>{{ section.settings.guarantee_fallback }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+
           {%- for block in accordion_items -%}
-            <div class="spa-item{% if forloop.first %} is-open{% endif %}" {{ block.shopify_attributes }}>
+            <div
+              class="spa-item{% if forloop.first and section.settings.show_guarantee_table == false %} is-open{% endif %}"
+              {{ block.shopify_attributes }}
+            >
               <button type="button" data-spa-toggle>
                 {{ block.settings.title }}
                 <svg class="spa-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -174,9 +216,37 @@
       "step": 20,
       "unit": "px",
       "default": 900
+    },
+    { "type": "header", "content": "Tabela de garantia" },
+    {
+      "type": "checkbox",
+      "id": "show_guarantee_table",
+      "label": "Mostrar item \"Tabela de garantia\"",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "guarantee_title",
+      "label": "Título",
+      "default": "Tabela de garantia (níveis mínimos)"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_fallback",
+      "label": "Texto quando não houver linhas cadastradas",
+      "default": "Consulte a tabela de garantia com os níveis mínimos por quilo de produto e por unidade de 4 g na embalagem do produto."
     }
   ],
   "blocks": [
+    {
+      "type": "nutrient_row",
+      "name": "Linha de garantia",
+      "settings": [
+        { "type": "text", "id": "nutrient", "label": "Nutriente", "default": "Nutriente" },
+        { "type": "text", "id": "per_kg", "label": "Por kg de produto" },
+        { "type": "text", "id": "per_unit", "label": "Por unidade (4g)" }
+      ]
+    },
     {
       "type": "accordion_item",
       "name": "Item do sanfona",
@@ -193,22 +263,15 @@
         {
           "type": "accordion_item",
           "settings": {
-            "title": "Composição",
-            "content": "<p>Consulte a tabela de garantia com os níveis mínimos por quilo de produto e por unidade de 4 g na descrição de cada fórmula. Suplemento alimentar de uso veterinário, para cães.</p>"
-          }
-        },
-        {
-          "type": "accordion_item",
-          "settings": {
             "title": "Modo de uso e conservação",
-            "content": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e do calor excessivo. Após aberto, consumir em até 60 dias.</p>"
+            "content": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e calor excessivo. Após aberto, consumir em até 60 dias.</p>"
           }
         },
         {
           "type": "accordion_item",
           "settings": {
-            "title": "Entrega e SAC",
-            "content": "<p>Frete grátis nas compras acima de R$ 199,00. Dúvidas sobre o pedido ou sobre a suplementação? Fale com o SAC: (41) 3209-8989 ou sac@drogavet.com.br.</p>"
+            "title": "Fabricação e SAC",
+            "content": "<p>Distribuído por Drogavet Farmácias de Manipulação e Indústria Ltda — Barracão 06, Campo Largo/PR. SAC: <a href=\"tel:+554132098989\">(41) 3209-8989</a> · <a href=\"mailto:sac@drogavet.com.br\">sac@drogavet.com.br</a> · <a href=\"https://www.drogavet.com.br/\" target=\"_blank\" rel=\"noopener noreferrer\">www.drogavet.com.br</a>.</p>"
           }
         }
       ]
