@@ -13,6 +13,53 @@
   assign nutrient_rows = section.blocks | where: 'type', 'nutrient_row'
 -%}
 
+{%- comment -%}
+  Sem linhas cadastradas via bloco, usa os níveis de garantia reais de
+  cada fórmula (mesmos dados declarados na LP de referência), pelo
+  handle do produto — assim a tabela certa aparece sozinha em cada
+  página, sem precisar configurar linha por linha por produto.
+{%- endcomment -%}
+{%- capture nutrient_rows_html -%}
+  {%- if nutrient_rows.size > 0 -%}
+    {%- for row in nutrient_rows -%}
+      <tr {{ row.shopify_attributes }}>
+        <td>{{ row.settings.nutrient }}</td>
+        <td>{{ row.settings.per_kg }}</td>
+        <td>{{ row.settings.per_unit }}</td>
+      </tr>
+    {%- endfor -%}
+  {%- else -%}
+    {%- case product.handle -%}
+      {%- when 'campo-de-vitaforca' -%}
+        <tr><td>Vitamina A</td><td>178.500 UI</td><td>714 UI</td></tr>
+        <tr><td>Vitamina E</td><td>2.975 UI</td><td>11,9 UI</td></tr>
+        <tr><td>Selênio</td><td>8,5 mg</td><td>0,03 mg</td></tr>
+        <tr><td>Zinco</td><td>1.275 mg</td><td>5,1 mg</td></tr>
+        <tr><td>Ferro</td><td>680 mg</td><td>2,72 mg</td></tr>
+        <tr><td>EPA + DHA</td><td>2.550 mg</td><td>10,2 mg</td></tr>
+      {%- when 'escudo-condroprotetor' -%}
+        <tr><td>Glucosamina</td><td>50 g</td><td>200 mg</td></tr>
+        <tr><td>Condroitina</td><td>40 g</td><td>160 mg</td></tr>
+        <tr><td>Manganês</td><td>1.445 mg</td><td>5,7 mg</td></tr>
+        <tr><td>Vitamina E</td><td>2.975 UI</td><td>11,9 UI</td></tr>
+        <tr><td>Colágeno tipo II</td><td>42 g</td><td>168 mg</td></tr>
+      {%- when 'barreira-anticopro' -%}
+        <tr><td>Metionina</td><td>22 g</td><td>88 mg</td></tr>
+        <tr><td>Triptofano</td><td>13 g</td><td>52 mg</td></tr>
+        <tr><td>Vitamina B6</td><td>397 mg</td><td>1,5 mg</td></tr>
+        <tr><td>Beta-glucanos</td><td>6.256 mg</td><td>25 mg</td></tr>
+        <tr><td>Lactobacillus acidophilus</td><td>2,55×10⁹ UFC</td><td>1×10⁹ UFC</td></tr>
+      {%- when 'neutralizador-de-estresse' -%}
+        <tr><td>Glicina</td><td>26 g</td><td>104 mg</td></tr>
+        <tr><td>Magnésio</td><td>4.300 mg</td><td>17 mg</td></tr>
+        <tr><td>L-teanina</td><td>16.600 mg</td><td>66 mg</td></tr>
+        <tr><td>Triptofano</td><td>37 g</td><td>148 mg</td></tr>
+        <tr><td>Vitamina B12</td><td>8.000 mcg</td><td>32 mcg</td></tr>
+    {%- endcase -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- assign nutrient_rows_html = nutrient_rows_html | strip -%}
+
 <style>
   #SuppetProductAccordion-{{ uid }} .spa-container {
     max-width: {{ section.settings.content_max_width | default: 900 }}px;
@@ -112,7 +159,7 @@
                 </svg>
               </button>
               <div class="spa-panel">
-                {%- if nutrient_rows.size > 0 -%}
+                {%- if nutrient_rows_html != blank -%}
                   <table>
                     <thead>
                       <tr>
@@ -122,13 +169,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {%- for row in nutrient_rows -%}
-                        <tr {{ row.shopify_attributes }}>
-                          <td>{{ row.settings.nutrient }}</td>
-                          <td>{{ row.settings.per_kg }}</td>
-                          <td>{{ row.settings.per_unit }}</td>
-                        </tr>
-                      {%- endfor -%}
+                      {{ nutrient_rows_html }}
                     </tbody>
                   </table>
                 {%- else -%}
