@@ -165,8 +165,9 @@
       "settings": {
         "eyebrow": "Universo Suppet",
         "title": "Feito para ativar o super do seu pet",
-        "richtext": "<p>Uma linha desenvolvida pela DrogaVET para apoiar diferentes necessidades com praticidade, sabor e rotina simples. Trouxemos o clima visual da campanha para reforçar a conexão afetiva sem poluir a LP.</p>",
+        "richtext": "<p>Uma linha desenvolvida pela DrogaVET para apoiar diferentes necessidades com praticidade, sabor e rotina simples.</p>",
         "content_max_width": 1240,
+        "image": "shopify://shop_images/pancho-clean.png",
         "brand_color": "#d7282d",
         "color_scheme": "scheme1",
         "use_gradient_background": false
