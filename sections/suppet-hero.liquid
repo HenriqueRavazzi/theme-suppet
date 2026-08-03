@@ -198,17 +198,18 @@
 
   #SuppetHero-{{ uid }} .sh-showcase {
     position: relative;
-    width: min(480px, 92%);
+    /* Tamanho final da LP (AJUSTES FINAIS — TAMANHOS E CARDS). */
+    width: min(640px, 92%);
     margin: 0 auto;
-    aspect-ratio: 1 / 1.28;
+    aspect-ratio: 1 / 1.1;
   }
 
   #SuppetHero-{{ uid }} .sh-glow {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 80%;
-    height: 80%;
+    width: 88%;
+    height: 88%;
     z-index: 0;
     border-radius: 50%;
     transform: translate(-50%, -50%);
@@ -383,6 +384,9 @@
       grid-template-columns: 1fr;
       text-align: center;
     }
+    #SuppetHero-{{ uid }} .sh-showcase {
+      width: min(560px, 90%);
+    }
     #SuppetHero-{{ uid }} .sh-eyebrow {
       justify-content: center;
     }
@@ -403,7 +407,7 @@
 
   @media (max-width: 520px) {
     #SuppetHero-{{ uid }} .sh-showcase {
-      width: 88%;
+      width: min(420px, 88%);
     }
     #SuppetHero-{{ uid }} .sh-badge {
       left: 50%;

@@ -136,7 +136,8 @@
     isolation: isolate;
     overflow: hidden;
     border-radius: 32px;
-    min-height: 520px;
+    /* Altura final da LP (AJUSTE FINAL — CENTRALIZAÇÃO VERTICAL DO BLOCO). */
+    min-height: 700px;
     padding: 40px 42px 34px;
     display: flex;
     flex-direction: column;
@@ -175,8 +176,8 @@
 
   #SuppetCampaign-{{ uid }} .sc-media img {
     width: 100%;
-    max-width: 300px;
-    max-height: 380px;
+    max-width: 350px;
+    max-height: 470px;
     object-fit: contain;
     filter: drop-shadow(0 28px 28px rgba(0, 0, 0, 0.34));
   }
@@ -204,7 +205,7 @@
     max-width: 340px;
     margin-top: 14px;
     font-family: var(--heading-font-stack);
-    font-size: clamp(24px, 2.6vw, 34px);
+    font-size: clamp(24px, 2.4vw, 36px);
     line-height: 1.05;
   }
 
@@ -247,16 +248,23 @@
     #SuppetCampaign-{{ uid }} .sc-badges {
       right: 6px;
     }
+    #SuppetCampaign-{{ uid }} .sc-panel {
+      min-height: 620px;
+    }
+    #SuppetCampaign-{{ uid }} .sc-media img {
+      max-width: 300px;
+      max-height: 400px;
+    }
   }
 
   @media (max-width: 520px) {
     #SuppetCampaign-{{ uid }} .sc-panel {
-      min-height: 440px;
+      min-height: 480px;
       padding: 32px 26px 28px;
     }
     #SuppetCampaign-{{ uid }} .sc-media img {
-      max-width: 220px;
-      max-height: 280px;
+      max-width: 240px;
+      max-height: 320px;
     }
   }
 </style>

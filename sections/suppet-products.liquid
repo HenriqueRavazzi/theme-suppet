@@ -138,8 +138,9 @@
   #SuppetProducts-{{ uid }} .sp-card__media {
     position: relative;
     /* height fixa (não min-height): embalagens com proporções levemente
-       diferentes não podem esticar o card e desalinhar o título abaixo. */
-    height: 300px;
+       diferentes não podem esticar o card e desalinhar o título abaixo.
+       330px é o valor final da LP (@media min-width:1200px). */
+    height: 330px;
     padding: 18px 18px 0;
     background: #16264a;
   }
@@ -232,7 +233,7 @@
 
   @media (max-width: 900px) {
     #SuppetProducts-{{ uid }} .sp-card__media {
-      height: 260px;
+      height: 320px;
     }
   }
 
@@ -242,6 +243,9 @@
     }
     #SuppetProducts-{{ uid }} .sp-arrows {
       display: none;
+    }
+    #SuppetProducts-{{ uid }} .sp-card__media {
+      height: 290px;
     }
   }
 </style>
