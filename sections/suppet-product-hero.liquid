@@ -16,7 +16,6 @@
   assign current_variant = product.selected_or_first_available_variant
   assign mini_benefits = section.blocks | where: 'type', 'mini_benefit'
   assign accordion_items = section.blocks | where: 'type', 'accordion_item'
-  assign pricing_app_blocks = section.blocks | where: 'type', '@app'
   assign tagline = product.metafields.custom.tagline | default: section.settings.tagline_fallback
 
   assign accent_color = section.settings.accent_color
@@ -328,10 +327,18 @@
             </div>
           {%- endif -%}
 
-          {%- if pricing_app_blocks.size > 0 -%}
+          {%- assign app_block_count = section.blocks | where: 'type', '@app' | size -%}
+          {%- if app_block_count > 0 -%}
             <div class="sph-price-app">
-              {%- for block in pricing_app_blocks -%}
-                {{ block }}
+              {%- comment -%}
+                Loop direto em section.blocks (sem `where`): o filtro `where`
+                quebra o vínculo especial que o Liquid usa pra renderizar o
+                conteúdo real do app, imprimindo "AppBlockDrop" em vez dele.
+              {%- endcomment -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == '@app' -%}
+                  {{ block }}
+                {%- endif -%}
               {%- endfor -%}
             </div>
           {%- endif -%}
