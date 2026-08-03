@@ -1,0 +1,633 @@
+{%- comment -%}
+  Suppet product hero — porte do ".product-hero" + ".accordion" da LP
+  estática (Suppet/produto.html + css/style.css). Usa dados reais do
+  produto Shopify (título, descrição, imagem, preço, estoque) — não é
+  estático como a LP. Sem animações: troca de estado é instantânea.
+
+  A faixa de preço por quantidade (Compre 1/3/9) da LP era só uma
+  simulação em JS, sem checkout real. Aqui, esse espaço fica livre
+  para o app de desconto automático (bloco @app) em vez de simular
+  um valor que o checkout não aplicaria de verdade.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign current_variant = product.selected_or_first_available_variant
+  assign mini_benefits = section.blocks | where: 'type', 'mini_benefit'
+  assign accordion_items = section.blocks | where: 'type', 'accordion_item'
+  assign pricing_app_blocks = section.blocks | where: 'type', '@app'
+  assign tagline = product.metafields.custom.tagline | default: section.settings.tagline_fallback
+-%}
+
+<style>
+  #SuppetProductHero-{{ uid }} .sph-container {
+    max-width: {{ section.settings.content_max_width | default: 1180 }}px;
+    margin-inline: auto;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 22px 0;
+    font-size: 13px;
+    color: rgba(var(--color-scheme-text), 0.6);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-breadcrumb a:hover {
+    color: {{ section.settings.accent_color | default: '#D7282D' }};
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-breadcrumb span {
+    opacity: 0.5;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-breadcrumb .sph-current {
+    color: rgb(var(--color-scheme-text));
+    font-weight: 700;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 56px;
+    align-items: flex-start;
+    padding-bottom: 70px;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-gallery {
+    border-radius: 28px;
+    overflow: hidden;
+    background: {{ section.settings.gallery_background | default: '#16264A' }};
+    padding: 30px;
+    text-align: center;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-gallery img {
+    width: min(100%, 560px);
+    max-width: 560px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-title {
+    font-size: clamp(28px, 3.4vw, 40px);
+    font-weight: 800;
+    color: {{ section.settings.accent_color | default: '#D7282D' }};
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-tagline {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: {{ section.settings.accent_color | default: '#D7282D' }};
+    color: #fff;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.3px;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-desc {
+    margin-top: 18px;
+    max-width: 520px;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: rgba(var(--color-scheme-text), 0.72);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-note {
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(var(--color-scheme-text), 0.6);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-rating .sph-stars {
+    color: #f5a623;
+    letter-spacing: 2px;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-rating span {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(var(--color-scheme-text), 0.6);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-price-app {
+    margin-top: 26px;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-buy-row {
+    display: flex;
+    gap: 14px;
+    margin-top: 26px;
+    flex-wrap: wrap;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-qty {
+    display: flex;
+    align-items: center;
+    border: 2px solid rgba(var(--color-scheme-text), 0.14);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-qty button {
+    width: 44px;
+    height: 56px;
+    border: none;
+    background: transparent;
+    color: rgb(var(--color-scheme-text));
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-qty button:hover {
+    background: rgba(var(--color-scheme-text), 0.06);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-qty input {
+    width: 40px;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-weight: 800;
+    font-size: 15px;
+    color: rgb(var(--color-scheme-text));
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-add-btn {
+    flex: 1;
+    min-width: 220px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 30px;
+    border: none;
+    border-radius: 999px;
+    background: {{ section.settings.accent_color | default: '#D7282D' }};
+    color: #fff;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 15px;
+    white-space: normal;
+    cursor: pointer;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-add-btn:hover {
+    filter: brightness(0.92);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-add-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-mini-benefits {
+    display: flex;
+    gap: 22px;
+    margin-top: 34px;
+    flex-wrap: wrap;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-mini-benefit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 78px;
+    text-align: center;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-mini-benefit .sph-ic {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(var(--color-scheme-text), 0.06);
+    color: {{ section.settings.accent_color | default: '#D7282D' }};
+    display: grid;
+    place-items: center;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-mini-benefit .sph-ic svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-mini-benefit span {
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: rgba(var(--color-scheme-text), 0.7);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-accordion {
+    max-width: 900px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(var(--color-scheme-text), 0.12);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-accordion-item {
+    border-bottom: 1px solid rgba(var(--color-scheme-text), 0.12);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-accordion-item button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    padding: 24px 4px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 18px;
+    color: rgb(var(--color-scheme-text));
+    cursor: pointer;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-accordion-item button svg {
+    width: 20px;
+    height: 20px;
+    flex: none;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-accordion-item:not(.is-open) button svg.sph-icon-minus,
+  #SuppetProductHero-{{ uid }} .sph-accordion-item.is-open button svg.sph-icon-plus {
+    display: none;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-accordion-panel {
+    display: none;
+    padding: 0 4px 26px;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-accordion-item.is-open .sph-accordion-panel {
+    display: block;
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-accordion-panel p {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: rgba(var(--color-scheme-text), 0.68);
+  }
+
+  @media (max-width: 900px) {
+    #SuppetProductHero-{{ uid }} .sph-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    #SuppetProductHero-{{ uid }} .sph-gallery {
+      padding: 22px;
+    }
+    #SuppetProductHero-{{ uid }} .sph-buy-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
+
+<section
+  id="SuppetProductHero-{{ uid }}"
+  class="bg-scheme-background text-scheme-text"
+  data-color-scheme="{{ section.settings.color_scheme }}"
+>
+  <div class="section-content px-section">
+    <div class="sph-container">
+      <nav class="sph-breadcrumb" aria-label="breadcrumb">
+        <a href="{{ routes.root_url }}">Início</a>
+        <span>/</span>
+        <a href="{{ routes.all_products_collection_url }}">Produtos</a>
+        <span>/</span>
+        <span class="sph-current">{{ product.title }}</span>
+      </nav>
+
+      <div class="sph-grid">
+        <div class="sph-gallery">
+          {%- if product.featured_image != blank -%}
+            {{
+              product.featured_image
+              | image_url: width: 700
+              | image_tag: widths: '350, 500, 700', sizes: '(min-width: 901px) 45vw, 90vw', alt: product.featured_image.alt | default: product.title, loading: 'eager'
+            }}
+          {%- endif -%}
+        </div>
+
+        <div>
+          <h1 class="sph-title">{{ product.title }}</h1>
+
+          {%- if tagline != blank -%}
+            <span class="sph-tagline">{{ tagline }}</span>
+          {%- endif -%}
+
+          {%- if product.description != blank -%}
+            <div class="sph-desc rte">{{ product.description }}</div>
+          {%- endif -%}
+
+          {%- if section.settings.note_text != blank -%}
+            <p class="sph-note">{{ section.settings.note_text }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.rating_text != blank -%}
+            <div class="sph-rating">
+              <span class="sph-stars" aria-hidden="true">★★★★★</span>
+              <span>{{ section.settings.rating_text }}</span>
+            </div>
+          {%- endif -%}
+
+          {%- if pricing_app_blocks.size > 0 -%}
+            <div class="sph-price-app">
+              {%- for block in pricing_app_blocks -%}
+                {{ block }}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {% form 'product', product, id: 'SuppetProductForm-' | append: uid, class: 'sph-form' %}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-sph-variant-id>
+            <div class="sph-buy-row">
+              <div class="sph-qty">
+                <button type="button" data-sph-qty-minus aria-label="Diminuir quantidade">−</button>
+                <input type="number" name="quantity" value="1" min="1" inputmode="numeric" data-sph-qty-input>
+                <button type="button" data-sph-qty-plus aria-label="Aumentar quantidade">+</button>
+              </div>
+              <button
+                type="submit"
+                class="sph-add-btn"
+                {% unless current_variant.available %}disabled{% endunless %}
+                data-sph-add-btn
+                data-unit-price="{{ current_variant.price | default: 0 }}"
+              >
+                {%- if current_variant.available -%}
+                  Adicionar ao carrinho —
+                  <span data-sph-total-price>{{ current_variant.price | money }}</span>
+                {%- else -%}
+                  Esgotado
+                {%- endif -%}
+              </button>
+            </div>
+          {% endform %}
+
+          {%- if mini_benefits.size > 0 -%}
+            <div class="sph-mini-benefits">
+              {%- for block in mini_benefits -%}
+                <div class="sph-mini-benefit" {{ block.shopify_attributes }}>
+                  <div class="sph-ic">
+                    {%- case block.settings.icon -%}
+                      {%- when 'paw' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <circle cx="6" cy="9" r="2.1"></circle>
+                          <circle cx="11" cy="6" r="2.1"></circle>
+                          <circle cx="16" cy="6" r="2.1"></circle>
+                          <circle cx="20" cy="10" r="2"></circle>
+                          <path d="M13 12.2c3.2 0 6 2.4 6 5.2 0 2-1.6 3.1-3.6 2.5-1-.3-2.1-.3-3.1 0-2 .6-3.6-.5-3.6-2.5 0-2.8 2.1-5.2 4.3-5.2Z"></path>
+                        </svg>
+                      {%- when 'leaf' -%}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                          <path d="M4 20c0-8 5-14 16-15-1 10-7 15-15 15Z"></path>
+                          <path d="M6 18c3-3 6-7 12-11"></path>
+                        </svg>
+                      {%- when 'shield' -%}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                          <path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6l7-3Z"></path>
+                          <path d="M9 12l2 2 4-4"></path>
+                        </svg>
+                      {%- else -%}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                          <path d="M12 20s-7.5-4.6-9.6-9.4C1.1 7.6 3 4.5 6.3 4.2c2-.2 3.7 1 4.7 2.6 1-1.6 2.7-2.8 4.7-2.6 3.3.3 5.2 3.4 3.9 6.4C19.5 15.4 12 20 12 20Z"></path>
+                          <path d="M9 11.2h1.6l1-1.7 1.4 3 1-1.3H16"></path>
+                        </svg>
+                    {%- endcase -%}
+                  </div>
+                  <span>{{ block.settings.label }}</span>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if accordion_items.size > 0 -%}
+        <div class="sph-accordion">
+          {%- for block in accordion_items -%}
+            <div class="sph-accordion-item{% if forloop.first %} is-open{% endif %}" {{ block.shopify_attributes }}>
+              <button type="button" data-sph-accordion-toggle>
+                {{ block.settings.title }}
+                <svg class="sph-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M12 5v14M5 12h14"></path>
+                </svg>
+                <svg class="sph-icon-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M5 12h14"></path>
+                </svg>
+              </button>
+              <div class="sph-accordion-panel">
+                <div class="rte">{{ block.settings.content }}</div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    function initSuppetProductHero(root) {
+      if (!root || root.dataset.sphReady === 'true') return;
+      root.dataset.sphReady = 'true';
+
+      var qtyInput = root.querySelector('[data-sph-qty-input]');
+      var addBtn = root.querySelector('[data-sph-add-btn]');
+      var totalEl = root.querySelector('[data-sph-total-price]');
+      var unitPrice = addBtn ? parseInt(addBtn.dataset.unitPrice, 10) || 0 : 0;
+
+      function formatMoney(cents) {
+        return (cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      }
+
+      function updateTotal() {
+        if (!qtyInput || !totalEl) return;
+        var qty = parseInt(qtyInput.value, 10) || 1;
+        totalEl.textContent = formatMoney(unitPrice * qty);
+      }
+
+      root.querySelector('[data-sph-qty-minus]')?.addEventListener('click', function () {
+        var qty = Math.max(1, (parseInt(qtyInput.value, 10) || 1) - 1);
+        qtyInput.value = qty;
+        updateTotal();
+      });
+
+      root.querySelector('[data-sph-qty-plus]')?.addEventListener('click', function () {
+        var qty = (parseInt(qtyInput.value, 10) || 1) + 1;
+        qtyInput.value = qty;
+        updateTotal();
+      });
+
+      qtyInput?.addEventListener('input', updateTotal);
+
+      root.querySelectorAll('[data-sph-accordion-toggle]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var item = btn.closest('.sph-accordion-item');
+          var wasOpen = item.classList.contains('is-open');
+          root.querySelectorAll('.sph-accordion-item').forEach(function (i) {
+            i.classList.remove('is-open');
+          });
+          if (!wasOpen) item.classList.add('is-open');
+        });
+      });
+    }
+
+    function initAll() {
+      Array.prototype.forEach.call(
+        document.querySelectorAll('[id^="SuppetProductHero-"]'),
+        initSuppetProductHero
+      );
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+      initAll();
+    }
+
+    document.addEventListener('shopify:section:load', function (event) {
+      var root = event.target.querySelector('[id^="SuppetProductHero-"]');
+      if (root) initSuppetProductHero(root);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Suppet product hero",
+  "tag": "section",
+  "class": "suppet-product-hero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline_fallback",
+      "label": "Selo (se o produto não tiver o metafield custom.tagline)",
+      "info": "Cadastre um metafield de produto \"custom.tagline\" (texto de uma linha) pra cada produto ter seu próprio selo. Sem o metafield, usa este texto para todos.",
+      "default": "Suplemento Super Premium"
+    },
+    {
+      "type": "text",
+      "id": "note_text",
+      "label": "Texto pequeno abaixo da descrição",
+      "default": "Suplemento mastigável para cães. Em caso de dúvidas, consulte o médico-veterinário."
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Texto ao lado das estrelas",
+      "info": "Deixe em branco pra esconder a linha de avaliação.",
+      "default": "Suplemento com rotina simples de uso e finalização facilitada pelo WhatsApp"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1180
+    },
+    { "type": "header", "content": "Cores" },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Cor de destaque (título, selo, botão)",
+      "default": "#D7282D"
+    },
+    {
+      "type": "color",
+      "id": "gallery_background",
+      "label": "Fundo do painel da imagem",
+      "default": "#16264A"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de cores",
+      "default": "scheme1"
+    }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "mini_benefit",
+      "name": "Ícone de benefício",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícone",
+          "options": [
+            { "value": "paw", "label": "Pata" },
+            { "value": "heart", "label": "Coração" },
+            { "value": "leaf", "label": "Folha" },
+            { "value": "shield", "label": "Escudo" }
+          ],
+          "default": "paw"
+        },
+        { "type": "text", "id": "label", "label": "Texto", "default": "Mastigável" }
+      ]
+    },
+    {
+      "type": "accordion_item",
+      "name": "Item do sanfona",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Título" },
+        { "type": "richtext", "id": "content", "label": "Conteúdo" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Suppet product hero",
+      "blocks": [
+        { "type": "mini_benefit", "settings": { "icon": "paw", "label": "Mastigável" } },
+        { "type": "mini_benefit", "settings": { "icon": "heart", "label": "Alta Palatabilidade" } },
+        { "type": "mini_benefit", "settings": { "icon": "leaf", "label": "Sem Aditivos" } },
+        { "type": "mini_benefit", "settings": { "icon": "shield", "label": "Super Premium" } },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Composição",
+            "content": "<p>Consulte a tabela de garantia com os níveis mínimos por quilo de produto e por unidade de 4 g na descrição de cada fórmula. Suplemento alimentar de uso veterinário, para cães.</p>"
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Modo de uso e conservação",
+            "content": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e do calor excessivo. Após aberto, consumir em até 60 dias.</p>"
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Entrega e SAC",
+            "content": "<p>Frete grátis nas compras acima de R$ 199,00. Dúvidas sobre o pedido ou sobre a suplementação? Fale com o SAC: (41) 3209-8989 ou sac@drogavet.com.br.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

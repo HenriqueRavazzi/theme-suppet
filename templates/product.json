@@ -1,125 +1,51 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
+      "type": "suppet-product-hero",
       "blocks": {
-        "title": {
-          "type": "title",
+        "mini-benefit-0": { "type": "mini_benefit", "settings": { "icon": "paw", "label": "Mastigável" } },
+        "mini-benefit-1": { "type": "mini_benefit", "settings": { "icon": "heart", "label": "Alta Palatabilidade" } },
+        "mini-benefit-2": { "type": "mini_benefit", "settings": { "icon": "leaf", "label": "Sem Aditivos" } },
+        "mini-benefit-3": { "type": "mini_benefit", "settings": { "icon": "shield", "label": "Super Premium" } },
+        "accordion-0": {
+          "type": "accordion_item",
           "settings": {
-            "display_on_card": false,
-            "text_align": "text-left"
+            "title": "Composição",
+            "content": "<p>Consulte a tabela de garantia com os níveis mínimos por quilo de produto e por unidade de 4 g na descrição de cada fórmula. Suplemento alimentar de uso veterinário, para cães.</p>"
           }
         },
-        "price": {
-          "type": "price",
+        "accordion-1": {
+          "type": "accordion_item",
           "settings": {
-            "display_on_card": false,
-            "show_on_sale_sticker": false,
-            "text_align": "text-left"
+            "title": "Modo de uso e conservação",
+            "content": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e do calor excessivo. Após aberto, consumir em até 60 dias.</p>"
           }
         },
-        "description": {
-          "type": "description",
+        "accordion-2": {
+          "type": "accordion_item",
           "settings": {
-            "display_on_card": false,
-            "truncate_description": true,
-            "text_align": "text-left"
-          }
-        },
-        "variant-picker": {
-          "type": "variant_picker",
-          "settings": {
-            "display_on_card": false,
-            "option_style": "buttons",
-            "full_width_buttons": true,
-            "hide_option_labels": true,
-            "enable_color_swatches": false
-          }
-        },
-        "buy-buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "display_on_card": false,
-            "show_price": true,
-            "enable_payment_button": true,
-            "show_pickup_availability": false,
-            "show_gift_card_recipient": false
-          }
-        },
-        "tabs": {
-          "type": "tabs",
-          "settings": {
-            "display_on_card": false,
-            "uppercase_heading": false,
-            "heading_1": "Composição",
-            "content_1": "<p>Consulte a tabela de garantia com os níveis mínimos por quilo de produto e por unidade de 4 g na descrição de cada fórmula. Suplemento alimentar de uso veterinário, para cães.</p>",
-            "page_content_1": "",
-            "heading_2": "Modo de uso e conservação",
-            "content_2": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e do calor excessivo. Após aberto, consumir em até 60 dias.</p>",
-            "page_content_2": "",
-            "heading_3": "Entrega e SAC",
-            "content_3": "<p>Frete grátis nas compras acima de R$ 199,00. Dúvidas sobre o pedido ou sobre a suplementação? Fale com o SAC: (41) 3209-8989 ou sac@drogavet.com.br.</p>",
-            "page_content_3": "",
-            "tab_style": "border",
-            "tab_color": "text"
-          }
-        },
-        "spacer": {
-          "type": "spacer",
-          "settings": {
-            "height": 7
-          }
-        },
-        "icon-row": {
-          "type": "icon_row",
-          "settings": {
-            "display_on_card": false,
-            "uppercase_text": false,
-            "icon_alignment": "justify-between",
-            "icon_thickness": 2,
-            "background_color": "bg-scheme-accent-1 text-scheme-accent-1-contrast",
-            "show_border": false,
-            "icon_size": "h-16 w-16",
-            "icon_1": "leaf",
-            "text_1": "Mastigável",
-            "icon_2": "non_gmo",
-            "text_2": "Super Premium",
-            "icon_3": "heart",
-            "text_3": "Palatável",
-            "icon_4": "probiotic",
-            "text_4": "Pré e Probióticos",
-            "icon_5": "no_additives",
-            "text_5": "Sem Aditivos"
+            "title": "Entrega e SAC",
+            "content": "<p>Frete grátis nas compras acima de R$ 199,00. Dúvidas sobre o pedido ou sobre a suplementação? Fale com o SAC: (41) 3209-8989 ou sac@drogavet.com.br.</p>"
           }
         }
       },
       "block_order": [
-        "title",
-        "price",
-        "description",
-        "variant-picker",
-        "buy-buttons",
-        "tabs",
-        "spacer",
-        "icon-row"
+        "mini-benefit-0",
+        "mini-benefit-1",
+        "mini-benefit-2",
+        "mini-benefit-3",
+        "accordion-0",
+        "accordion-1",
+        "accordion-2"
       ],
       "settings": {
-        "crop": "",
-        "image_shape": "scalloped_circle_5",
-        "desktop_media_width": "lg:col-span-6_lg:col-span-6",
-        "show_slideshow_arrows_on_desktop": false,
-        "enable_image_zoom": false,
-        "enable_video_looping": true,
-        "autoplay_videos_on_desktop": true,
-        "media_mobile_width": "w-full",
-        "thumbnails_position": "under",
-        "thumbnail_crop": "aspect-w-1 aspect-h-1",
-        "thumbnail_shape": "scalloped_circle_5",
-        "thumbnail_size": "standard",
-        "show_thumbnails_on_mobile": false,
-        "hide_media_shadow": false,
-        "color_scheme": "scheme1",
-        "use_gradient_background": false
+        "tagline_fallback": "Suplemento Super Premium",
+        "note_text": "Suplemento mastigável para cães. Em caso de dúvidas, consulte o médico-veterinário.",
+        "rating_text": "Suplemento com rotina simples de uso e finalização facilitada pelo WhatsApp",
+        "content_max_width": 1180,
+        "accent_color": "#D7282D",
+        "gallery_background": "#16264A",
+        "color_scheme": "scheme1"
       }
     },
     "feature-text": {
