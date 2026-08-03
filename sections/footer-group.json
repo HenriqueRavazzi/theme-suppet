@@ -3,54 +3,85 @@
   "name": "Footer",
   "sections": {
     "footer": {
-      "type": "footer",
+      "type": "suppet-footer",
       "blocks": {
-        "tagline-and-social-links-0": {
-          "type": "tagline_and_social_links",
-          "settings": {
-            "tagline": "Suppet é a linha de suplementos super premium mastigáveis da DrogaVET — reforço imunológico, proteção articular, equilíbrio digestivo e emocional para o seu pet. Suplemento alimentar. Uso veterinário — para cães.",
-            "show_social_icons": true
-          }
+        "link-institutional-0": {
+          "type": "link",
+          "settings": { "column": "institutional", "label": "Sobre a DrogaVET", "url": "https://www.drogavet.com.br/" }
         },
-        "menus-0": {
-          "type": "menus",
-          "settings": {
-            "show_menu_headings": false,
-            "linklist_1": "main-menu",
-            "linklist_2": "footer",
-            "linklist_3": ""
-          }
+        "link-institutional-1": {
+          "type": "link",
+          "settings": { "column": "institutional", "label": "Nossa campanha", "url": "" }
         },
-        "newsletter-0": {
-          "type": "newsletter",
-          "settings": {
-            "newsletter_heading": "Receba o cupom SUPPET10"
-          }
+        "link-institutional-2": {
+          "type": "link",
+          "settings": { "column": "institutional", "label": "Conheça a linha Suppet", "url": "" }
         },
-        "shape-divider-footer-0": {
-          "type": "shape_divider",
-          "settings": {
-            "target_section": "above",
-            "target_section_color_scheme": "scheme1",
-            "style": "waves-3-patterned_1200x84",
-            "flip_horizontal": false,
-            "enable_animation": false,
-            "animation_direction": ""
-          }
+        "link-institutional-3": {
+          "type": "link",
+          "settings": { "column": "institutional", "label": "Site institucional", "url": "https://www.drogavet.com.br/" }
+        },
+        "link-help-0": {
+          "type": "link",
+          "settings": { "column": "help", "label": "Perguntas frequentes", "url": "mailto:sac@drogavet.com.br" }
+        },
+        "link-help-1": {
+          "type": "link",
+          "settings": { "column": "help", "label": "Trocas e devoluções", "url": "https://wa.me/554132098989" }
+        },
+        "link-help-2": {
+          "type": "link",
+          "settings": { "column": "help", "label": "Política de privacidade", "url": "mailto:sac@drogavet.com.br" }
+        },
+        "link-help-3": {
+          "type": "link",
+          "settings": { "column": "help", "label": "Termos de uso", "url": "mailto:sac@drogavet.com.br" }
+        },
+        "link-contact-0": {
+          "type": "link",
+          "settings": { "column": "contact", "label": "(41) 3209-8989", "url": "tel:+554132098989" }
+        },
+        "link-contact-1": {
+          "type": "link",
+          "settings": { "column": "contact", "label": "sac@drogavet.com.br", "url": "mailto:sac@drogavet.com.br" }
+        },
+        "link-contact-2": {
+          "type": "link",
+          "settings": { "column": "contact", "label": "www.drogavet.com.br", "url": "https://www.drogavet.com.br/" }
+        },
+        "link-contact-3": {
+          "type": "link",
+          "settings": { "column": "contact", "label": "Barracão 06 — Campo Largo/PR", "url": "" }
         }
       },
       "block_order": [
-        "tagline-and-social-links-0",
-        "menus-0",
-        "newsletter-0",
-        "shape-divider-footer-0"
+        "link-institutional-0",
+        "link-institutional-1",
+        "link-institutional-2",
+        "link-institutional-3",
+        "link-help-0",
+        "link-help-1",
+        "link-help-2",
+        "link-help-3",
+        "link-contact-0",
+        "link-contact-1",
+        "link-contact-2",
+        "link-contact-3"
       ],
       "settings": {
-        "show_payment_icons": true,
-        "show_country_selector": true,
-        "show_locale_selector": true,
-        "color_scheme": "scheme3",
-        "use_gradient_background": false
+        "tagline": "Suppet é a linha de suplementos super premium mastigáveis da DrogaVET — reforço imunológico, proteção articular, equilíbrio digestivo e emocional para o seu pet.",
+        "instagram_url": "https://www.instagram.com/drogavet/",
+        "facebook_url": "https://www.facebook.com/drogavet/",
+        "whatsapp_number": "554132098989",
+        "institutional_heading": "Institucional",
+        "help_heading": "Ajuda",
+        "contact_heading": "Contato (SAC)",
+        "copyright_owner": "DrogaVET · Suppet",
+        "copyright_text": "Todos os direitos reservados.",
+        "disclaimer": "Suplemento alimentar. Uso veterinário — para cães.",
+        "content_max_width": 1240,
+        "background_color": "#0E1B33",
+        "accent_color": "#D7282D"
       }
     },
     "hero-logo": {

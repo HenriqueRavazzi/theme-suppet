@@ -1,0 +1,226 @@
+{%- comment -%}
+  Suppet newsletter (cta-strip) — porte do bloco ".cta-strip" da LP
+  (Suppet/index.html + css/style.css). Cadastro real via formulário
+  nativo de cliente do Shopify (contact[tags]=newsletter), não é só
+  decorativo como na LP estática.
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign form_id = 'SuppetNewsletterForm-' | append: uid
+-%}
+
+<style>
+  #SuppetNewsletter-{{ uid }} .sn-container {
+    max-width: {{ section.settings.content_max_width | default: 1240 }}px;
+    margin-inline: auto;
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-strip {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    border-radius: 28px;
+    padding: 50px 56px;
+    color: #fff;
+    background: linear-gradient(
+      120deg,
+      {{ section.settings.color_from | default: '#D7282D' }},
+      {{ section.settings.color_to | default: '#DD6E1F' }}
+    );
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-strip::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.25), transparent 55%);
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-copy h3 {
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    font-size: clamp(22px, 3vw, 32px);
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-copy p {
+    margin-top: 8px;
+    opacity: 0.9;
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-form input[type='email'] {
+    min-width: 260px;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 999px;
+    font-family: var(--main-font-stack);
+    font-size: 14px;
+    color: #0e1b33;
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 30px;
+    border: none;
+    border-radius: 999px;
+    background: #0e1b33;
+    color: #fff;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 26px -10px rgba(14, 27, 51, 0.5);
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-feedback {
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: #fff;
+    color: #0e1b33;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  #SuppetNewsletter-{{ uid }} .sn-feedback--error {
+    background: #fff5f5;
+  }
+
+  @media (max-width: 640px) {
+    #SuppetNewsletter-{{ uid }} .sn-strip {
+      padding: 34px 26px;
+    }
+    #SuppetNewsletter-{{ uid }} .sn-form {
+      width: 100%;
+    }
+    #SuppetNewsletter-{{ uid }} .sn-form input[type='email'] {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+</style>
+
+<section id="SuppetNewsletter-{{ uid }}" class="bg-scheme-background text-scheme-text">
+  <div class="section-content px-section py-section-vertical-spacing">
+    <div class="sn-container">
+      <div class="sn-strip">
+        <div class="sn-copy">
+          {%- if section.settings.title != blank -%}
+            <h3>{{ section.settings.title }}</h3>
+          {%- endif -%}
+          {%- if section.settings.richtext != blank -%}
+            <div class="rte font-main">{{ section.settings.richtext }}</div>
+          {%- endif -%}
+        </div>
+
+        {% form 'customer', id: form_id, class: 'sn-form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <label class="sr-only" for="{{ form_id }}-email">
+            {{ 'general.newsletter_form.newsletter_email' | t }}
+          </label>
+          <input
+            id="{{ form_id }}-email"
+            type="email"
+            name="contact[email]"
+            value="{{ form.email }}"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            placeholder="{{ section.settings.input_placeholder | default: 'Seu melhor e-mail' }}"
+            required
+          >
+          <button type="submit" class="sn-btn">
+            {{- section.settings.button_label | default: 'Quero meu cupom' -}}
+          </button>
+
+          {%- if form.posted_successfully? -%}
+            <p class="sn-feedback">{{ section.settings.success_message }}</p>
+          {%- elsif form.errors -%}
+            <p class="sn-feedback sn-feedback--error">
+              {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+            </p>
+          {%- endif -%}
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Suppet newsletter",
+  "tag": "section",
+  "class": "suppet-newsletter-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Ganhe 10% OFF na primeira compra"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Texto",
+      "default": "<p>Cadastre seu e-mail e receba o cupom SUPPET10 para finalizar seu pedido pelo WhatsApp.</p>"
+    },
+    {
+      "type": "text",
+      "id": "input_placeholder",
+      "label": "Placeholder do e-mail",
+      "default": "Seu melhor e-mail"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Botão",
+      "default": "Quero meu cupom"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Mensagem de sucesso",
+      "default": "Cadastro recebido! Use o cupom SUPPET10 na sua primeira compra."
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "min": 1100,
+      "max": 1820,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    { "type": "header", "content": "Cores" },
+    { "type": "color", "id": "color_from", "label": "Gradiente (início)", "default": "#D7282D" },
+    { "type": "color", "id": "color_to", "label": "Gradiente (fim)", "default": "#DD6E1F" }
+  ],
+  "presets": [
+    {
+      "name": "Suppet newsletter"
+    }
+  ]
+}
+{% endschema %}

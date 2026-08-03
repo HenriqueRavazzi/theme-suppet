@@ -673,13 +673,16 @@
       }
     },
     "newsletter": {
-      "type": "newsletter",
+      "type": "suppet-newsletter",
       "settings": {
         "title": "Ganhe 10% OFF na primeira compra",
-        "richtext": "<p>Cadastre seu e-mail e receba o cupom SUPPET10, além das novidades da linha em primeira mão.</p>",
-        "display_on_card": false,
-        "color_scheme": "",
-        "use_gradient_background": false
+        "richtext": "<p>Cadastre seu e-mail e receba o cupom SUPPET10 para finalizar seu pedido pelo WhatsApp.</p>",
+        "input_placeholder": "Seu melhor e-mail",
+        "button_label": "Quero meu cupom",
+        "success_message": "Cadastro recebido! Use o cupom SUPPET10 na sua primeira compra.",
+        "content_max_width": 1240,
+        "color_from": "#D7282D",
+        "color_to": "#DD6E1F"
       }
     }
   },
