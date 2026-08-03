@@ -158,28 +158,23 @@
     transform: scale(1.05) rotate(-1deg);
   }
 
-  #SuppetProducts-{{ uid }} .sp-card__tag {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    max-width: calc(100% - 32px);
-    font-family: var(--heading-font-stack);
-    font-weight: 700;
-    font-size: 11px;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 999px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background: var(--sp-accent, #d7282d);
-  }
-
   #SuppetProducts-{{ uid }} .sp-card__body {
     padding: 22px 24px 26px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     flex: 1;
+  }
+
+  /* Na LP, o selo do produto é texto (.prod-card__body .tagline) no
+     corpo do card, não um pill sobre a imagem. */
+  #SuppetProducts-{{ uid }} .sp-card__tagline {
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--sp-accent, #d7282d);
   }
 
   #SuppetProducts-{{ uid }} .sp-card__body h3 {
@@ -335,11 +330,11 @@
                       height="1974"
                     >
                   {%- endif -%}
-                  {%- if block.settings.tagline != blank -%}
-                    <span class="sp-card__tag">{{ block.settings.tagline }}</span>
-                  {%- endif -%}
                 </div>
                 <div class="sp-card__body">
+                  {%- if block.settings.tagline != blank -%}
+                    <p class="sp-card__tagline">{{ block.settings.tagline }}</p>
+                  {%- endif -%}
                   {%- if card_name != blank -%}<h3>{{ card_name }}</h3>{%- endif -%}
                   {%- if card_desc != blank -%}
                     <p class="sp-card__desc">{{ card_desc }}</p>
