@@ -51,6 +51,8 @@
         "tagline_fallback": "Suplemento Super Premium",
         "note_text": "Suplemento mastigável para cães. Em caso de dúvidas, consulte o médico-veterinário.",
         "rating_text": "Suplemento com rotina simples de uso e finalização facilitada pelo WhatsApp",
+        "tier_quantity": 2,
+        "tier_discount_percent": 10,
         "content_max_width": 1180,
         "accent_color": "#d7282d",
         "gallery_background": "#16264a",
@@ -89,7 +91,12 @@
           }
         }
       },
-      "block_order": ["benefit-0", "benefit-1", "benefit-2", "benefit-3"],
+      "block_order": [
+        "benefit-0",
+        "benefit-1",
+        "benefit-2",
+        "benefit-3"
+      ],
       "settings": {
         "title_prefix": "O que torna",
         "title_suffix": "único?",
@@ -123,255 +130,13 @@
           }
         }
       },
-      "block_order": ["accordion-0", "accordion-1", "accordion-2"],
+      "block_order": [
+        "accordion-0",
+        "accordion-1",
+        "accordion-2"
+      ],
       "settings": {
         "content_max_width": 900
-      }
-    },
-    "feature-text": {
-      "type": "feature-text",
-      "blocks": {
-        "shape-divider-feature-text-0": {
-          "type": "shape_divider",
-          "settings": {
-            "target_section": "above",
-            "target_section_color_scheme": "scheme1",
-            "style": "waves-3-patterned_1200x84",
-            "flip_horizontal": false,
-            "enable_animation": false,
-            "animation_direction": ""
-          }
-        },
-        "shape-divider-feature-text-1": {
-          "type": "shape_divider",
-          "settings": {
-            "target_section": "below",
-            "target_section_color_scheme": "scheme1",
-            "style": "waves-3-patterned_1200x84",
-            "flip_horizontal": true,
-            "enable_animation": false,
-            "animation_direction": ""
-          }
-        }
-      },
-      "block_order": [
-        "shape-divider-feature-text-0",
-        "shape-divider-feature-text-1"
-      ],
-      "settings": {
-        "rich_text": "Suplemento mastigável super premium, pronto para consumo. Sem pó, sem misturar na ração e sem complicação na rotina. Cada caixa vem com 30 sachês — um mês de suplementação diária.",
-        "mobile_text_scale": 2,
-        "desktop_text_scale": 8,
-        "display_on_card": false,
-        "apply_effects": false,
-        "content_width_desktop": "lg:w-full",
-        "button_link": "",
-        "button_label": "Ver a linha completa",
-        "color_scheme": "scheme4",
-        "use_gradient_background": false
-      }
-    },
-    "image-with-highlights": {
-      "type": "image-with-highlights",
-      "blocks": {
-        "highlight-0": {
-          "type": "highlight",
-          "settings": {
-            "title": "Praticidade",
-            "text": "Vem pronto para consumo. Sem pó, sem misturar e sem complicação na rotina diária do seu cão.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-1": {
-          "type": "highlight",
-          "settings": {
-            "title": "Alta Palatabilidade",
-            "text": "Sabores baunilha e maracujá aprovados até pelos pets mais exigentes. Parece agrado, não parece remédio.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-2": {
-          "type": "highlight",
-          "settings": {
-            "title": "Fórmula Super Premium",
-            "text": "Desenvolvida para complementar a dieta diária de cães adultos, com níveis de garantia declarados na embalagem.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-3": {
-          "type": "highlight",
-          "settings": {
-            "title": "Sem Antioxidantes Sintéticos",
-            "text": "Composição pensada para a suplementação diária, sem antioxidantes sintéticos na formulação.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-4": {
-          "type": "highlight",
-          "settings": {
-            "title": "30 Sachês por Caixa",
-            "text": "Uma caixa cobre um mês inteiro de rotina na dosagem padrão, sem sobra e sem falta.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-5": {
-          "type": "highlight",
-          "settings": {
-            "title": "Especialistas DrogaVET",
-            "text": "Uma linha criada por quem entende da rotina veterinária e da saúde dos pets há mais de duas décadas.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "sticker-image-with-highlights-0": {
-          "type": "sticker",
-          "settings": {
-            "width": 150,
-            "half_width_on_mobile": false,
-            "text": "Só coisa boa<br>aqui dentro",
-            "shape": "wave_ribbon",
-            "sticker_font_size": "1.563rem",
-            "horizontal_position": 88,
-            "vertical_position": 10,
-            "rotate": 26,
-            "show_sticker_on_mobile": true,
-            "show_sticker_on_desktop": true,
-            "rotation_animation": "rotate_when_scrolling",
-            "enable_parallax": false,
-            "parallax_speed": 3,
-            "color_scheme": "scheme1",
-            "color": "bg-scheme-accent-1 text-scheme-accent-1-contrast"
-          }
-        }
-      },
-      "block_order": [
-        "highlight-0",
-        "highlight-1",
-        "highlight-2",
-        "highlight-3",
-        "highlight-4",
-        "highlight-5",
-        "sticker-image-with-highlights-0"
-      ],
-      "settings": {
-        "title": "Por que este suplemento?",
-        "block_alignment_on_desktop": "justify-center",
-        "display_on_card": true,
-        "slideshow_on_mobile": true,
-        "slideshow_focus": "center",
-        "max_width": 840,
-        "crop": "",
-        "image_shape": "default",
-        "blob_type": 1,
-        "rotate_image": 0,
-        "disable_media_style": false,
-        "color_scheme": "",
-        "use_gradient_background": false
-      }
-    },
-    "faq": {
-      "type": "faq",
-      "blocks": {
-        "question-0": {
-          "type": "question",
-          "settings": {
-            "icon": "none",
-            "title": "Como ofereço o suplemento ao meu cão?",
-            "answer": "<p>O sachê é mastigável e vem pronto para consumo — não precisa dissolver, misturar na ração nem disfarçar em outro alimento. Consulte na embalagem a recomendação diária de acordo com o peso do pet.</p>"
-          }
-        },
-        "question-1": {
-          "type": "question",
-          "settings": {
-            "icon": "none",
-            "title": "Meu cão é exigente. Ele vai aceitar?",
-            "answer": "<p>As fórmulas têm alta palatabilidade, nos sabores baunilha e maracujá. Na prática, o pet recebe o sachê como um agrado e não como um remédio.</p>"
-          }
-        },
-        "question-2": {
-          "type": "question",
-          "settings": {
-            "icon": "none",
-            "title": "Serve para cães de qualquer idade ou porte?",
-            "answer": "<p>A linha foi desenvolvida para cães adultos, com dosagem orientada pelo peso do animal. Para filhotes, cães idosos ou com condições de saúde específicas, consulte o médico-veterinário antes de iniciar.</p>"
-          }
-        },
-        "question-3": {
-          "type": "question",
-          "settings": {
-            "icon": "none",
-            "title": "Posso oferecer mais de uma fórmula ao mesmo tempo?",
-            "answer": "<p>Em muitos casos sim, mas a combinação depende da idade, do peso e do histórico de saúde do animal. Consulte o médico-veterinário antes de associar fórmulas.</p>"
-          }
-        },
-        "question-4": {
-          "type": "question",
-          "settings": {
-            "icon": "none",
-            "title": "Quanto tempo dura uma caixa?",
-            "answer": "<p>Cada caixa vem com 30 sachês, o suficiente para um mês de suplementação diária na dosagem padrão.</p>"
-          }
-        },
-        "question-5": {
-          "type": "question",
-          "settings": {
-            "icon": "none",
-            "title": "Em quanto tempo vejo resultado?",
-            "answer": "<p>Suplementação é rotina, não efeito imediato. O ideal é manter o uso diário por pelo menos um ciclo completo de 30 dias e acompanhar a evolução junto ao médico-veterinário.</p>"
-          }
-        },
-        "question-6": {
-          "type": "question",
-          "settings": {
-            "icon": "none",
-            "title": "Como devo conservar o produto?",
-            "answer": "<p>Conserve em lugar seco e ventilado, ao abrigo dos raios solares e do calor excessivo. Depois de aberto, consuma em até 60 dias.</p>"
-          }
-        },
-        "question-7": {
-          "type": "question",
-          "settings": {
-            "icon": "none",
-            "title": "Em quanto tempo recebo meu pedido?",
-            "answer": "<p>O prazo varia conforme a região. Você recebe o código de rastreio assim que o pedido é despachado. O frete é grátis nas compras acima de R$ 199,00.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "question-0",
-        "question-1",
-        "question-2",
-        "question-3",
-        "question-4",
-        "question-5",
-        "question-6",
-        "question-7"
-      ],
-      "settings": {
-        "display_on_card": true,
-        "heading_text_style": "heading",
-        "two_columns_desktop": true,
-        "title": "Perguntas frequentes",
-        "richtext": "Você perguntou, a gente respondeu.",
-        "color_scheme": "",
-        "use_gradient_background": false
       }
     },
     "related-products": {
@@ -381,8 +146,8 @@
         "enable_quick_buy": false,
         "related_products_heading": "Complete a rotina do seu pet",
         "max_products": "3",
-        "product_tiles_aspect_ratio": "",
-        "image_shape": "",
+        "product_tiles_aspect_ratio": "aspect-w-3 aspect-h-4",
+        "image_shape": "default",
         "color_scheme": "scheme1",
         "use_gradient_background": false
       }
@@ -392,9 +157,6 @@
     "main",
     "unique",
     "accordion",
-    "feature-text",
-    "image-with-highlights",
-    "faq",
     "related-products"
   ]
 }
