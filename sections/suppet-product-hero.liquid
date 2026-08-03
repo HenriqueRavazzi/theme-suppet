@@ -327,16 +327,23 @@
             </div>
           {%- endif -%}
 
-          {%- assign app_block_count = section.blocks | where: 'type', '@app' | size -%}
-          {%- if app_block_count > 0 -%}
+          {%- comment -%}
+            Bloco de app instalado tem type = "shopify://apps/..." no
+            storefront publicado (o literal "@app" só existe no schema,
+            como aceite de tipo). Loop direto em section.blocks, sem
+            `where` (que quebra o vínculo de renderização do app).
+          {%- endcomment -%}
+          {%- assign has_app_block = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type contains 'shopify://apps' -%}
+              {%- assign has_app_block = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if has_app_block -%}
             <div class="sph-price-app">
-              {%- comment -%}
-                Loop direto em section.blocks (sem `where`): o filtro `where`
-                quebra o vínculo especial que o Liquid usa pra renderizar o
-                conteúdo real do app, imprimindo "AppBlockDrop" em vez dele.
-              {%- endcomment -%}
               {%- for block in section.blocks -%}
-                {%- if block.type == '@app' -%}
+                {%- if block.type contains 'shopify://apps' -%}
                   {{ block }}
                 {%- endif -%}
               {%- endfor -%}
