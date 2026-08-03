@@ -1,0 +1,474 @@
+{%- comment -%}
+  Suppet benefits (Universo Suppet) — porte do bloco "benefits--kv" da LP estática
+  (Suppet/index.html + css/style.css, seção id="super").
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign chips = section.blocks | where: 'type', 'chip'
+  assign benefits = section.blocks | where: 'type', 'benefit'
+-%}
+
+<style>
+  #SuppetBenefits-{{ uid }} {
+    --sb-brand: {{ section.settings.brand_color | default: '#D7282D' }};
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-container {
+    /* A LP usa container de 1240px; o max-w-site do tema é 1820px, o que
+       deixa o painel do Pancho grande demais em relação ao texto. */
+    max-width: {{ section.settings.content_max_width | default: 1240 }}px;
+    margin-inline: auto;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-kv {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 34px;
+    align-items: center;
+    margin-bottom: 42px;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-copy::before,
+  #SuppetBenefits-{{ uid }} .sb-copy::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 92px;
+    height: 74px;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-copy::before {
+    left: -10px;
+    top: -20px;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 48'%3E%3Crect x='8' y='2' width='15' height='28' rx='7.5' transform='rotate(-6 15.5 16)' fill='%23DD6E1F'/%3E%3Crect x='28' y='12' width='15' height='28' rx='7.5' transform='rotate(-6 35.5 26)' fill='%23DD6E1F'/%3E%3C/svg%3E");
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-copy::after {
+    right: 0;
+    bottom: -22px;
+    opacity: 0.25;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 48'%3E%3Crect x='8' y='2' width='15' height='28' rx='7.5' transform='rotate(-6 15.5 16)' fill='%233A7CAE'/%3E%3Crect x='28' y='12' width='15' height='28' rx='7.5' transform='rotate(-6 35.5 26)' fill='%233A7CAE'/%3E%3C/svg%3E");
+  }
+
+  @media (max-width: 780px) {
+    #SuppetBenefits-{{ uid }} .sb-copy::before,
+    #SuppetBenefits-{{ uid }} .sb-copy::after {
+      width: 68px;
+      height: 54px;
+    }
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--sb-brand);
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 3px;
+    border-radius: 3px;
+    background: currentColor;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-title {
+    margin-top: 12px;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-sub {
+    margin-top: 14px;
+    max-width: 560px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(var(--color-scheme-text), 0.72);
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-chips span {
+    padding: 11px 16px;
+    border-radius: 999px;
+    background: rgb(var(--color-scheme-card));
+    color: rgb(var(--color-scheme-card-text));
+    border: 1px solid rgba(var(--color-scheme-text), 0.08);
+    box-shadow: 0 14px 26px -18px rgba(var(--color-scheme-text), 0.35);
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    /* Painel com altura fixa (como .pancho-panel da LP) pra imagem não
+       inchar junto com a coluna quando o container fica largo. */
+    min-height: 560px;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-card {
+    text-align: center;
+    padding: 38px 22px;
+    border-radius: 18px;
+    background: rgb(var(--color-scheme-card));
+    border: 1px solid rgba(var(--color-scheme-text), 0.08);
+    box-shadow: 0 22px 40px -28px rgba(14, 27, 51, 0.28);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.45s var(--sh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+      box-shadow 0.45s var(--sh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-card::after {
+    content: '';
+    position: absolute;
+    right: -24px;
+    top: -24px;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(221, 110, 31, 0.17) 0%, rgba(0, 0, 0, 0) 72%);
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 24px 50px -20px rgba(16, 35, 66, 0.25);
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-ic {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: rgba(var(--color-scheme-text), 0.06);
+    color: rgb(var(--color-scheme-text));
+    display: grid;
+    place-items: center;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s, color 0.35s;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-ic svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-card:hover .sb-ic {
+    transform: rotate(-8deg) scale(1.08);
+    background: var(--sb-brand);
+    color: #fff;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-card h4 {
+    font-size: 16.5px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  #SuppetBenefits-{{ uid }} .sb-card p {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: rgba(var(--color-scheme-text), 0.68);
+  }
+
+  @media (max-width: 1024px) {
+    #SuppetBenefits-{{ uid }} .sb-kv {
+      grid-template-columns: 1fr;
+    }
+    #SuppetBenefits-{{ uid }} .sb-panel {
+      min-height: 500px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    #SuppetBenefits-{{ uid }} .sb-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 520px) {
+    #SuppetBenefits-{{ uid }} .sb-grid {
+      grid-template-columns: 1fr;
+    }
+    #SuppetBenefits-{{ uid }} .sb-panel {
+      min-height: 360px;
+    }
+    #SuppetBenefits-{{ uid }} .sb-chips span {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+</style>
+
+<section
+  id="SuppetBenefits-{{ uid }}"
+  class="relative overflow-hidden bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}"
+  data-color-scheme="{{ section.settings.color_scheme }}"
+>
+  <div class="section-content px-section py-section-vertical-spacing">
+    <div class="mx-auto sb-container">
+      <div class="sb-kv">
+        <div class="sb-copy">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="sb-eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.title != blank -%}
+            <h2 class="sb-title inline-heading-rte font-heading break-words">
+              {{ section.settings.title }}
+            </h2>
+          {%- endif -%}
+
+          {%- if section.settings.richtext != blank -%}
+            <div class="sb-sub rte font-main">{{ section.settings.richtext }}</div>
+          {%- endif -%}
+
+          {%- if chips.size > 0 -%}
+            <div class="sb-chips">
+              {%- for block in chips -%}
+                <span {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div>
+          <article class="sb-panel">
+            {%- if section.settings.image != blank -%}
+              {{
+                section.settings.image
+                | image_url: width: 900
+                | image_tag:
+                  widths: '400, 600, 800, 900',
+                  sizes: '(min-width: 981px) 45vw, 90vw',
+                  alt: section.settings.image.alt | default: section.settings.title,
+                  loading: 'lazy'
+              }}
+            {%- else -%}
+              <img
+                src="{{ 'pancho-clean.webp' | asset_url }}"
+                alt="{{ section.settings.title | strip_html | default: 'Pancho caracterizado como super-herói da campanha Suppet' }}"
+                loading="lazy"
+                width="1850"
+                height="2048"
+              >
+            {%- endif -%}
+          </article>
+        </div>
+      </div>
+
+      {%- if benefits.size > 0 -%}
+        <div class="sb-grid">
+          {%- for block in benefits -%}
+            <div class="sb-card" style="--i:{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+              <div class="sb-ic">
+                {%- case block.settings.icon -%}
+                  {%- when 'paw' -%}
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <circle cx="6" cy="9" r="2.1"></circle>
+                      <circle cx="11" cy="6" r="2.1"></circle>
+                      <circle cx="16" cy="6" r="2.1"></circle>
+                      <circle cx="20" cy="10" r="2"></circle>
+                      <path d="M13 12.2c3.2 0 6 2.4 6 5.2 0 2-1.6 3.1-3.6 2.5-1-.3-2.1-.3-3.1 0-2 .6-3.6-.5-3.6-2.5 0-2.8 2.1-5.2 4.3-5.2Z"></path>
+                    </svg>
+                  {%- when 'leaf' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M4 20c0-8 5-14 16-15-1 10-7 15-15 15Z"></path>
+                      <path d="M6 18c3-3 6-7 12-11"></path>
+                    </svg>
+                  {%- when 'shield' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6l7-3Z"></path>
+                      <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                  {%- else -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M12 20s-7.5-4.6-9.6-9.4C1.1 7.6 3 4.5 6.3 4.2c2-.2 3.7 1 4.7 2.6 1-1.6 2.7-2.8 4.7-2.6 3.3.3 5.2 3.4 3.9 6.4C19.5 15.4 12 20 12 20Z"></path>
+                      <path d="M9 11.2h1.6l1-1.7 1.4 3 1-1.3H16"></path>
+                    </svg>
+                {%- endcase -%}
+              </div>
+              {%- if block.settings.title != blank -%}
+                <h4>{{ block.settings.title }}</h4>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <p>{{ block.settings.text }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Suppet benefits",
+  "tag": "section",
+  "class": "suppet-benefits-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Universo Suppet"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Título",
+      "default": "Feito para ativar o super do seu pet"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Texto",
+      "default": "<p>Uma linha desenvolvida pela DrogaVET para apoiar diferentes necessidades com praticidade, sabor e rotina simples. Trouxemos o clima visual da campanha para reforçar a conexão afetiva sem poluir a LP.</p>"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "min": 1100,
+      "max": 1820,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    { "type": "header", "content": "Imagem" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagem do painel",
+      "info": "Se vazio, usa a imagem padrão do Pancho (super-herói)."
+    },
+    { "type": "header", "content": "Cores" },
+    {
+      "type": "color",
+      "id": "brand_color",
+      "label": "Cor da marca (eyebrow, ícones em hover)",
+      "default": "#D7282D"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de cores",
+      "default": "scheme1"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_background",
+      "label": "Usar fundo gradiente",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "chip",
+      "name": "Selo",
+      "settings": [{ "type": "text", "id": "text", "label": "Texto", "default": "Selo" }]
+    },
+    {
+      "type": "benefit",
+      "name": "Benefício",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícone",
+          "options": [
+            { "value": "paw", "label": "Pata" },
+            { "value": "heart", "label": "Coração" },
+            { "value": "leaf", "label": "Folha" },
+            { "value": "shield", "label": "Escudo" }
+          ],
+          "default": "heart"
+        },
+        { "type": "text", "id": "title", "label": "Título", "default": "Benefício" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Suppet benefits",
+      "blocks": [
+        { "type": "chip", "settings": { "text": "Assinada pela DrogaVET" } },
+        { "type": "chip", "settings": { "text": "Mastigável" } },
+        { "type": "chip", "settings": { "text": "Super premium" } },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "paw",
+            "title": "Alta palatabilidade",
+            "text": "Formato mastigável que facilita a rotina e aumenta a adesão do pet ao suplemento."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "heart",
+            "title": "Qualidade de vida",
+            "text": "Fórmulas pensadas para apoiar bem-estar, disposição e conforto em diferentes momentos do dia a dia."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "title": "Formulação cuidadosa",
+            "text": "Sem antioxidantes sintéticos e com composição desenvolvida para a suplementação diária."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "Especialistas DrogaVET",
+            "text": "Uma linha super premium criada por quem entende da rotina veterinária e da saúde dos pets."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

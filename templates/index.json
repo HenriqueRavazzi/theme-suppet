@@ -82,108 +82,59 @@
         "cta_secondary_url": "",
         "badge_kicker": "Primeira compra",
         "badge_value": "Cupom SUPPET10",
-        "autoplay": true,
+        "autoplay": false,
         "speed": 3800,
         "brand_color": "#DD6E1F",
         "color_scheme": "scheme3",
         "use_gradient_background": false,
-        "enable_motion": true
+        "enable_motion": false
       }
     },
-    "icon-list": {
-      "type": "icon-list",
+    "suppet-benefits": {
+      "type": "suppet-benefits",
       "blocks": {
-        "icon-0": {
-          "type": "icon",
+        "chip-0": { "type": "chip", "settings": { "text": "Assinada pela DrogaVET" } },
+        "chip-1": { "type": "chip", "settings": { "text": "Mastigável" } },
+        "chip-2": { "type": "chip", "settings": { "text": "Super premium" } },
+        "benefit-0": {
+          "type": "benefit",
           "settings": {
-            "icon": "vegan",
-            "text": "100% Mastigável"
+            "icon": "paw",
+            "title": "Alta palatabilidade",
+            "text": "Formato mastigável que facilita a rotina e aumenta a adesão do pet ao suplemento."
           }
         },
-        "icon-1": {
-          "type": "icon",
-          "settings": {
-            "icon": "non_gmo",
-            "text": "Super Premium"
-          }
-        },
-        "icon-2": {
-          "type": "icon",
+        "benefit-1": {
+          "type": "benefit",
           "settings": {
             "icon": "heart",
-            "text": "Alta Palatabilidade"
+            "title": "Qualidade de vida",
+            "text": "Fórmulas pensadas para apoiar bem-estar, disposição e conforto em diferentes momentos do dia a dia."
           }
         },
-        "icon-3": {
-          "type": "icon",
+        "benefit-2": {
+          "type": "benefit",
           "settings": {
-            "icon": "probiotic",
-            "text": "Pré e Probióticos"
+            "icon": "leaf",
+            "title": "Formulação cuidadosa",
+            "text": "Sem antioxidantes sintéticos e com composição desenvolvida para a suplementação diária."
           }
         },
-        "icon-4": {
-          "type": "icon",
+        "benefit-3": {
+          "type": "benefit",
           "settings": {
-            "icon": "no_additives",
-            "text": "Sem Aditivos"
+            "icon": "shield",
+            "title": "Especialistas DrogaVET",
+            "text": "Uma linha super premium criada por quem entende da rotina veterinária e da saúde dos pets."
           }
         }
       },
-      "block_order": [
-        "icon-0",
-        "icon-1",
-        "icon-2",
-        "icon-3",
-        "icon-4"
-      ],
+      "block_order": ["chip-0", "chip-1", "chip-2", "benefit-0", "benefit-1", "benefit-2", "benefit-3"],
       "settings": {
-        "title": "",
-        "max_width": 120,
-        "text_style": "heading",
-        "uppercase_text": false,
-        "layout_on_mobile": "scroll",
-        "icon_alignment_on_desktop": "md:justify-between",
-        "icon_thickness": 2.4,
-        "background_color": "bg-scheme-accent-1 text-scheme-accent-1-contrast",
-        "show_border": false,
-        "color_scheme": "scheme1",
-        "use_gradient_background": false
-      }
-    },
-    "rich-text": {
-      "type": "rich-text",
-      "blocks": {
-        "sticker-rich-text-0": {
-          "type": "sticker",
-          "settings": {
-            "width": 160,
-            "half_width_on_mobile": false,
-            "text": "Pets em primeiro lugar!",
-            "shape": "star_3",
-            "sticker_font_size": "1.563rem",
-            "horizontal_position": 88,
-            "vertical_position": 100,
-            "rotate": 0,
-            "show_sticker_on_mobile": true,
-            "show_sticker_on_desktop": true,
-            "rotation_animation": "constantly_rotate",
-            "enable_parallax": true,
-            "parallax_speed": 3,
-            "color_scheme": "scheme1",
-            "color": "bg-scheme-accent-2 text-scheme-accent-2-contrast"
-          }
-        }
-      },
-      "block_order": [
-        "sticker-rich-text-0"
-      ],
-      "settings": {
-        "title": "Por que <em>Suppet?</em>",
-        "heading_size": "heading-standard",
-        "rich_text": "<p>Suppet é a linha de suplementos super premium da DrogaVET. Cada fórmula foi desenvolvida por quem entende da rotina veterinária para apoiar uma necessidade específica do seu cão — imunidade, articulações, digestão e equilíbrio emocional — com sabor que o pet aceita de primeira.</p>",
-        "display_on_card": false,
-        "content_width_desktop": "lg:w-1/2",
-        "button_label": "Conhecer a linha",
+        "eyebrow": "Universo Suppet",
+        "title": "Feito para ativar o super do seu pet",
+        "richtext": "<p>Uma linha desenvolvida pela DrogaVET para apoiar diferentes necessidades com praticidade, sabor e rotina simples. Trouxemos o clima visual da campanha para reforçar a conexão afetiva sem poluir a LP.</p>",
+        "brand_color": "#D7282D",
         "color_scheme": "scheme1",
         "use_gradient_background": false
       }
@@ -724,8 +675,7 @@
   },
   "order": [
     "suppet-hero",
-    "icon-list",
-    "rich-text",
+    "suppet-benefits",
     "collection-focus-carousel",
     "text-columns-with-images",
     "video-with-text-overlay",

@@ -135,7 +135,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 28px;
+    padding: 16px 30px;
     border-radius: var(--button-border-radius, 9999px);
     border: 2px solid rgba(var(--color-scheme-text), 0.5);
     color: rgb(var(--color-scheme-text));
@@ -151,6 +151,22 @@
     background: rgba(var(--color-scheme-text), 0.12);
     border-color: rgb(var(--color-scheme-text));
     transform: translateY(-3px);
+  }
+
+  /* LP: .btn-primary usa a cor de destaque (vermelho) da marca, não a
+     cor de texto do scheme — o botão global do tema usa button_color=text,
+     por isso sobrescrevemos só aqui dentro do hero. */
+  #SuppetHero-{{ uid }} .sh-ctas .push-btn__surface {
+    padding: 16px 30px;
+    --color-button-background: var(--color-scheme-accent-1);
+    --color-button-text: var(--color-scheme-accent-1-contrast);
+    --color-button-border: var(--color-scheme-accent-1);
+  }
+
+  #SuppetHero-{{ uid }} .sh-ctas .push-btn:hover .push-btn__surface {
+    --color-button-background-hover: var(--color-scheme-accent-1);
+    --color-button-text-hover: var(--color-scheme-accent-1-contrast);
+    --color-button-border-hover: var(--color-scheme-accent-1);
   }
 
   #SuppetHero-{{ uid }} .sh-stats {
