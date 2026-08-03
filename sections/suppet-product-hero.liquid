@@ -147,46 +147,13 @@
     flex-wrap: wrap;
   }
 
-  #SuppetProductHero-{{ uid }} .sph-qty {
-    display: flex;
-    align-items: center;
-    border: 2px solid rgba(var(--color-scheme-text), 0.14);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-qty button {
-    width: 44px;
-    height: 56px;
-    border: none;
-    background: transparent;
-    color: rgb(var(--color-scheme-text));
-    font-size: 18px;
-    font-weight: 700;
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-qty button:hover {
-    background: rgba(var(--color-scheme-text), 0.06);
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-qty input {
-    width: 40px;
-    border: none;
-    background: transparent;
-    text-align: center;
-    font-weight: 800;
-    font-size: 15px;
-    color: rgb(var(--color-scheme-text));
-  }
-
   #SuppetProductHero-{{ uid }} .sph-add-btn {
-    flex: 1;
-    min-width: 220px;
+    width: 100%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 0 30px;
+    padding: 18px 30px;
     border: none;
     border-radius: 999px;
     background: {{ accent_color | default: '#D7282D' }};
@@ -372,21 +339,13 @@
           {% form 'product', product, id: form_id, class: 'sph-form' %}
             <input type="hidden" name="id" value="{{ current_variant.id }}" data-sph-variant-id>
             <div class="sph-buy-row">
-              <div class="sph-qty">
-                <button type="button" data-sph-qty-minus aria-label="Diminuir quantidade">−</button>
-                <input type="number" name="quantity" value="1" min="1" inputmode="numeric" data-sph-qty-input>
-                <button type="button" data-sph-qty-plus aria-label="Aumentar quantidade">+</button>
-              </div>
               <button
                 type="submit"
                 class="sph-add-btn"
                 {% unless current_variant.available %}disabled{% endunless %}
-                data-sph-add-btn
-                data-unit-price="{{ current_variant.price | default: 0 }}"
               >
                 {%- if current_variant.available -%}
-                  Adicionar ao carrinho —
-                  <span data-sph-total-price>{{ current_variant.price | money }}</span>
+                  Adicionar ao carrinho — {{ current_variant.price | money }}
                 {%- else -%}
                   Esgotado
                 {%- endif -%}
@@ -462,35 +421,6 @@
     function initSuppetProductHero(root) {
       if (!root || root.dataset.sphReady === 'true') return;
       root.dataset.sphReady = 'true';
-
-      var qtyInput = root.querySelector('[data-sph-qty-input]');
-      var addBtn = root.querySelector('[data-sph-add-btn]');
-      var totalEl = root.querySelector('[data-sph-total-price]');
-      var unitPrice = addBtn ? parseInt(addBtn.dataset.unitPrice, 10) || 0 : 0;
-
-      function formatMoney(cents) {
-        return (cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-      }
-
-      function updateTotal() {
-        if (!qtyInput || !totalEl) return;
-        var qty = parseInt(qtyInput.value, 10) || 1;
-        totalEl.textContent = formatMoney(unitPrice * qty);
-      }
-
-      root.querySelector('[data-sph-qty-minus]')?.addEventListener('click', function () {
-        var qty = Math.max(1, (parseInt(qtyInput.value, 10) || 1) - 1);
-        qtyInput.value = qty;
-        updateTotal();
-      });
-
-      root.querySelector('[data-sph-qty-plus]')?.addEventListener('click', function () {
-        var qty = (parseInt(qtyInput.value, 10) || 1) + 1;
-        qtyInput.value = qty;
-        updateTotal();
-      });
-
-      qtyInput?.addEventListener('input', updateTotal);
 
       root.querySelectorAll('[data-sph-accordion-toggle]').forEach(function (btn) {
         btn.addEventListener('click', function () {
