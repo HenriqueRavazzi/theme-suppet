@@ -39,37 +39,13 @@
             "icon": "shield",
             "label": "Super Premium"
           }
-        },
-        "accordion-0": {
-          "type": "accordion_item",
-          "settings": {
-            "title": "Composição",
-            "content": "<p>Consulte a tabela de garantia com os níveis mínimos por quilo de produto e por unidade de 4 g na descrição de cada fórmula. Suplemento alimentar de uso veterinário, para cães.</p>"
-          }
-        },
-        "accordion-1": {
-          "type": "accordion_item",
-          "settings": {
-            "title": "Modo de uso e conservação",
-            "content": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e do calor excessivo. Após aberto, consumir em até 60 dias.</p>"
-          }
-        },
-        "accordion-2": {
-          "type": "accordion_item",
-          "settings": {
-            "title": "Entrega e SAC",
-            "content": "<p>Frete grátis nas compras acima de R$ 199,00. Dúvidas sobre o pedido ou sobre a suplementação? Fale com o SAC: (41) 3209-8989 ou sac@drogavet.com.br.</p>"
-          }
         }
       },
       "block_order": [
         "mini-benefit-0",
         "mini-benefit-1",
         "mini-benefit-2",
-        "mini-benefit-3",
-        "accordion-0",
-        "accordion-1",
-        "accordion-2"
+        "mini-benefit-3"
       ],
       "settings": {
         "tagline_fallback": "Suplemento Super Premium",
@@ -120,6 +96,36 @@
         "content_max_width": 1180,
         "accent_color": "#d7282d",
         "background_color": "#ffffff"
+      }
+    },
+    "accordion": {
+      "type": "suppet-product-accordion",
+      "blocks": {
+        "accordion-0": {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Composição",
+            "content": "<p>Consulte a tabela de garantia com os níveis mínimos por quilo de produto e por unidade de 4 g na descrição de cada fórmula. Suplemento alimentar de uso veterinário, para cães.</p>"
+          }
+        },
+        "accordion-1": {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Modo de uso e conservação",
+            "content": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e do calor excessivo. Após aberto, consumir em até 60 dias.</p>"
+          }
+        },
+        "accordion-2": {
+          "type": "accordion_item",
+          "settings": {
+            "title": "Entrega e SAC",
+            "content": "<p>Frete grátis nas compras acima de R$ 199,00. Dúvidas sobre o pedido ou sobre a suplementação? Fale com o SAC: (41) 3209-8989 ou sac@drogavet.com.br.</p>"
+          }
+        }
+      },
+      "block_order": ["accordion-0", "accordion-1", "accordion-2"],
+      "settings": {
+        "content_max_width": 900
       }
     },
     "feature-text": {
@@ -385,6 +391,7 @@
   "order": [
     "main",
     "unique",
+    "accordion",
     "feature-text",
     "image-with-highlights",
     "faq",

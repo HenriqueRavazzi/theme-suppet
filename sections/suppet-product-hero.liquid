@@ -16,7 +16,6 @@
   assign form_id = 'SuppetProductForm-' | append: uid
   assign current_variant = product.selected_or_first_available_variant
   assign mini_benefits = section.blocks | where: 'type', 'mini_benefit'
-  assign accordion_items = section.blocks | where: 'type', 'accordion_item'
   assign tagline = product.metafields.custom.tagline | default: section.settings.tagline_fallback
 
   assign tier_qty = section.settings.tier_quantity | default: 2
@@ -311,57 +310,6 @@
     color: rgba(var(--color-scheme-text), 0.7);
   }
 
-  #SuppetProductHero-{{ uid }} .sph-accordion {
-    max-width: 900px;
-    margin: 0 auto;
-    border-top: 1px solid rgba(var(--color-scheme-text), 0.12);
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-accordion-item {
-    border-bottom: 1px solid rgba(var(--color-scheme-text), 0.12);
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-accordion-item button {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: none;
-    border: none;
-    padding: 24px 4px;
-    font-family: var(--heading-font-stack);
-    font-weight: 700;
-    font-size: 18px;
-    color: rgb(var(--color-scheme-text));
-    cursor: pointer;
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-accordion-item button svg {
-    width: 20px;
-    height: 20px;
-    flex: none;
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-accordion-item:not(.is-open) button svg.sph-icon-minus,
-  #SuppetProductHero-{{ uid }} .sph-accordion-item.is-open button svg.sph-icon-plus {
-    display: none;
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-accordion-panel {
-    display: none;
-    padding: 0 4px 26px;
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-accordion-item.is-open .sph-accordion-panel {
-    display: block;
-  }
-
-  #SuppetProductHero-{{ uid }} .sph-accordion-panel p {
-    font-size: 13.5px;
-    line-height: 1.7;
-    color: rgba(var(--color-scheme-text), 0.68);
-  }
-
   @media (max-width: 900px) {
     #SuppetProductHero-{{ uid }} .sph-grid {
       grid-template-columns: 1fr;
@@ -544,26 +492,6 @@
         </div>
       </div>
 
-      {%- if accordion_items.size > 0 -%}
-        <div class="sph-accordion">
-          {%- for block in accordion_items -%}
-            <div class="sph-accordion-item{% if forloop.first %} is-open{% endif %}" {{ block.shopify_attributes }}>
-              <button type="button" data-sph-accordion-toggle>
-                {{ block.settings.title }}
-                <svg class="sph-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M12 5v14M5 12h14"></path>
-                </svg>
-                <svg class="sph-icon-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M5 12h14"></path>
-                </svg>
-              </button>
-              <div class="sph-accordion-panel">
-                <div class="rte">{{ block.settings.content }}</div>
-              </div>
-            </div>
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
     </div>
   </div>
 </section>
@@ -595,16 +523,6 @@
         });
       });
 
-      root.querySelectorAll('[data-sph-accordion-toggle]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var item = btn.closest('.sph-accordion-item');
-          var wasOpen = item.classList.contains('is-open');
-          root.querySelectorAll('.sph-accordion-item').forEach(function (i) {
-            i.classList.remove('is-open');
-          });
-          if (!wasOpen) item.classList.add('is-open');
-        });
-      });
     }
 
     function initAll() {
@@ -720,14 +638,6 @@
         },
         { "type": "text", "id": "label", "label": "Texto", "default": "Mastigável" }
       ]
-    },
-    {
-      "type": "accordion_item",
-      "name": "Item do sanfona",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Título", "default": "Título" },
-        { "type": "richtext", "id": "content", "label": "Conteúdo" }
-      ]
     }
   ],
   "presets": [
@@ -737,28 +647,7 @@
         { "type": "mini_benefit", "settings": { "icon": "paw", "label": "Mastigável" } },
         { "type": "mini_benefit", "settings": { "icon": "heart", "label": "Alta Palatabilidade" } },
         { "type": "mini_benefit", "settings": { "icon": "leaf", "label": "Sem Aditivos" } },
-        { "type": "mini_benefit", "settings": { "icon": "shield", "label": "Super Premium" } },
-        {
-          "type": "accordion_item",
-          "settings": {
-            "title": "Composição",
-            "content": "<p>Consulte a tabela de garantia com os níveis mínimos por quilo de produto e por unidade de 4 g na descrição de cada fórmula. Suplemento alimentar de uso veterinário, para cães.</p>"
-          }
-        },
-        {
-          "type": "accordion_item",
-          "settings": {
-            "title": "Modo de uso e conservação",
-            "content": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e do calor excessivo. Após aberto, consumir em até 60 dias.</p>"
-          }
-        },
-        {
-          "type": "accordion_item",
-          "settings": {
-            "title": "Entrega e SAC",
-            "content": "<p>Frete grátis nas compras acima de R$ 199,00. Dúvidas sobre o pedido ou sobre a suplementação? Fale com o SAC: (41) 3209-8989 ou sac@drogavet.com.br.</p>"
-          }
-        }
+        { "type": "mini_benefit", "settings": { "icon": "shield", "label": "Super Premium" } }
       ]
     }
   ]
