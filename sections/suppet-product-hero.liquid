@@ -12,11 +12,24 @@
 
 {%- liquid
   assign uid = section.id
+  assign form_id = 'SuppetProductForm-' | append: uid
   assign current_variant = product.selected_or_first_available_variant
   assign mini_benefits = section.blocks | where: 'type', 'mini_benefit'
   assign accordion_items = section.blocks | where: 'type', 'accordion_item'
   assign pricing_app_blocks = section.blocks | where: 'type', '@app'
   assign tagline = product.metafields.custom.tagline | default: section.settings.tagline_fallback
+
+  assign accent_color = section.settings.accent_color
+  if product.metafields.custom.accent_color != blank
+    assign accent_color = product.metafields.custom.accent_color
+  endif
+
+  assign gallery_color = section.settings.gallery_background
+  if product.metafields.custom.gallery_color != blank
+    assign gallery_color = product.metafields.custom.gallery_color
+  elsif product.metafields.custom.accent_color != blank
+    assign gallery_color = product.metafields.custom.accent_color
+  endif
 -%}
 
 <style>
@@ -35,7 +48,7 @@
   }
 
   #SuppetProductHero-{{ uid }} .sph-breadcrumb a:hover {
-    color: {{ section.settings.accent_color | default: '#D7282D' }};
+    color: {{ accent_color | default: '#D7282D' }};
   }
 
   #SuppetProductHero-{{ uid }} .sph-breadcrumb span {
@@ -58,7 +71,7 @@
   #SuppetProductHero-{{ uid }} .sph-gallery {
     border-radius: 28px;
     overflow: hidden;
-    background: {{ section.settings.gallery_background | default: '#16264A' }};
+    background: {{ gallery_color | default: '#16264A' }};
     padding: 30px;
     text-align: center;
   }
@@ -74,7 +87,7 @@
   #SuppetProductHero-{{ uid }} .sph-title {
     font-size: clamp(28px, 3.4vw, 40px);
     font-weight: 800;
-    color: {{ section.settings.accent_color | default: '#D7282D' }};
+    color: {{ accent_color | default: '#D7282D' }};
   }
 
   #SuppetProductHero-{{ uid }} .sph-tagline {
@@ -82,7 +95,7 @@
     margin-top: 14px;
     padding: 8px 16px;
     border-radius: 999px;
-    background: {{ section.settings.accent_color | default: '#D7282D' }};
+    background: {{ accent_color | default: '#D7282D' }};
     color: #fff;
     font-family: var(--heading-font-stack);
     font-weight: 700;
@@ -176,7 +189,7 @@
     padding: 0 30px;
     border: none;
     border-radius: 999px;
-    background: {{ section.settings.accent_color | default: '#D7282D' }};
+    background: {{ accent_color | default: '#D7282D' }};
     color: #fff;
     font-family: var(--heading-font-stack);
     font-weight: 700;
@@ -215,7 +228,7 @@
     height: 52px;
     border-radius: 50%;
     background: rgba(var(--color-scheme-text), 0.06);
-    color: {{ section.settings.accent_color | default: '#D7282D' }};
+    color: {{ accent_color | default: '#D7282D' }};
     display: grid;
     place-items: center;
   }
@@ -356,7 +369,7 @@
             </div>
           {%- endif -%}
 
-          {% form 'product', product, id: 'SuppetProductForm-' | append: uid, class: 'sph-form' %}
+          {% form 'product', product, id: form_id, class: 'sph-form' %}
             <input type="hidden" name="id" value="{{ current_variant.id }}" data-sph-variant-id>
             <div class="sph-buy-row">
               <div class="sph-qty">
@@ -551,13 +564,15 @@
     {
       "type": "color",
       "id": "accent_color",
-      "label": "Cor de destaque (título, selo, botão)",
+      "label": "Cor de destaque padrão (título, selo, botão, moldura)",
+      "info": "Cadastre o metafield de produto \"custom.accent_color\" (cor) pra cada produto ter sua própria cor. Sem o metafield, usa esta cor para todos.",
       "default": "#D7282D"
     },
     {
       "type": "color",
       "id": "gallery_background",
-      "label": "Fundo do painel da imagem",
+      "label": "Fundo do painel da imagem (fallback)",
+      "info": "Usado só se o produto não tiver \"custom.accent_color\" nem \"custom.gallery_color\".",
       "default": "#16264A"
     },
     {
