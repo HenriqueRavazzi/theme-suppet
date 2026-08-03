@@ -1,12 +1,52 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "suppet-product-hero",
       "blocks": {
-        "mini-benefit-0": { "type": "mini_benefit", "settings": { "icon": "paw", "label": "Mastigável" } },
-        "mini-benefit-1": { "type": "mini_benefit", "settings": { "icon": "heart", "label": "Alta Palatabilidade" } },
-        "mini-benefit-2": { "type": "mini_benefit", "settings": { "icon": "leaf", "label": "Sem Aditivos" } },
-        "mini-benefit-3": { "type": "mini_benefit", "settings": { "icon": "shield", "label": "Super Premium" } },
+        "pumper_bundles_app_block_bundle_ggUjPT": {
+          "type": "shopify://apps/pumper-bundles/blocks/app-block-bundle/0856870d-2aca-4b1e-a662-cf1797f61270",
+          "settings": {
+            "selected_product": "{{product}}",
+            "using_page_builder": false
+          }
+        },
+        "mini-benefit-0": {
+          "type": "mini_benefit",
+          "settings": {
+            "icon": "paw",
+            "label": "Mastigável"
+          }
+        },
+        "mini-benefit-1": {
+          "type": "mini_benefit",
+          "settings": {
+            "icon": "heart",
+            "label": "Alta Palatabilidade"
+          }
+        },
+        "mini-benefit-2": {
+          "type": "mini_benefit",
+          "settings": {
+            "icon": "leaf",
+            "label": "Sem Aditivos"
+          }
+        },
+        "mini-benefit-3": {
+          "type": "mini_benefit",
+          "settings": {
+            "icon": "shield",
+            "label": "Super Premium"
+          }
+        },
         "accordion-0": {
           "type": "accordion_item",
           "settings": {
@@ -30,6 +70,7 @@
         }
       },
       "block_order": [
+        "pumper_bundles_app_block_bundle_ggUjPT",
         "mini-benefit-0",
         "mini-benefit-1",
         "mini-benefit-2",
@@ -43,8 +84,8 @@
         "note_text": "Suplemento mastigável para cães. Em caso de dúvidas, consulte o médico-veterinário.",
         "rating_text": "Suplemento com rotina simples de uso e finalização facilitada pelo WhatsApp",
         "content_max_width": 1180,
-        "accent_color": "#D7282D",
-        "gallery_background": "#16264A",
+        "accent_color": "#d7282d",
+        "gallery_background": "#16264a",
         "color_scheme": "scheme1"
       }
     },
@@ -101,6 +142,7 @@
             "text": "Vem pronto para consumo. Sem pó, sem misturar e sem complicação na rotina diária do seu cão.",
             "cta_link": "",
             "cta_text": "",
+            "override_section_color_scheme": false,
             "color_scheme": ""
           }
         },
@@ -111,6 +153,7 @@
             "text": "Sabores baunilha e maracujá aprovados até pelos pets mais exigentes. Parece agrado, não parece remédio.",
             "cta_link": "",
             "cta_text": "",
+            "override_section_color_scheme": false,
             "color_scheme": ""
           }
         },
@@ -121,6 +164,7 @@
             "text": "Desenvolvida para complementar a dieta diária de cães adultos, com níveis de garantia declarados na embalagem.",
             "cta_link": "",
             "cta_text": "",
+            "override_section_color_scheme": false,
             "color_scheme": ""
           }
         },
@@ -131,6 +175,7 @@
             "text": "Composição pensada para a suplementação diária, sem antioxidantes sintéticos na formulação.",
             "cta_link": "",
             "cta_text": "",
+            "override_section_color_scheme": false,
             "color_scheme": ""
           }
         },
@@ -141,6 +186,7 @@
             "text": "Uma caixa cobre um mês inteiro de rotina na dosagem padrão, sem sobra e sem falta.",
             "cta_link": "",
             "cta_text": "",
+            "override_section_color_scheme": false,
             "color_scheme": ""
           }
         },
@@ -151,6 +197,7 @@
             "text": "Uma linha criada por quem entende da rotina veterinária e da saúde dos pets há mais de duas décadas.",
             "cta_link": "",
             "cta_text": "",
+            "override_section_color_scheme": false,
             "color_scheme": ""
           }
         },
@@ -189,6 +236,7 @@
         "block_alignment_on_desktop": "justify-center",
         "display_on_card": true,
         "slideshow_on_mobile": true,
+        "slideshow_focus": "center",
         "max_width": 840,
         "crop": "",
         "image_shape": "default",
