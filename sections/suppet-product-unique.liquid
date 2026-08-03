@@ -86,7 +86,10 @@
   }
 
   #SuppetProductUnique-{{ uid }} .spu-petal.is-dark {
-    filter: brightness(0.78);
+    /* Sobrepõe um véu escuro só no fundo (não usa filter no elemento
+       inteiro) — isso escurecia o texto branco junto com o fundo e
+       derrubava o contraste do parágrafo. */
+    background: linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)), {{ accent_color | default: '#D7282D' }};
   }
 
   #SuppetProductUnique-{{ uid }} .spu-col:first-child .spu-petal {
@@ -109,7 +112,7 @@
   #SuppetProductUnique-{{ uid }} .spu-petal p {
     font-size: 13px;
     line-height: 1.55;
-    opacity: 0.92;
+    color: rgba(255, 255, 255, 0.96);
   }
 
   #SuppetProductUnique-{{ uid }} .spu-center {
