@@ -37,34 +37,31 @@
 
   #SuppetBenefits-{{ uid }} .sb-copy::before,
   #SuppetBenefits-{{ uid }} .sb-copy::after {
-    content: '';
     position: absolute;
     z-index: -1;
-    width: 92px;
-    height: 74px;
-    background-repeat: no-repeat;
-    background-size: contain;
+    font-family: var(--heading-font-stack);
+    font-size: 120px;
+    line-height: 1;
+    color: rgba(221, 110, 31, 0.18);
   }
 
   #SuppetBenefits-{{ uid }} .sb-copy::before {
+    content: '\201C';
     left: -10px;
-    top: -20px;
-    opacity: 0.35;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 48'%3E%3Crect x='8' y='2' width='15' height='28' rx='7.5' transform='rotate(-6 15.5 16)' fill='%23DD6E1F'/%3E%3Crect x='28' y='12' width='15' height='28' rx='7.5' transform='rotate(-6 35.5 26)' fill='%23DD6E1F'/%3E%3C/svg%3E");
+    top: -26px;
   }
 
   #SuppetBenefits-{{ uid }} .sb-copy::after {
+    content: '\201D';
     right: 0;
-    bottom: -22px;
-    opacity: 0.25;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 48'%3E%3Crect x='8' y='2' width='15' height='28' rx='7.5' transform='rotate(-6 15.5 16)' fill='%233A7CAE'/%3E%3Crect x='28' y='12' width='15' height='28' rx='7.5' transform='rotate(-6 35.5 26)' fill='%233A7CAE'/%3E%3C/svg%3E");
+    bottom: -30px;
+    color: rgba(58, 124, 174, 0.14);
   }
 
   @media (max-width: 780px) {
     #SuppetBenefits-{{ uid }} .sb-copy::before,
     #SuppetBenefits-{{ uid }} .sb-copy::after {
-      width: 68px;
-      height: 54px;
+      font-size: 88px;
     }
   }
 
