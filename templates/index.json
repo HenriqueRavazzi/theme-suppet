@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "suppet-hero": {
@@ -6,37 +15,37 @@
         "slide-vitaforca": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/pack-vitaforca.png",
             "name": "Campo de Vitaforça",
-            "accent": "#D7282D",
-            "link": "",
-            "image": "shopify://shop_images/pack-vitaforca.png"
+            "accent": "#d7282d",
+            "link": ""
           }
         },
         "slide-condroprotetor": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/pack-condroprotetor.png",
             "name": "Escudo Condroprotetor",
-            "accent": "#DD6E1F",
-            "link": "",
-            "image": "shopify://shop_images/pack-condroprotetor.png"
+            "accent": "#dd6e1f",
+            "link": ""
           }
         },
         "slide-anticopro": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/pack-anticopro.png",
             "name": "Barreira AntiCopro",
-            "accent": "#3A7CAE",
-            "link": "",
-            "image": "shopify://shop_images/pack-anticopro.png"
+            "accent": "#3a7cae",
+            "link": ""
           }
         },
         "slide-estresse": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/pack-estresse.png",
             "name": "Neutralizador de Estresse",
-            "accent": "#2FA39C",
-            "link": "",
-            "image": "shopify://shop_images/pack-estresse.png"
+            "accent": "#2fa39c",
+            "link": ""
           }
         },
         "stat-formulas": {
@@ -82,20 +91,35 @@
         "cta_secondary_url": "",
         "badge_kicker": "Primeira compra",
         "badge_value": "Cupom SUPPET10",
+        "enable_motion": false,
         "autoplay": false,
         "speed": 3800,
-        "brand_color": "#DD6E1F",
+        "brand_color": "#dd6e1f",
         "color_scheme": "scheme3",
-        "use_gradient_background": false,
-        "enable_motion": false
+        "use_gradient_background": false
       }
     },
     "suppet-benefits": {
       "type": "suppet-benefits",
       "blocks": {
-        "chip-0": { "type": "chip", "settings": { "text": "Assinada pela DrogaVET" } },
-        "chip-1": { "type": "chip", "settings": { "text": "Mastigável" } },
-        "chip-2": { "type": "chip", "settings": { "text": "Super premium" } },
+        "chip-0": {
+          "type": "chip",
+          "settings": {
+            "text": "Assinada pela DrogaVET"
+          }
+        },
+        "chip-1": {
+          "type": "chip",
+          "settings": {
+            "text": "Mastigável"
+          }
+        },
+        "chip-2": {
+          "type": "chip",
+          "settings": {
+            "text": "Super premium"
+          }
+        },
         "benefit-0": {
           "type": "benefit",
           "settings": {
@@ -129,12 +153,21 @@
           }
         }
       },
-      "block_order": ["chip-0", "chip-1", "chip-2", "benefit-0", "benefit-1", "benefit-2", "benefit-3"],
+      "block_order": [
+        "chip-0",
+        "chip-1",
+        "chip-2",
+        "benefit-0",
+        "benefit-1",
+        "benefit-2",
+        "benefit-3"
+      ],
       "settings": {
         "eyebrow": "Universo Suppet",
         "title": "Feito para ativar o super do seu pet",
         "richtext": "<p>Uma linha desenvolvida pela DrogaVET para apoiar diferentes necessidades com praticidade, sabor e rotina simples. Trouxemos o clima visual da campanha para reforçar a conexão afetiva sem poluir a LP.</p>",
-        "brand_color": "#D7282D",
+        "content_max_width": 1240,
+        "brand_color": "#d7282d",
         "color_scheme": "scheme1",
         "use_gradient_background": false
       }
@@ -147,11 +180,11 @@
           "settings": {
             "product": "",
             "tagline": "Reforço Imunológico e Suporte Nutricional",
+            "accent": "#d7282d",
             "name": "Campo de Vitaforça",
             "description": "Suplemento mastigável super premium que fortalece as defesas naturais do seu cão e entrega suporte nutricional completo — o campo de força que todo super-herói de quatro patas merece.",
             "price": "R$ 119,90",
             "price_note": "caixa com 30 sachês",
-            "accent": "#D7282D",
             "link": ""
           }
         },
@@ -160,11 +193,11 @@
           "settings": {
             "product": "",
             "tagline": "Proteção para as Articulações",
+            "accent": "#dd6e1f",
             "name": "Escudo Condroprotetor",
             "description": "Suplemento mastigável com condroitina e glucosamina para proteger as articulações e manter a mobilidade — o escudo que blinda cada passo, corrida e brincadeira do seu pet.",
             "price": "R$ 119,90",
             "price_note": "caixa com 30 sachês",
-            "accent": "#DD6E1F",
             "link": ""
           }
         },
@@ -173,11 +206,11 @@
           "settings": {
             "product": "",
             "tagline": "Redução do Hábito de Ingestão das Fezes",
+            "accent": "#3a7cae",
             "name": "Barreira AntiCopro",
             "description": "Suplemento mastigável formulado com prebióticos e probióticos que ajuda a reduzir o hábito de ingestão das fezes e favorece o equilíbrio da flora intestinal.",
             "price": "R$ 119,90",
             "price_note": "caixa com 30 sachês",
-            "accent": "#3A7CAE",
             "link": ""
           }
         },
@@ -186,11 +219,11 @@
           "settings": {
             "product": "",
             "tagline": "Equilíbrio e Bem-Estar",
+            "accent": "#2fa39c",
             "name": "Neutralizador de Estresse",
             "description": "Suplemento mastigável com L-triptofano e L-teanina que ajuda a promover calma, equilíbrio emocional e bem-estar em momentos de tensão, viagens ou mudanças de rotina.",
             "price": "R$ 119,90",
             "price_note": "caixa com 30 sachês",
-            "accent": "#2FA39C",
             "link": ""
           }
         }
@@ -206,7 +239,7 @@
         "title": "Os 4 superpoderes do seu pet",
         "richtext": "<p>Cada fórmula ativa um superpoder diferente — escolha o suplemento ideal para a rotina do seu companheiro.</p>",
         "content_max_width": 1240,
-        "brand_color": "#DD6E1F",
+        "brand_color": "#dd6e1f",
         "color_scheme": "scheme3",
         "use_gradient_background": false
       }
@@ -214,14 +247,51 @@
     "suppet-campaign": {
       "type": "suppet-campaign",
       "blocks": {
-        "list-item-0": { "type": "list_item", "settings": { "text": "Fórmulas super premium para cada necessidade" } },
-        "list-item-1": { "type": "list_item", "settings": { "text": "Compra guiada com carrinho e finalização pelo WhatsApp" } },
-        "list-item-2": { "type": "list_item", "settings": { "text": "Linha desenvolvida por especialistas DrogaVET" } },
-        "badge-0": { "type": "badge", "settings": { "text": "+ disposição" } },
-        "badge-1": { "type": "badge", "settings": { "text": "+ mobilidade" } },
-        "badge-2": { "type": "badge", "settings": { "text": "+ equilíbrio" } }
+        "list-item-0": {
+          "type": "list_item",
+          "settings": {
+            "text": "Fórmulas super premium para cada necessidade"
+          }
+        },
+        "list-item-1": {
+          "type": "list_item",
+          "settings": {
+            "text": "Compra guiada com carrinho e finalização pelo WhatsApp"
+          }
+        },
+        "list-item-2": {
+          "type": "list_item",
+          "settings": {
+            "text": "Linha desenvolvida por especialistas DrogaVET"
+          }
+        },
+        "badge-0": {
+          "type": "badge",
+          "settings": {
+            "text": "+ disposição"
+          }
+        },
+        "badge-1": {
+          "type": "badge",
+          "settings": {
+            "text": "+ mobilidade"
+          }
+        },
+        "badge-2": {
+          "type": "badge",
+          "settings": {
+            "text": "+ equilíbrio"
+          }
+        }
       },
-      "block_order": ["list-item-0", "list-item-1", "list-item-2", "badge-0", "badge-1", "badge-2"],
+      "block_order": [
+        "list-item-0",
+        "list-item-1",
+        "list-item-2",
+        "badge-0",
+        "badge-1",
+        "badge-2"
+      ],
       "settings": {
         "eyebrow": "Campanha Suppet",
         "title": "Ative o super do seu pet",
@@ -235,207 +305,19 @@
         "product_name": "Escudo Condroprotetor",
         "product_subtitle": "Condroitina e glucosamina",
         "product_link": "",
-        "accent": "#DD6E1F",
-        "brand_color": "#D7282D",
+        "accent": "#dd6e1f",
+        "brand_color": "#d7282d",
         "color_scheme": "scheme2",
-        "use_gradient_background": false
-      }
-    },
-    "text-columns-with-images": {
-      "type": "text-columns-with-images",
-      "blocks": {
-        "column-0": {
-          "type": "column",
-          "settings": {
-            "show_image": false,
-            "title": "Escolha o superpoder",
-            "text": "<p>Identifique a necessidade do seu cão — imunidade, articulações, digestão ou equilíbrio emocional — e escolha a fórmula certa para ela.</p>",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "column-1": {
-          "type": "column",
-          "settings": {
-            "show_image": false,
-            "title": "Ofereça no dia a dia",
-            "text": "<p>O sachê mastigável vem pronto para consumo. Sem pó, sem misturar na ração e sem precisar disfarçar em outro alimento.</p>",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "column-2": {
-          "type": "column",
-          "settings": {
-            "show_image": false,
-            "title": "Veja o super aparecer",
-            "text": "<p>Com a suplementação diária, seu pet ganha disposição, mobilidade e bem-estar. Cada caixa rende 30 dias de rotina.</p>",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        }
-      },
-      "block_order": [
-        "column-0",
-        "column-1",
-        "column-2"
-      ],
-      "settings": {
-        "display_on_card": true,
-        "slideshow_on_mobile": false,
-        "title": "Como funciona",
-        "crop": "",
-        "image_shape": "default",
-        "show_index_on_blocks": true,
-        "index_shape": "star_1",
-        "color_scheme": "scheme1",
-        "use_gradient_background": false
-      }
-    },
-    "image-with-highlights": {
-      "type": "image-with-highlights",
-      "blocks": {
-        "highlight-0": {
-          "type": "highlight",
-          "settings": {
-            "title": "Vitaminas e Minerais",
-            "text": "Vitamina A, vitamina E, selênio, zinco e ferro em níveis que complementam a dieta diária do seu cão.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-1": {
-          "type": "highlight",
-          "settings": {
-            "title": "Condroitina e Glucosamina",
-            "text": "Atuam na manutenção da saúde das articulações e ajudam a preservar a mobilidade em cães de todas as idades.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-2": {
-          "type": "highlight",
-          "settings": {
-            "title": "Pré e Probióticos",
-            "text": "Beta-glucanos e Lactobacillus acidophilus favorecem o equilíbrio da flora intestinal e o conforto digestivo.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-3": {
-          "type": "highlight",
-          "settings": {
-            "title": "L-triptofano e L-teanina",
-            "text": "Aminoácidos que ajudam a promover calma e equilíbrio emocional em viagens, mudanças de rotina e momentos de tensão.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-4": {
-          "type": "highlight",
-          "settings": {
-            "title": "EPA + DHA",
-            "text": "Ômegas que apoiam a saúde da pele e do pelo e o bom funcionamento do organismo como um todo.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "highlight-5": {
-          "type": "highlight",
-          "settings": {
-            "title": "Alta Palatabilidade",
-            "text": "Sabores baunilha e maracujá aprovados até pelos pets mais exigentes. Parece agrado, não parece remédio.",
-            "cta_link": "",
-            "cta_text": "",
-            "override_section_color_scheme": false,
-            "color_scheme": ""
-          }
-        },
-        "sticker-image-with-highlights-0": {
-          "type": "sticker",
-          "settings": {
-            "width": 150,
-            "half_width_on_mobile": false,
-            "text": "Só coisa boa<br>aqui dentro",
-            "shape": "wave_ribbon",
-            "sticker_font_size": "1.563rem",
-            "horizontal_position": 88,
-            "vertical_position": 10,
-            "rotate": 26,
-            "show_sticker_on_mobile": true,
-            "show_sticker_on_desktop": true,
-            "rotation_animation": "rotate_when_scrolling",
-            "enable_parallax": false,
-            "parallax_speed": 3,
-            "color_scheme": "scheme1",
-            "color": "bg-scheme-accent-1 text-scheme-accent-1-contrast"
-          }
-        }
-      },
-      "block_order": [
-        "highlight-0",
-        "highlight-1",
-        "highlight-2",
-        "highlight-3",
-        "highlight-4",
-        "highlight-5",
-        "sticker-image-with-highlights-0"
-      ],
-      "settings": {
-        "title": "O que tem em cada sachê?",
-        "block_alignment_on_desktop": "justify-center",
-        "display_on_card": true,
-        "slideshow_on_mobile": true,
-        "slideshow_focus": "center",
-        "max_width": 840,
-        "crop": "",
-        "image_shape": "default",
-        "blob_type": 1,
-        "rotate_image": 0,
-        "disable_media_style": false,
-        "color_scheme": "",
         "use_gradient_background": false
       }
     },
     "featured-collection": {
       "type": "featured-collection",
-      "blocks": {
-        "shape-divider-featured-collection-0": {
-          "type": "shape_divider",
-          "settings": {
-            "target_section": "below",
-            "target_section_color_scheme": "scheme1",
-            "style": "waves-2-patterned_1200x43",
-            "flip_horizontal": false,
-            "enable_animation": false,
-            "animation_direction": ""
-          }
-        }
-      },
-      "block_order": [
-        "shape-divider-featured-collection-0"
-      ],
       "settings": {
         "title": "Linha completa Suppet",
-        "subheading": "Conheça todos os suplementos mastigáveis super premium da linha, em caixas com 30 sachês.",
+        "subheading": "Conheça todos os suplementos mastigáveis super premium da linha.",
         "collection": "all",
-        "no_products": 10,
+        "no_products": 4,
         "show_view_all": true,
         "enable_quick_buy": false,
         "display_on_card": false,
@@ -444,82 +326,11 @@
         "products_per_row_desktop": 4,
         "slideshow_focus": "center",
         "mobile_slide_width": "three_fifths",
-        "desktop_slide_width": 40,
+        "desktop_slide_width": 20,
         "autoscroll_mode": "1",
-        "product_tiles_aspect_ratio": "",
-        "image_shape": "scalloped_circle_6",
+        "product_tiles_aspect_ratio": "natural",
+        "image_shape": "default",
         "color_scheme": "scheme2",
-        "use_gradient_background": false
-      }
-    },
-    "featured-product": {
-      "type": "featured-product",
-      "blocks": {
-        "title": {
-          "type": "title",
-          "settings": {
-            "display_on_card": false,
-            "text_align": "text-left"
-          }
-        },
-        "price": {
-          "type": "price",
-          "settings": {
-            "display_on_card": false,
-            "show_on_sale_sticker": false,
-            "text_align": "text-left"
-          }
-        },
-        "variant-picker": {
-          "type": "variant_picker",
-          "settings": {
-            "display_on_card": false,
-            "option_style": "drop_down",
-            "full_width_buttons": false,
-            "hide_option_labels": false,
-            "enable_color_swatches": false
-          }
-        },
-        "buy-buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "display_on_card": false,
-            "show_price": false,
-            "enable_payment_button": true,
-            "show_pickup_availability": true,
-            "show_gift_card_recipient": false
-          }
-        },
-        "description": {
-          "type": "description",
-          "settings": {
-            "display_on_card": false,
-            "truncate_description": true,
-            "text_align": "text-left"
-          }
-        }
-      },
-      "block_order": [
-        "title",
-        "price",
-        "variant-picker",
-        "buy-buttons",
-        "description"
-      ],
-      "settings": {
-        "title": "O primeiro passo do <em>super</em>",
-        "crop": "",
-        "image_shape": "scalloped_circle_5",
-        "media_mobile_width": "w-full",
-        "desktop_media_width": "lg:col-span-7_lg:col-span-5",
-        "enable_video_looping": true,
-        "thumbnails_position": "left",
-        "thumbnail_crop": "aspect-w-1 aspect-h-1",
-        "thumbnail_shape": "scalloped_circle_5",
-        "hide_media_shadow": false,
-        "thumbnail_size": "standard",
-        "show_thumbnails_on_mobile": false,
-        "color_scheme": "",
         "use_gradient_background": false
       }
     },
@@ -681,8 +492,8 @@
         "button_label": "Quero meu cupom",
         "success_message": "Cadastro recebido! Use o cupom SUPPET10 na sua primeira compra.",
         "content_max_width": 1240,
-        "color_from": "#D7282D",
-        "color_to": "#DD6E1F"
+        "color_from": "#d7282d",
+        "color_to": "#dd6e1f"
       }
     }
   },
@@ -691,10 +502,7 @@
     "suppet-benefits",
     "suppet-products",
     "suppet-campaign",
-    "text-columns-with-images",
-    "image-with-highlights",
     "featured-collection",
-    "featured-product",
     "faq",
     "scrolling-text-with-icons",
     "newsletter"
