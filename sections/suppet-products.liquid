@@ -1,0 +1,511 @@
+{%- comment -%}
+  Suppet products (Os 4 superpoderes) — porte do bloco "products"/".prod-card"
+  da LP estática (Suppet/index.html + css/style.css, seção id="produtos").
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign products = section.blocks | where: 'type', 'product'
+-%}
+
+<style>
+  #SuppetProducts-{{ uid }} {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #SuppetProducts-{{ uid }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(60% 60% at 90% 0%, rgba(47, 163, 156, 0.18), transparent 70%),
+      radial-gradient(50% 50% at 0% 100%, rgba(215, 40, 45, 0.14), transparent 70%);
+    pointer-events: none;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-container {
+    position: relative;
+    z-index: 1;
+    /* A LP usa container de 1240px; o max-w-site do tema é 1820px. */
+    max-width: {{ section.settings.content_max_width | default: 1240 }}px;
+    margin-inline: auto;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: {{ section.settings.brand_color | default: '#DD6E1F' }};
+  }
+
+  #SuppetProducts-{{ uid }} .sp-eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 3px;
+    border-radius: 3px;
+    background: currentColor;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-title {
+    margin-top: 12px;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-sub {
+    margin-top: 14px;
+    max-width: 560px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(var(--color-scheme-text), 0.65);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-scroller {
+    position: relative;
+    margin-top: 40px;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-arrows {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-bottom: 18px;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-arrow {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--color-scheme-text), 0.25);
+    background: rgba(var(--color-scheme-text), 0.06);
+    color: rgb(var(--color-scheme-text));
+    display: grid;
+    place-items: center;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-arrow:hover {
+    background: rgb(var(--color-scheme-text));
+    color: rgb(var(--color-scheme-background));
+    transform: scale(1.06);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(280px, 1fr);
+    gap: 26px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 4px 4px 12px;
+    scrollbar-width: none;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card {
+    scroll-snap-align: start;
+    background: #fff;
+    color: #0e1b33;
+    border-radius: 28px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 44px -24px rgba(0, 0, 0, 0.5);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.55);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__media {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 300px;
+    padding: 18px 18px 0;
+    background: #16264a;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__media img {
+    width: 100%;
+    max-width: 260px;
+    object-fit: contain;
+    filter: drop-shadow(0 26px 28px rgba(0, 0, 0, 0.42));
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card:hover .sp-card__media img {
+    transform: scale(1.05) rotate(-1deg);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    max-width: calc(100% - 32px);
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 11px;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--sp-accent, #d7282d);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__body {
+    padding: 22px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__body h3 {
+    font-size: 20px;
+    color: #0e1b33;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #5b6b84;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 14px;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__price {
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    font-size: 19px;
+    color: #0e1b33;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__price span {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #5b6b84;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__go {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: var(--sp-accent, #d7282d);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__go svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card:hover .sp-card__go {
+    transform: translateX(4px) rotate(-45deg);
+  }
+
+  @media (max-width: 900px) {
+    #SuppetProducts-{{ uid }} .sp-card__media {
+      min-height: 260px;
+    }
+    #SuppetProducts-{{ uid }} .sp-card__media img {
+      max-width: 220px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #SuppetProducts-{{ uid }} .sp-track {
+      grid-auto-columns: minmax(78%, 1fr);
+    }
+    #SuppetProducts-{{ uid }} .sp-arrows {
+      display: none;
+    }
+  }
+</style>
+
+<section
+  id="SuppetProducts-{{ uid }}"
+  class="bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}"
+  data-color-scheme="{{ section.settings.color_scheme }}"
+>
+  <div class="section-content px-section py-section-vertical-spacing">
+    <div class="sp-container">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="sp-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.title != blank -%}
+        <h2 class="sp-title inline-heading-rte font-heading break-words">
+          {{ section.settings.title }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.richtext != blank -%}
+        <div class="sp-sub rte font-main">{{ section.settings.richtext }}</div>
+      {%- endif -%}
+
+      {%- if products.size > 0 -%}
+        <div class="sp-scroller">
+          <div class="sp-arrows">
+            <button type="button" class="sp-arrow" data-sp-prev aria-label="{{ 'general.slider.previous_slide' | t }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 5l-7 7 7 7"></path>
+              </svg>
+            </button>
+            <button type="button" class="sp-arrow" data-sp-next aria-label="{{ 'general.slider.next_slide' | t }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="sp-track" data-sp-track>
+            {%- for block in products -%}
+              <article class="sp-card" style="--sp-accent: {{ block.settings.accent }};" {{ block.shopify_attributes }}>
+                <div class="sp-card__media">
+                  {%- if block.settings.image != blank -%}
+                    {{
+                      block.settings.image
+                      | image_url: width: 500
+                      | image_tag: widths: '250, 350, 500', sizes: '280px', alt: block.settings.name, loading: 'lazy'
+                    }}
+                  {%- else -%}
+                    {%- assign fallback_pack = 'pack-vitaforca.webp' -%}
+                    {%- case forloop.index0 -%}
+                      {%- when 1 -%}
+                        {%- assign fallback_pack = 'pack-condroprotetor.webp' -%}
+                      {%- when 2 -%}
+                        {%- assign fallback_pack = 'pack-anticopro.webp' -%}
+                      {%- when 3 -%}
+                        {%- assign fallback_pack = 'pack-estresse.webp' -%}
+                    {%- endcase -%}
+                    <img
+                      src="{{ fallback_pack | asset_url }}"
+                      alt="{{ block.settings.name | default: 'Suppet' }}"
+                      loading="lazy"
+                      width="1497"
+                      height="1974"
+                    >
+                  {%- endif -%}
+                  {%- if block.settings.tagline != blank -%}
+                    <span class="sp-card__tag">{{ block.settings.tagline }}</span>
+                  {%- endif -%}
+                </div>
+                <div class="sp-card__body">
+                  {%- if block.settings.name != blank -%}<h3>{{ block.settings.name }}</h3>{%- endif -%}
+                  {%- if block.settings.description != blank -%}
+                    <p class="sp-card__desc">{{ block.settings.description }}</p>
+                  {%- endif -%}
+                  <div class="sp-card__foot">
+                    <div class="sp-card__price">
+                      {{ block.settings.price }}
+                      {%- if block.settings.price_note != blank -%}
+                        <span>{{ block.settings.price_note }}</span>
+                      {%- endif -%}
+                    </div>
+                    <a
+                      href="{{ block.settings.link | default: '#' }}"
+                      class="sp-card__go"
+                      aria-label="{{ 'general.pagination.next' | t }} {{ block.settings.name }}"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 5l7 7-7 7"></path>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    function initSuppetProducts(root) {
+      if (!root || root.dataset.spReady === 'true') return;
+      root.dataset.spReady = 'true';
+
+      var track = root.querySelector('[data-sp-track]');
+      var prev = root.querySelector('[data-sp-prev]');
+      var next = root.querySelector('[data-sp-next]');
+      if (!track) return;
+
+      function scrollByCard(dir) {
+        var card = track.querySelector('.sp-card');
+        var dist = card ? card.getBoundingClientRect().width + 26 : 320;
+        track.scrollBy({ left: dir * dist, behavior: 'smooth' });
+      }
+
+      if (prev) prev.addEventListener('click', function () { scrollByCard(-1); });
+      if (next) next.addEventListener('click', function () { scrollByCard(1); });
+    }
+
+    function initAll() {
+      Array.prototype.forEach.call(
+        document.querySelectorAll('[id^="SuppetProducts-"]'),
+        initSuppetProducts
+      );
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+      initAll();
+    }
+
+    document.addEventListener('shopify:section:load', function (event) {
+      var root = event.target.querySelector('[id^="SuppetProducts-"]');
+      if (root) initSuppetProducts(root);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Suppet products",
+  "tag": "section",
+  "class": "suppet-products-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Linha Suppet"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Título",
+      "default": "Os 4 superpoderes do seu pet"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Texto",
+      "default": "<p>Cada fórmula ativa um superpoder diferente — escolha o suplemento ideal para a rotina do seu companheiro.</p>"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "min": 1100,
+      "max": 1820,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    { "type": "header", "content": "Cores" },
+    {
+      "type": "color",
+      "id": "brand_color",
+      "label": "Cor da marca (eyebrow)",
+      "default": "#DD6E1F"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de cores",
+      "default": "scheme3"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_background",
+      "label": "Usar fundo gradiente",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produto",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Imagem do pack" },
+        { "type": "text", "id": "tagline", "label": "Selo (sobre a imagem)", "default": "Superpoder" },
+        { "type": "text", "id": "name", "label": "Nome", "default": "Campo de Vitaforça" },
+        { "type": "textarea", "id": "description", "label": "Descrição" },
+        { "type": "text", "id": "price", "label": "Preço", "default": "R$ 149,90" },
+        { "type": "text", "id": "price_note", "label": "Legenda do preço", "default": "caixa com 30 sachês" },
+        { "type": "color", "id": "accent", "label": "Cor do produto", "default": "#D7282D" },
+        { "type": "url", "id": "link", "label": "Link do produto" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Suppet products",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "tagline": "Reforço Imunológico e Suporte Nutricional",
+            "name": "Campo de Vitaforça",
+            "description": "Suplemento mastigável super premium que fortalece as defesas naturais do seu cão e entrega suporte nutricional completo — o campo de força que todo super-herói de quatro patas merece.",
+            "accent": "#D7282D"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "tagline": "Proteção para as Articulações",
+            "name": "Escudo Condroprotetor",
+            "description": "Suplemento mastigável com condroitina e glucosamina para proteger as articulações e manter a mobilidade — o escudo que blinda cada passo, corrida e brincadeira do seu pet.",
+            "accent": "#DD6E1F"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "tagline": "Redução do Hábito de Ingestão das Fezes",
+            "name": "Barreira AntiCopro",
+            "description": "Suplemento mastigável formulado com prebióticos e probióticos que ajuda a reduzir o hábito de ingestão das fezes e favorece o equilíbrio da flora intestinal.",
+            "accent": "#3A7CAE"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "tagline": "Equilíbrio e Bem-Estar",
+            "name": "Neutralizador de Estresse",
+            "description": "Suplemento mastigável com L-triptofano e L-teanina que ajuda a promover calma, equilíbrio emocional e bem-estar em momentos de tensão, viagens ou mudanças de rotina.",
+            "accent": "#2FA39C"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

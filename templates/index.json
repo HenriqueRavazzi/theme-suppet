@@ -139,49 +139,71 @@
         "use_gradient_background": false
       }
     },
-    "collection-focus-carousel": {
-      "type": "collection-focus-carousel",
+    "suppet-products": {
+      "type": "suppet-products",
       "blocks": {
-        "shape-divider-collection-focus-carousel-0": {
-          "type": "shape_divider",
+        "product-vitaforca": {
+          "type": "product",
           "settings": {
-            "target_section": "above",
-            "target_section_color_scheme": "scheme1",
-            "style": "waves-3-patterned_1200x84",
-            "flip_horizontal": false,
-            "enable_animation": false,
-            "animation_direction": ""
+            "tagline": "Reforço Imunológico e Suporte Nutricional",
+            "name": "Campo de Vitaforça",
+            "description": "Suplemento mastigável super premium que fortalece as defesas naturais do seu cão e entrega suporte nutricional completo — o campo de força que todo super-herói de quatro patas merece.",
+            "price": "R$ 149,90",
+            "price_note": "caixa com 30 sachês",
+            "accent": "#D7282D",
+            "link": ""
           }
         },
-        "shape-divider-collection-focus-carousel-1": {
-          "type": "shape_divider",
+        "product-condroprotetor": {
+          "type": "product",
           "settings": {
-            "target_section": "below",
-            "target_section_color_scheme": "scheme1",
-            "style": "waves-3-patterned_1200x84",
-            "flip_horizontal": false,
-            "enable_animation": false,
-            "animation_direction": ""
+            "tagline": "Proteção para as Articulações",
+            "name": "Escudo Condroprotetor",
+            "description": "Suplemento mastigável com condroitina e glucosamina para proteger as articulações e manter a mobilidade — o escudo que blinda cada passo, corrida e brincadeira do seu pet.",
+            "price": "R$ 149,90",
+            "price_note": "caixa com 30 sachês",
+            "accent": "#DD6E1F",
+            "link": ""
+          }
+        },
+        "product-anticopro": {
+          "type": "product",
+          "settings": {
+            "tagline": "Redução do Hábito de Ingestão das Fezes",
+            "name": "Barreira AntiCopro",
+            "description": "Suplemento mastigável formulado com prebióticos e probióticos que ajuda a reduzir o hábito de ingestão das fezes e favorece o equilíbrio da flora intestinal.",
+            "price": "R$ 149,90",
+            "price_note": "caixa com 30 sachês",
+            "accent": "#3A7CAE",
+            "link": ""
+          }
+        },
+        "product-estresse": {
+          "type": "product",
+          "settings": {
+            "tagline": "Equilíbrio e Bem-Estar",
+            "name": "Neutralizador de Estresse",
+            "description": "Suplemento mastigável com L-triptofano e L-teanina que ajuda a promover calma, equilíbrio emocional e bem-estar em momentos de tensão, viagens ou mudanças de rotina.",
+            "price": "R$ 149,90",
+            "price_note": "caixa com 30 sachês",
+            "accent": "#2FA39C",
+            "link": ""
           }
         }
       },
       "block_order": [
-        "shape-divider-collection-focus-carousel-0",
-        "shape-divider-collection-focus-carousel-1"
+        "product-vitaforca",
+        "product-condroprotetor",
+        "product-anticopro",
+        "product-estresse"
       ],
       "settings": {
-        "title": "Os 4 superpoderes",
-        "subheading": "Cada fórmula ativa um superpoder diferente. Escolha o suplemento ideal para a rotina do seu companheiro.",
-        "collection": "all",
-        "no_products": 8,
-        "focused_slide_source": "description",
-        "display_on_card": false,
-        "enlarge_active_slide": true,
-        "mobile_slide_width": "three_fifths",
-        "desktop_slide_width": 50,
-        "product_tiles_aspect_ratio": "",
-        "image_shape": "scalloped_circle_5",
-        "color_scheme": "scheme2",
+        "eyebrow": "Linha Suppet",
+        "title": "Os 4 superpoderes do seu pet",
+        "richtext": "<p>Cada fórmula ativa um superpoder diferente — escolha o suplemento ideal para a rotina do seu companheiro.</p>",
+        "content_max_width": 1240,
+        "brand_color": "#DD6E1F",
+        "color_scheme": "scheme3",
         "use_gradient_background": false
       }
     },
@@ -676,7 +698,7 @@
   "order": [
     "suppet-hero",
     "suppet-benefits",
-    "collection-focus-carousel",
+    "suppet-products",
     "text-columns-with-images",
     "video-with-text-overlay",
     "image-with-highlights",
