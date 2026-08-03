@@ -12,7 +12,7 @@
     "main": {
       "type": "suppet-product-hero",
       "blocks": {
-        "pumper_bundles_app_block_bundle_ggUjPT": {
+        "pumper_bundles_app_block_bundle_qadPia": {
           "type": "shopify://apps/pumper-bundles/blocks/app-block-bundle/0856870d-2aca-4b1e-a662-cf1797f61270",
           "settings": {
             "selected_product": "{{product}}",
@@ -70,7 +70,7 @@
         }
       },
       "block_order": [
-        "pumper_bundles_app_block_bundle_ggUjPT",
+        "pumper_bundles_app_block_bundle_qadPia",
         "mini-benefit-0",
         "mini-benefit-1",
         "mini-benefit-2",
