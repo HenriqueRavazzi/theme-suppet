@@ -137,18 +137,19 @@
 
   #SuppetProducts-{{ uid }} .sp-card__media {
     position: relative;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    min-height: 300px;
+    /* height fixa (não min-height): embalagens com proporções levemente
+       diferentes não podem esticar o card e desalinhar o título abaixo. */
+    height: 300px;
     padding: 18px 18px 0;
     background: #16264a;
   }
 
   #SuppetProducts-{{ uid }} .sp-card__media img {
+    display: block;
     width: 100%;
-    max-width: 260px;
+    height: 100%;
     object-fit: contain;
+    object-position: center bottom;
     filter: drop-shadow(0 26px 28px rgba(0, 0, 0, 0.42));
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -236,10 +237,7 @@
 
   @media (max-width: 900px) {
     #SuppetProducts-{{ uid }} .sp-card__media {
-      min-height: 260px;
-    }
-    #SuppetProducts-{{ uid }} .sp-card__media img {
-      max-width: 220px;
+      height: 260px;
     }
   }
 
@@ -457,7 +455,7 @@
         { "type": "text", "id": "tagline", "label": "Selo (sobre a imagem)", "default": "Superpoder" },
         { "type": "text", "id": "name", "label": "Nome", "default": "Campo de Vitaforça" },
         { "type": "textarea", "id": "description", "label": "Descrição" },
-        { "type": "text", "id": "price", "label": "Preço", "default": "R$ 149,90" },
+        { "type": "text", "id": "price", "label": "Preço", "default": "R$ 119,90" },
         { "type": "text", "id": "price_note", "label": "Legenda do preço", "default": "caixa com 30 sachês" },
         { "type": "color", "id": "accent", "label": "Cor do produto", "default": "#D7282D" },
         { "type": "url", "id": "link", "label": "Link do produto" }
