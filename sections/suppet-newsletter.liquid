@@ -22,7 +22,9 @@
     isolation: isolate;
     overflow: hidden;
     display: flex;
-    align-items: center;
+    /* Valor final da LP: o strip alinha ao topo, só o form fica centralizado
+       internamente (ver .sn-form abaixo). */
+    align-items: flex-start;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 30px;
@@ -57,6 +59,7 @@
 
   #SuppetNewsletter-{{ uid }} .sn-form {
     display: flex;
+    align-items: center;
     gap: 10px;
     flex-wrap: wrap;
   }
