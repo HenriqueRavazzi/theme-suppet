@@ -81,6 +81,47 @@
         "color_scheme": "scheme1"
       }
     },
+    "unique": {
+      "type": "suppet-product-unique",
+      "blocks": {
+        "benefit-0": {
+          "type": "benefit",
+          "settings": {
+            "title": "Praticidade",
+            "text": "Vem pronto para consumo. Sem pó, sem misturar e sem complicação na rotina diária."
+          }
+        },
+        "benefit-1": {
+          "type": "benefit",
+          "settings": {
+            "title": "Suplemento Mastigável",
+            "text": "Fácil de oferecer, sem necessidade de disfarçar em outros alimentos."
+          }
+        },
+        "benefit-2": {
+          "type": "benefit",
+          "settings": {
+            "title": "Alta Palatabilidade",
+            "text": "Sabores aprovados até pelos pets mais exigentes — parece agrado, não remédio."
+          }
+        },
+        "benefit-3": {
+          "type": "benefit",
+          "settings": {
+            "title": "Fórmula Super Premium",
+            "text": "Desenvolvida para complementar a dieta diária de cães adultos."
+          }
+        }
+      },
+      "block_order": ["benefit-0", "benefit-1", "benefit-2", "benefit-3"],
+      "settings": {
+        "title_prefix": "O que torna",
+        "title_suffix": "único?",
+        "content_max_width": 1180,
+        "accent_color": "#d7282d",
+        "background_color": "#ffffff"
+      }
+    },
     "feature-text": {
       "type": "feature-text",
       "blocks": {
@@ -343,6 +384,7 @@
   },
   "order": [
     "main",
+    "unique",
     "feature-text",
     "image-with-highlights",
     "faq",

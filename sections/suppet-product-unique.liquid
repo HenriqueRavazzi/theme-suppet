@@ -1,0 +1,279 @@
+{%- comment -%}
+  Suppet product unique (petals) — porte do ".unique"/".petals" da LP
+  estática (Suppet/produto.html + css/style.css). Usa título e imagem
+  reais do produto Shopify. Sem animações — sem hover lift nos petals.
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign benefits = section.blocks | where: 'type', 'benefit'
+  assign half = benefits.size | divided_by: 2 | ceil
+  assign left_benefits = benefits | slice: 0, half
+  assign right_benefits = benefits | slice: half, 10
+
+  assign accent_color = section.settings.accent_color
+  if product.metafields.custom.accent_color != blank
+    assign accent_color = product.metafields.custom.accent_color
+  endif
+-%}
+
+<style>
+  #SuppetProductUnique-{{ uid }} {
+    background: {{ section.settings.background_color | default: '#ffffff' }};
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-container {
+    max-width: {{ section.settings.content_max_width | default: 1180 }}px;
+    margin-inline: auto;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: {{ accent_color | default: '#D7282D' }};
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 3px;
+    border-radius: 3px;
+    background: currentColor;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-title {
+    font-size: clamp(26px, 3.6vw, 40px);
+    font-weight: 800;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-petals {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 26px;
+    align-items: center;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-col {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-petal {
+    border-radius: 28px;
+    padding: 22px 26px;
+    color: #fff;
+    background: {{ accent_color | default: '#D7282D' }};
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-petal.is-dark {
+    filter: brightness(0.78);
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-col:first-child .spu-petal {
+    border-top-right-radius: 70px;
+    border-bottom-right-radius: 70px;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-col:last-child .spu-petal {
+    border-top-left-radius: 70px;
+    border-bottom-left-radius: 70px;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-petal h4 {
+    font-family: var(--heading-font-stack);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-petal p {
+    font-size: 13px;
+    line-height: 1.55;
+    opacity: 0.92;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-center {
+    display: flex;
+    justify-content: center;
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-center img {
+    max-width: 380px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 30px 50px rgba(16, 35, 66, 0.25));
+  }
+
+  @media (max-width: 900px) {
+    #SuppetProductUnique-{{ uid }} .spu-center img {
+      max-width: 300px;
+    }
+  }
+
+  @media (max-width: 860px) {
+    #SuppetProductUnique-{{ uid }} .spu-petals {
+      grid-template-columns: 1fr;
+    }
+    #SuppetProductUnique-{{ uid }} .spu-center {
+      order: -1;
+      margin-bottom: 10px;
+    }
+    #SuppetProductUnique-{{ uid }} .spu-col:first-child .spu-petal,
+    #SuppetProductUnique-{{ uid }} .spu-col:last-child .spu-petal {
+      border-radius: 24px;
+    }
+  }
+</style>
+
+<section id="SuppetProductUnique-{{ uid }}">
+  <div class="section-content px-section py-section-vertical-spacing">
+    <div class="spu-container">
+      <div class="spu-head">
+        <p class="spu-eyebrow">{{ product.title | default: 'Suppet' }}</p>
+        <h2 class="spu-title">
+          {{ section.settings.title_prefix | default: 'O que torna' }}
+          {{ product.title }}
+          {{ section.settings.title_suffix | default: 'único?' }}
+        </h2>
+      </div>
+
+      {%- if benefits.size > 0 -%}
+        <div class="spu-petals">
+          <div class="spu-col">
+            {%- for block in left_benefits -%}
+              <div class="spu-petal{% if forloop.index0 == 1 %} is-dark{% endif %}" {{ block.shopify_attributes }}>
+                <h4>{{ block.settings.title }}</h4>
+                <p>{{ block.settings.text }}</p>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <div class="spu-center">
+            {%- if product.featured_image != blank -%}
+              {{
+                product.featured_image
+                | image_url: width: 500
+                | image_tag: widths: '250, 350, 500', sizes: '380px', alt: product.title, loading: 'lazy'
+              }}
+            {%- endif -%}
+          </div>
+
+          <div class="spu-col">
+            {%- for block in right_benefits -%}
+              <div class="spu-petal{% if forloop.index0 == 0 %} is-dark{% endif %}" {{ block.shopify_attributes }}>
+                <h4>{{ block.settings.title }}</h4>
+                <p>{{ block.settings.text }}</p>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Suppet product unique",
+  "tag": "section",
+  "class": "suppet-product-unique-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_prefix",
+      "label": "Título (antes do nome do produto)",
+      "default": "O que torna"
+    },
+    {
+      "type": "text",
+      "id": "title_suffix",
+      "label": "Título (depois do nome do produto)",
+      "default": "único?"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1180
+    },
+    { "type": "header", "content": "Cores" },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Cor padrão dos petals",
+      "info": "Usa o metafield de produto \"custom.accent_color\" quando existir (mesmo do topo da página).",
+      "default": "#D7282D"
+    },
+    { "type": "color", "id": "background_color", "label": "Fundo da seção", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefício",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Benefício" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Suppet product unique",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Praticidade",
+            "text": "Vem pronto para consumo. Sem pó, sem misturar e sem complicação na rotina diária."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Suplemento Mastigável",
+            "text": "Fácil de oferecer, sem necessidade de disfarçar em outros alimentos."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Alta Palatabilidade",
+            "text": "Sabores aprovados até pelos pets mais exigentes — parece agrado, não remédio."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Fórmula Super Premium",
+            "text": "Desenvolvida para complementar a dieta diária de cães adultos."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
