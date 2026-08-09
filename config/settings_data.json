@@ -99,7 +99,7 @@
     "cart_icon": "cart",
     "cart_type": "modal",
     "open_modal_on_add_to_cart": true,
-    "enable_free_shipping_progress_in_cart": true,
+    "enable_free_shipping_progress_in_cart": false,
     "free_shipping_threshold": "199",
     "navigation_font": "font-main",
     "navigation_uppercase": false,

@@ -29,33 +29,77 @@
       top: 50% !important;
       left: 50% !important;
       transform: translate(-50%, -50%) !important;
-      width: min(90vw, 480px) !important;
+      width: min(92vw, 600px) !important;
       height: auto !important;
       max-height: 85vh !important;
       border-radius: 24px !important;
       box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.5);
+      /* [data-cart-drawer] em si não tem classe de fundo — quem pintava
+         o fundo era o pai #right-drawer-slot (bg-scheme-background), que
+         a gente deixa pra trás ao tirar o elemento da faixa com
+         position:fixed. Sem isso o modal fica "transparente" e a página
+         escurecida atrás vaza por trás do texto/imagens. */
+      background: #fff !important;
+    }
+
+    /* #right-drawer-slot é o mesmo container usado por busca/filtro/
+       ordenação — não dá pra escondê-lo sempre. Mas quando é ELE quem
+       está hospedando o carrinho (identificado pelo :has do filho
+       [data-cart-drawer]), o conteúdo real já foi puxado pra fora via
+       position:fixed acima, então o que sobra aqui é só a "casca" vazia
+       da gaveta (fundo branco, ml-auto, até 5/12 da tela) — sem isso
+       vira uma barra lateral branca enorme atrás do modal. */
+    #right-drawer-slot:has([data-cart-drawer]) {
+      width: 0 !important;
+      min-width: 0 !important;
+      background: transparent !important;
+      border: 0 !important;
+    }
+
+    /* [data-cart-items] cresce (flex-auto) pra preencher a gaveta de
+       tela cheia original (h-screen). No modal com height:auto isso
+       sobra como espaço vazio embaixo do item/nota — aqui ele deve só
+       ocupar o espaço do próprio conteúdo. */
+    [data-cart-drawer] [data-cart-items] {
+      flex: 0 1 auto !important;
     }
   }
 
   /* ---------- Cabeçalho do carrinho ---------- */
   [data-cart-drawer] > div:first-child {
-    background: #0e1b33;
-    color: #fff;
+    background: #fff;
+    color: #0e1b33;
+    border-bottom: 1px solid rgba(14, 27, 51, 0.08);
   }
 
   [data-cart-drawer] > div:first-child h2 {
     font-family: var(--heading-font-stack);
     font-weight: 800;
+    font-size: 22px;
+  }
+
+  /* Botão fechar: círculo bege, igual à LP */
+  [data-cart-drawer] > div:first-child button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #f7f1e6;
+    border-radius: 999px;
   }
 
   [data-cart-drawer] > div:first-child button svg {
-    color: #fff;
+    color: #0e1b33;
   }
 
   /* ---------- Itens do carrinho ---------- */
   [data-cart-items] .media__styled-element {
     border-radius: 16px;
-    background: #16264a;
+    background: #f7f1e6;
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
   }
 
   [data-cart-items] [data-product-title] p:first-child {
@@ -64,11 +108,24 @@
     color: #0e1b33;
   }
 
-  /* Contador de quantidade em pílula, igual ao .qty da LP */
+  /* Contador de quantidade: "−" e "+" como círculos soltos com número no
+     meio (igual à LP), em vez da pílula única que envolvia os 3 juntos. */
   [data-cart-items] .input.flex {
+    border: 0;
+    overflow: visible;
+    gap: 6px;
+  }
+
+  [data-cart-items] .input.flex button {
+    border: 1px solid rgba(14, 27, 51, 0.16);
     border-radius: 999px;
-    border-color: rgba(14, 27, 51, 0.16);
-    overflow: hidden;
+    flex: 0 0 32px;
+  }
+
+  [data-cart-items] .input.flex input[type='number'] {
+    flex: 0 0 24px;
+    font-weight: 700;
+    color: #0e1b33;
   }
 
   /* Selo de desconto por linha */
@@ -99,6 +156,12 @@
     color: #0e1b33;
   }
 
+  /* Aviso "Tax included and shipping calculated at checkout" — só some
+     visualmente, o cálculo de imposto/frete no checkout continua normal. */
+  [data-cart-footer] dl + p {
+    display: none;
+  }
+
   /* Botão "Atualizar": estilo secundário discreto, como .btn-light da LP */
   [data-cart-footer] input[name='update'] {
     border-radius: 999px;
@@ -110,21 +173,30 @@
   }
 
   /* Botão "Finalizar compra": pílula vermelha, igual ao .btn-primary da LP.
-     Mesmo truque de variáveis usado no CTA do hero e do header — não mexe
-     no fluxo de checkout, só na cor. */
+     Não mexe no fluxo de checkout, só na cor.
+
+     As variáveis de cor do tema alimentam `rgb(var(--x))` no CSS nativo
+     (base.bundle.css) — precisam ser "R, G, B" (ex.: css-bridge.liquid),
+     não hex. Um hex aqui (#d7282d) faz `rgb(#d7282d)`, que é inválido:
+     o navegador descarta a declaração e o botão fica sem estilo nenhum
+     (era exatamente o bug do "Check Out" sem cor). */
+  [data-cart-footer] .push-btn {
+    --button-border-radius: 999px;
+  }
+
   [data-cart-footer] .push-btn__surface {
-    --color-button-background: #d7282d;
-    --color-button-text: #ffffff;
-    --color-button-border: #d7282d;
+    --color-button-background: 215, 40, 45;
+    --color-button-text: 255, 255, 255;
+    --color-button-border: 215, 40, 45;
     border-radius: 999px;
     font-family: var(--heading-font-stack);
     font-weight: 700;
   }
 
   [data-cart-footer] .push-btn:hover .push-btn__surface {
-    --color-button-background-hover: #a81e22;
-    --color-button-text-hover: #ffffff;
-    --color-button-border-hover: #a81e22;
+    --color-button-background-hover: 168, 30, 34;
+    --color-button-text-hover: 255, 255, 255;
+    --color-button-border-hover: 168, 30, 34;
   }
 
   [data-cart-footer] #cart-errors {
