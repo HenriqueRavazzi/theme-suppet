@@ -64,8 +64,8 @@
     "general_border_width": 2,
     "product_tiles_show_vendor": false,
     "product_tiles_scatter": true,
-    "product_tiles_aspect_ratio": "aspect-w-1 aspect-h-1",
-    "product_tile_media_shape": "scalloped_circle_5",
+    "product_tiles_aspect_ratio": "natural",
+    "product_tile_media_shape": "default",
     "product_tiles_second_image_on_hover": true,
     "hover_effect_zoom_media": false,
     "hover_effect_rotate_shape": false,
@@ -86,6 +86,7 @@
     "heading_italics_color": "color-scheme-accent-2",
     "heading_italics_decoration": "none",
     "underline_style": "dotted",
+    "currency_code_enabled": false,
     "sharing_display": "text",
     "social_style": "icons",
     "social_instagram_link": "https://www.instagram.com/drogavet/",
@@ -127,19 +128,14 @@
     "color_primary_meta": "#16233B",
     "content_for_index": [],
     "blocks": {
-      "6544682535036668446": {
-        "type": "shopify://apps/pumper-bundles/blocks/app-embed/0856870d-2aca-4b1e-a662-cf1797f61270",
-        "disabled": false,
-        "settings": {}
-      },
       "5091004626459974968": {
         "type": "shopify://apps/moose-whatsapp/blocks/whatsapp/b77db749-c44a-4265-8135-8b842af1b111",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       },
       "13768625480086291342": {
         "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       }
     },

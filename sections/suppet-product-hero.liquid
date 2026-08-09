@@ -18,6 +18,23 @@
   assign mini_benefits = section.blocks | where: 'type', 'mini_benefit'
   assign tagline = product.metafields.custom.tagline | default: section.settings.tagline_fallback
 
+  # Sem blocks de "mini benefício" cadastrados, usa os 4 reais de cada
+  # fórmula (mesmos dados da LP de referência), pelo handle do produto —
+  # mesma lógica já usada na tabela de garantia e nos petals de "único".
+  assign mb_icons = 'paw,heart,leaf,shield' | split: ','
+  assign mb_labels = 'Mastigável,Praticidade,Alta palatabilidade,Super premium' | split: ','
+  case product.handle
+    when 'escudo-condroprotetor'
+      assign mb_icons = 'paw,shield,leaf,shield' | split: ','
+      assign mb_labels = 'Mastigável,Proteção articular,Alta palatabilidade,Super premium' | split: ','
+    when 'barreira-anticopro'
+      assign mb_icons = 'paw,bolt,leaf,shield' | split: ','
+      assign mb_labels = 'Mastigável,Barreira anticoprofagia,Alta palatabilidade,Super premium' | split: ','
+    when 'neutralizador-de-estresse'
+      assign mb_icons = 'paw,star,leaf,shield' | split: ','
+      assign mb_labels = 'Mastigável,Equilíbrio emocional,Alta palatabilidade,Super premium' | split: ','
+  endcase
+
   assign tier_qty = section.settings.tier_quantity | default: 2
   assign tier_discount = section.settings.tier_discount_percent | default: 10
   assign tier_full_price = current_variant.price | times: tier_qty
@@ -116,6 +133,13 @@
     color: rgba(var(--color-scheme-text), 0.72);
   }
 
+  #SuppetProductHero-{{ uid }} .sph-package {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: rgb(var(--color-scheme-text));
+  }
+
   #SuppetProductHero-{{ uid }} .sph-note {
     margin-top: 14px;
     font-size: 13px;
@@ -164,6 +188,17 @@
     background: transparent;
     text-align: left;
     cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #SuppetProductHero-{{ uid }} .sph-tier:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #SuppetProductHero-{{ uid }} .sph-tier {
+      transition: none;
+    }
   }
 
   #SuppetProductHero-{{ uid }} .sph-tier.is-active {
@@ -364,6 +399,10 @@
             <div class="sph-desc rte">{{ product.description }}</div>
           {%- endif -%}
 
+          {%- if section.settings.package_text != blank -%}
+            <p class="sph-package">{{ section.settings.package_text }}</p>
+          {%- endif -%}
+
           {%- if section.settings.note_text != blank -%}
             <p class="sph-note">{{ section.settings.note_text }}</p>
           {%- endif -%}
@@ -453,42 +492,23 @@
             </div>
           {% endform %}
 
-          {%- if mini_benefits.size > 0 -%}
-            <div class="sph-mini-benefits">
+          <div class="sph-mini-benefits">
+            {%- if mini_benefits.size > 0 -%}
               {%- for block in mini_benefits -%}
                 <div class="sph-mini-benefit" {{ block.shopify_attributes }}>
-                  <div class="sph-ic">
-                    {%- case block.settings.icon -%}
-                      {%- when 'paw' -%}
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                          <circle cx="6" cy="9" r="2.1"></circle>
-                          <circle cx="11" cy="6" r="2.1"></circle>
-                          <circle cx="16" cy="6" r="2.1"></circle>
-                          <circle cx="20" cy="10" r="2"></circle>
-                          <path d="M13 12.2c3.2 0 6 2.4 6 5.2 0 2-1.6 3.1-3.6 2.5-1-.3-2.1-.3-3.1 0-2 .6-3.6-.5-3.6-2.5 0-2.8 2.1-5.2 4.3-5.2Z"></path>
-                        </svg>
-                      {%- when 'leaf' -%}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                          <path d="M4 20c0-8 5-14 16-15-1 10-7 15-15 15Z"></path>
-                          <path d="M6 18c3-3 6-7 12-11"></path>
-                        </svg>
-                      {%- when 'shield' -%}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                          <path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6l7-3Z"></path>
-                          <path d="M9 12l2 2 4-4"></path>
-                        </svg>
-                      {%- else -%}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                          <path d="M12 20s-7.5-4.6-9.6-9.4C1.1 7.6 3 4.5 6.3 4.2c2-.2 3.7 1 4.7 2.6 1-1.6 2.7-2.8 4.7-2.6 3.3.3 5.2 3.4 3.9 6.4C19.5 15.4 12 20 12 20Z"></path>
-                          <path d="M9 11.2h1.6l1-1.7 1.4 3 1-1.3H16"></path>
-                        </svg>
-                    {%- endcase -%}
-                  </div>
+                  <div class="sph-ic">{%- render 'suppet-icon-mini', icon: block.settings.icon -%}</div>
                   <span>{{ block.settings.label }}</span>
                 </div>
               {%- endfor -%}
-            </div>
-          {%- endif -%}
+            {%- else -%}
+              {%- for mb_icon in mb_icons -%}
+                <div class="sph-mini-benefit">
+                  <div class="sph-ic">{%- render 'suppet-icon-mini', icon: mb_icon -%}</div>
+                  <span>{{ mb_labels[forloop.index0] }}</span>
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
         </div>
       </div>
 
@@ -552,11 +572,21 @@
   "class": "suppet-product-hero-section",
   "settings": [
     {
+      "type": "paragraph",
+      "content": "Sem blocos de \"Ícone de benefício\" cadastrados, os 4 mini-benefícios abaixo do preço são preenchidos automaticamente com o conteúdo real de cada uma das 4 fórmulas Suppet (pelo handle do produto). Cadastre blocos aqui só para sobrescrever esse conteúdo."
+    },
+    {
       "type": "text",
       "id": "tagline_fallback",
       "label": "Selo (se o produto não tiver o metafield custom.tagline)",
       "info": "Cadastre um metafield de produto \"custom.tagline\" (texto de uma linha) pra cada produto ter seu próprio selo. Sem o metafield, usa este texto para todos.",
       "default": "Suplemento Super Premium"
+    },
+    {
+      "type": "text",
+      "id": "package_text",
+      "label": "Texto da embalagem",
+      "default": "Sachê de 150 g (com aproximadamente 34 biscoitos)"
     },
     {
       "type": "text",
@@ -632,7 +662,9 @@
             { "value": "paw", "label": "Pata" },
             { "value": "heart", "label": "Coração" },
             { "value": "leaf", "label": "Folha" },
-            { "value": "shield", "label": "Escudo" }
+            { "value": "shield", "label": "Escudo" },
+            { "value": "bolt", "label": "Raio" },
+            { "value": "star", "label": "Estrela" }
           ],
           "default": "paw"
         },
@@ -642,13 +674,7 @@
   ],
   "presets": [
     {
-      "name": "Suppet product hero",
-      "blocks": [
-        { "type": "mini_benefit", "settings": { "icon": "paw", "label": "Mastigável" } },
-        { "type": "mini_benefit", "settings": { "icon": "heart", "label": "Alta Palatabilidade" } },
-        { "type": "mini_benefit", "settings": { "icon": "leaf", "label": "Sem Aditivos" } },
-        { "type": "mini_benefit", "settings": { "icon": "shield", "label": "Super Premium" } }
-      ]
+      "name": "Suppet product hero"
     }
   ]
 }

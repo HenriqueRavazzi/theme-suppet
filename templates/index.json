@@ -15,6 +15,7 @@
         "slide-vitaforca": {
           "type": "slide",
           "settings": {
+            "product": "campo-de-vitaforca",
             "image": "shopify://shop_images/pack-vitaforca.png",
             "name": "Campo de Vitaforça",
             "accent": "#d7282d",
@@ -24,6 +25,7 @@
         "slide-condroprotetor": {
           "type": "slide",
           "settings": {
+            "product": "escudo-condroprotetor",
             "image": "shopify://shop_images/pack-condroprotetor.png",
             "name": "Escudo Condroprotetor",
             "accent": "#dd6e1f",
@@ -33,6 +35,7 @@
         "slide-anticopro": {
           "type": "slide",
           "settings": {
+            "product": "barreira-anticopro",
             "image": "shopify://shop_images/pack-anticopro.png",
             "name": "Barreira AntiCopro",
             "accent": "#3a7cae",
@@ -42,6 +45,7 @@
         "slide-estresse": {
           "type": "slide",
           "settings": {
+            "product": "neutralizador-de-estresse",
             "image": "shopify://shop_images/pack-estresse.png",
             "name": "Neutralizador de Estresse",
             "accent": "#2fa39c",
@@ -59,14 +63,14 @@
           "type": "stat",
           "settings": {
             "value": "100%",
-            "label": "mastigável & palatável"
+            "label": "mastigável e palatável"
           }
         },
         "stat-saches": {
           "type": "stat",
           "settings": {
-            "value": "30",
-            "label": "sachês por caixa"
+            "value": "Cerca de 34",
+            "label": "biscoitos por sachê"
           }
         }
       },
@@ -81,8 +85,8 @@
       ],
       "settings": {
         "eyebrow": "Suplementos Super Premium",
-        "title": "O <em>power up</em> na saúde e na longevidade do seu pet.",
-        "richtext": "<p>Suppet é a linha de suplementos mastigáveis super premium assinada pela DrogaVET para ativar o super que existe em cada pet — imunidade, articulações, digestão e equilíbrio emocional.</p>",
+        "title": "O <em>power-up</em> na saúde e na longevidade do seu pet.",
+        "richtext": "<p>Suppet é a linha de suplementos mastigáveis super premium da DrogaVET, desenvolvida para ativar o super que existe em cada pet. Uma combinação de ciência e cuidado para fortalecer a imunidade, apoiar a saúde das articulações, favorecer a digestão e promover o equilíbrio emocional.</p>",
         "min_height": 88,
         "content_max_width": 1240,
         "cta_primary_label": "Ver os 4 superpoderes",
@@ -91,8 +95,8 @@
         "cta_secondary_url": "",
         "badge_kicker": "Primeira compra",
         "badge_value": "Cupom SUPPET10",
-        "enable_motion": false,
-        "autoplay": false,
+        "enable_motion": true,
+        "autoplay": true,
         "speed": 3800,
         "brand_color": "#dd6e1f",
         "color_scheme": "scheme3",
@@ -125,7 +129,7 @@
           "settings": {
             "icon": "paw",
             "title": "Alta palatabilidade",
-            "text": "Formato mastigável que facilita a rotina e aumenta a adesão do pet ao suplemento."
+            "text": "Formato mastigável que facilita a rotina e aumenta a aceitação do suplemento pelo pet."
           }
         },
         "benefit-1": {
@@ -133,15 +137,7 @@
           "settings": {
             "icon": "heart",
             "title": "Qualidade de vida",
-            "text": "Fórmulas pensadas para apoiar bem-estar, disposição e conforto em diferentes momentos do dia a dia."
-          }
-        },
-        "benefit-2": {
-          "type": "benefit",
-          "settings": {
-            "icon": "leaf",
-            "title": "Formulação cuidadosa",
-            "text": "Sem antioxidantes sintéticos e com composição desenvolvida para a suplementação diária."
+            "text": "Fórmulas desenvolvidas para promover o bem-estar, a disposição e o conforto em diferentes momentos do dia a dia."
           }
         },
         "benefit-3": {
@@ -149,7 +145,7 @@
           "settings": {
             "icon": "shield",
             "title": "Especialistas DrogaVET",
-            "text": "Uma linha super premium criada por quem entende da rotina veterinária e da saúde dos pets."
+            "text": "Uma linha super premium desenvolvida por quem entende da rotina veterinária e da saúde dos pets."
           }
         }
       },
@@ -159,13 +155,12 @@
         "chip-2",
         "benefit-0",
         "benefit-1",
-        "benefit-2",
         "benefit-3"
       ],
       "settings": {
         "eyebrow": "Universo Suppet",
-        "title": "Feito para ativar o super do seu pet",
-        "richtext": "<p>Uma linha desenvolvida pela DrogaVET para apoiar diferentes necessidades com praticidade, sabor e rotina simples.</p>",
+        "title": "Feita para ativar o super do seu pet",
+        "richtext": "<p>Uma linha desenvolvida pela DrogaVET para apoiar diferentes necessidades dos cães com praticidade, sabor e rotina simples.</p>",
         "content_max_width": 1240,
         "image": "shopify://shop_images/pancho-clean.png",
         "brand_color": "#d7282d",
@@ -182,8 +177,11 @@
             "product": "campo-de-vitaforca",
             "tagline": "Reforço Imunológico e Suporte Nutricional",
             "accent": "#d7282d",
+            "campaign_line": "A defesa da vitalidade",
+            "mission": "Oferecer energia e suporte nutricional para as aventuras do dia a dia.",
+            "powers": "Auxilia o metabolismo energético;\nFortalece a imunidade;\nFavorece pele e pelagem;\nSaúde intestinal;\nAção antioxidante.",
+            "allies": "EPA + DHA • Taurina • Biotina • Zinco • Beta-glucanos",
             "name": "",
-            "description": "",
             "price": "",
             "price_note": "caixa com 30 sachês",
             "link": ""
@@ -195,8 +193,11 @@
             "product": "escudo-condroprotetor",
             "tagline": "Proteção para as Articulações",
             "accent": "#dd6e1f",
+            "campaign_line": "A proteção da mobilidade",
+            "mission": "Proteger as articulações para que nenhuma aventura precise parar.",
+            "powers": "Auxilia a saúde articular;\nProtege a cartilagem;\nFavorece a mobilidade;\nContribui para o conforto;\nMais qualidade de vida.",
+            "allies": "Glucosamina • Condroitina • Colágeno Tipo II",
             "name": "",
-            "description": "",
             "price": "",
             "price_note": "caixa com 30 sachês",
             "link": ""
@@ -208,8 +209,11 @@
             "product": "barreira-anticopro",
             "tagline": "Redução do Hábito de Ingestão das Fezes",
             "accent": "#3a7cae",
+            "campaign_line": "A potência da saúde intestinal",
+            "mission": "Impedir que a coprofagia atrapalhe o bem-estar do seu herói.",
+            "powers": "Auxilia no controle da coprofagia;\nFavorece a saúde intestinal;\nReduz o odor das fezes;\nMelhora a digestibilidade dos nutrientes;\nAlta palatabilidade.",
+            "allies": "Yucca • Probióticos • Prebióticos • Enzimas Digestivas",
             "name": "",
-            "description": "",
             "price": "",
             "price_note": "caixa com 30 sachês",
             "link": ""
@@ -221,8 +225,11 @@
             "product": "neutralizador-de-estresse",
             "tagline": "Equilíbrio e Bem-Estar",
             "accent": "#2fa39c",
+            "campaign_line": "A diferença do equilíbrio",
+            "mission": "Transformar momentos desafiadores em mais tranquilidade.",
+            "powers": "Auxilia no controle do estresse e da ansiedade;\nPromove relaxamento;\nFavorece o equilíbrio comportamental;\nSuporte ao sistema nervoso;\nIdeal para viagens, fogos e mudanças de rotina.",
+            "allies": "L-Triptofano • L-Teanina • Camomila • Melissa • Valeriana",
             "name": "",
-            "description": "",
             "price": "",
             "price_note": "caixa com 30 sachês",
             "link": ""
@@ -238,7 +245,7 @@
       "settings": {
         "eyebrow": "Linha Suppet",
         "title": "Os 4 superpoderes do seu pet",
-        "richtext": "<p>Cada fórmula ativa um superpoder diferente — escolha o suplemento ideal para a rotina do seu companheiro.</p>",
+        "richtext": "<p>Cada fórmula ativa um superpoder diferente. Escolha o suplemento ideal para a rotina do seu companheiro.</p>",
         "content_max_width": 1240,
         "brand_color": "#dd6e1f",
         "color_scheme": "scheme3",
@@ -283,6 +290,50 @@
           "settings": {
             "text": "+ equilíbrio"
           }
+        },
+        "product-vitaforca": {
+          "type": "product_slide",
+          "settings": {
+            "product": "campo-de-vitaforca",
+            "tag": "A defesa da vitalidade",
+            "name": "",
+            "subtitle": "Vitaminas, minerais e aminoácidos",
+            "link": "",
+            "accent": "#d7282d"
+          }
+        },
+        "product-condroprotetor": {
+          "type": "product_slide",
+          "settings": {
+            "product": "escudo-condroprotetor",
+            "tag": "A proteção da mobilidade",
+            "name": "",
+            "subtitle": "Condroitina, glucosamina e colágeno tipo II",
+            "link": "",
+            "accent": "#dd6e1f"
+          }
+        },
+        "product-anticopro": {
+          "type": "product_slide",
+          "settings": {
+            "product": "barreira-anticopro",
+            "tag": "A potência da saúde intestinal",
+            "name": "",
+            "subtitle": "Prebióticos, probióticos e enzimas digestivas",
+            "link": "",
+            "accent": "#3a7cae"
+          }
+        },
+        "product-estresse": {
+          "type": "product_slide",
+          "settings": {
+            "product": "neutralizador-de-estresse",
+            "tag": "A diferença do equilíbrio",
+            "name": "",
+            "subtitle": "L-triptofano, L-teanina e extratos vegetais",
+            "link": "",
+            "accent": "#2fa39c"
+          }
         }
       },
       "block_order": [
@@ -291,46 +342,25 @@
         "list-item-2",
         "badge-0",
         "badge-1",
-        "badge-2"
+        "badge-2",
+        "product-vitaforca",
+        "product-condroprotetor",
+        "product-anticopro",
+        "product-estresse"
       ],
       "settings": {
         "eyebrow": "Campanha Suppet",
         "title": "Ative o super do seu pet",
-        "richtext": "<p>A campanha valoriza o vínculo entre tutores, pets e profissionais que fazem parte dessa jornada. Por isso, trouxemos elementos do universo visual da campanha para a LP, mantendo uma navegação leve, clara e orientada para compra.</p>",
+        "richtext": "<p>Coloque no carrinho e compre facilmente.</p>",
         "content_max_width": 1240,
         "cta_primary_label": "Ver todos os produtos",
         "cta_primary_url": "",
         "cta_secondary_label": "Fale com a gente",
         "cta_secondary_url": "https://wa.me/554132098989",
-        "product_tag": "Proteção articular",
-        "product_name": "Escudo Condroprotetor",
-        "product_subtitle": "Condroitina e glucosamina",
-        "product_link": "",
-        "accent": "#dd6e1f",
+        "enable_motion": true,
+        "autoplay": true,
+        "speed": 3400,
         "brand_color": "#d7282d",
-        "color_scheme": "scheme2",
-        "use_gradient_background": false
-      }
-    },
-    "featured-collection": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Linha completa Suppet",
-        "subheading": "Conheça todos os suplementos mastigáveis super premium da linha.",
-        "collection": "all",
-        "no_products": 4,
-        "show_view_all": true,
-        "enable_quick_buy": false,
-        "display_on_card": false,
-        "layout": "carousel",
-        "products_per_row_mobile": "1",
-        "products_per_row_desktop": 4,
-        "slideshow_focus": "center",
-        "mobile_slide_width": "three_fifths",
-        "desktop_slide_width": 20,
-        "autoscroll_mode": "1",
-        "product_tiles_aspect_ratio": "natural",
-        "image_shape": "default",
         "color_scheme": "scheme2",
         "use_gradient_background": false
       }
@@ -342,24 +372,24 @@
           "type": "question",
           "settings": {
             "icon": "none",
-            "title": "Para que servem os suplementos Suppet?",
-            "answer": "<p>A linha tem quatro fórmulas, cada uma para uma necessidade específica: reforço imunológico, proteção articular, equilíbrio digestivo e bem-estar emocional. Todas são suplementos mastigáveis super premium para cães.</p>"
+            "title": "O que é a linha SUPPET?",
+            "answer": "<p>A SUPPET é uma linha de suplementos desenvolvida para complementar os cuidados com a saúde e o bem-estar dos pets, podendo ser associada às formulações manipuladas prescritas pelo veterinário.</p>"
           }
         },
         "question-1": {
           "type": "question",
           "settings": {
             "icon": "none",
-            "title": "Como ofereço o suplemento ao meu cão?",
-            "answer": "<p>O sachê é mastigável e vem pronto para consumo — não precisa dissolver, misturar na ração nem disfarçar em outro alimento. Consulte na embalagem a recomendação diária de acordo com o peso do pet.</p>"
+            "title": "Posso usar junto com a fórmula manipulada?",
+            "answer": "<p>Sim! Os produtos SUPPET foram desenvolvidos para complementar os cuidados do seu pet e podem ser utilizados juntamente com a fórmula prescrita pelo médico-veterinário.</p>"
           }
         },
         "question-2": {
           "type": "question",
           "settings": {
             "icon": "none",
-            "title": "Meu cão é exigente. Ele vai aceitar?",
-            "answer": "<p>As fórmulas têm alta palatabilidade, nos sabores baunilha e maracujá. Na prática, o pet recebe o sachê como um agrado e não como um remédio.</p>"
+            "title": "Qual produto é indicado para o meu pet?",
+            "answer": "<p>Depende da necessidade dele:</p><ul><li>Escudo Condroprotetor serve para articulações e mobilidade.</li><li>Neutralizador de Estresse serve para ansiedade, agitação e estresse.</li><li>Campo de Vitaforça serve para imunidade, energia e vitalidade.</li><li>Barreira AntiCopro serve para inibir a coprofagia (vontade de ingerir fezes).</li></ul>"
           }
         },
         "question-3": {
@@ -367,39 +397,31 @@
           "settings": {
             "icon": "none",
             "title": "Posso oferecer mais de uma fórmula ao mesmo tempo?",
-            "answer": "<p>Em muitos casos sim, mas a combinação depende da idade, do peso e do histórico de saúde do animal. Consulte o médico-veterinário antes de associar fórmulas.</p>"
+            "answer": "<p>Sim. Mas siga a recomendação de dosagem descrita em cada embalagem.</p>"
           }
         },
         "question-4": {
           "type": "question",
           "settings": {
             "icon": "none",
-            "title": "Quanto tempo dura uma caixa?",
-            "answer": "<p>Cada caixa vem com 30 sachês, o suficiente para um mês de suplementação diária na dosagem padrão.</p>"
+            "title": "Os produtos SUPPET substituem medicamentos?",
+            "answer": "<p>Não. Os produtos SUPPET atuam como suplementos nutricionais, complementando os cuidados já prescritos pelo médico-veterinário. Eles não substituem tratamentos medicamentosos ou terapias específicas.</p>"
           }
         },
         "question-5": {
           "type": "question",
           "settings": {
             "icon": "none",
-            "title": "Como devo conservar o produto?",
-            "answer": "<p>Conserve em lugar seco e ventilado, ao abrigo dos raios solares e do calor excessivo. Depois de aberto, consuma em até 60 dias.</p>"
+            "title": "Quantos biscoitos posso dar para o meu cão por dia?",
+            "answer": "<p>A quantidade varia conforme o peso do seu cão. Cães de raças pequenas poderão ingerir, em média, um biscoito por dia. Cães de raças grandes podem ingerir até 4 biscoitos por dia. Cada suplemento tem a sua indicação de dosagem na própria embalagem. Cuidado com o Olhar Pidão! Siga a recomendação diária.</p>"
           }
         },
         "question-6": {
           "type": "question",
           "settings": {
             "icon": "none",
-            "title": "Em quanto tempo recebo meu pedido?",
-            "answer": "<p>O prazo varia conforme a região. Você recebe o código de rastreio assim que o pedido é despachado. O frete é grátis nas compras acima de R$ 199,00.</p>"
-          }
-        },
-        "question-7": {
-          "type": "question",
-          "settings": {
-            "icon": "none",
-            "title": "Quem fabrica a linha Suppet?",
-            "answer": "<p>Suppet é uma linha da Drogavet Farmácias de Manipulação e Indústria Ltda, em Campo Largo/PR. SAC: (41) 3209-8989 ou sac@drogavet.com.br.</p>"
+            "title": "Qual é o prazo de validade do suplemento?",
+            "answer": "<p>A embalagem fechada possui validade de 12 meses. No entanto, quando aberta, é necessário consumir em até 60 dias.</p>"
           }
         }
       },
@@ -410,8 +432,7 @@
         "question-3",
         "question-4",
         "question-5",
-        "question-6",
-        "question-7"
+        "question-6"
       ],
       "settings": {
         "display_on_card": true,
@@ -419,68 +440,7 @@
         "two_columns_desktop": true,
         "title": "Perguntas frequentes",
         "richtext": "Você perguntou, a gente respondeu.",
-        "color_scheme": "",
-        "use_gradient_background": false
-      }
-    },
-    "scrolling-text-with-icons": {
-      "type": "scrolling-text-with-icons",
-      "blocks": {
-        "text-0": {
-          "type": "text",
-          "settings": {
-            "text": "Frete grátis acima de R$ 199",
-            "icon": "globe"
-          }
-        },
-        "text-1": {
-          "type": "text",
-          "settings": {
-            "text": "Sem antioxidantes sintéticos",
-            "icon": "leaf"
-          }
-        },
-        "text-2": {
-          "type": "text",
-          "settings": {
-            "text": "SAC (41) 3209-8989",
-            "icon": "chat_bubble"
-          }
-        },
-        "text-3": {
-          "type": "text",
-          "settings": {
-            "text": "10% OFF com o cupom SUPPET10",
-            "icon": "check_mark"
-          }
-        },
-        "text-4": {
-          "type": "text",
-          "settings": {
-            "text": "Ative o super do seu pet",
-            "icon": "heart"
-          }
-        }
-      },
-      "block_order": [
-        "text-0",
-        "text-1",
-        "text-2",
-        "text-3",
-        "text-4"
-      ],
-      "settings": {
-        "repeat_text": true,
-        "link": "",
-        "font": "body",
-        "gap": "gap-36",
-        "icon_size": "size-8",
-        "speed": 120,
-        "direction": "",
-        "icon_thickness": 1.5,
-        "background_color": "bg-transparent text-scheme-text",
-        "show_border": true,
-        "color_scheme": "scheme1",
+        "color_scheme": "scheme2",
         "use_gradient_background": false
       }
     },
@@ -494,7 +454,8 @@
         "success_message": "Cadastro recebido! Use o cupom SUPPET10 na sua primeira compra.",
         "content_max_width": 1240,
         "color_from": "#d7282d",
-        "color_to": "#dd6e1f"
+        "color_to": "#dd6e1f",
+        "color_scheme": "scheme2"
       }
     }
   },
@@ -503,9 +464,7 @@
     "suppet-benefits",
     "suppet-products",
     "suppet-campaign",
-    "featured-collection",
     "faq",
-    "scrolling-text-with-icons",
     "newsletter"
   ]
 }

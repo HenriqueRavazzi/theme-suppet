@@ -124,7 +124,11 @@
   }
 </style>
 
-<section id="SuppetNewsletter-{{ uid }}" class="bg-scheme-background text-scheme-text">
+<section
+  id="SuppetNewsletter-{{ uid }}"
+  class="bg-scheme-background text-scheme-text"
+  data-color-scheme="{{ section.settings.color_scheme }}"
+>
   <div class="section-content px-section py-section-vertical-spacing">
     <div class="sn-container">
       <div class="sn-strip">
@@ -218,7 +222,13 @@
     },
     { "type": "header", "content": "Cores" },
     { "type": "color", "id": "color_from", "label": "Gradiente (início)", "default": "#D7282D" },
-    { "type": "color", "id": "color_to", "label": "Gradiente (fim)", "default": "#DD6E1F" }
+    { "type": "color", "id": "color_to", "label": "Gradiente (fim)", "default": "#DD6E1F" },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de cores (fundo da seção)",
+      "default": "scheme2"
+    }
   ],
   "presets": [
     {

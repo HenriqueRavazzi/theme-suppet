@@ -1,0 +1,117 @@
+{%- comment -%}
+  Suppet cart skin — reveste o carrinho nativo (drawer-cart.liquid +
+  cart-items.liquid + cart-footer.liquid) com as cores/tipografia da
+  Suppet. NÃO mexe em nada funcional: fluxo de compra, checkout, cálculo
+  de preço, cupons e Alpine.js continuam 100% nativos — só CSS.
+
+  A referência estática (Suppet (1)/js/main.js: renderCartModal()) fecha
+  pedido pelo WhatsApp porque é um site de demonstração sem checkout de
+  verdade. Aqui o botão continua indo pro checkout real da Shopify —
+  só a aparência foi replicada.
+
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+<style>
+  /* ---------- Cabeçalho do carrinho ---------- */
+  [data-cart-drawer] > div:first-child {
+    background: #0e1b33;
+    color: #fff;
+  }
+
+  [data-cart-drawer] > div:first-child h2 {
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+  }
+
+  [data-cart-drawer] > div:first-child button svg {
+    color: #fff;
+  }
+
+  /* ---------- Itens do carrinho ---------- */
+  [data-cart-items] .media__styled-element {
+    border-radius: 16px;
+    background: #16264a;
+  }
+
+  [data-cart-items] [data-product-title] p:first-child {
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    color: #0e1b33;
+  }
+
+  /* Contador de quantidade em pílula, igual ao .qty da LP */
+  [data-cart-items] .input.flex {
+    border-radius: 999px;
+    border-color: rgba(14, 27, 51, 0.16);
+    overflow: hidden;
+  }
+
+  /* Selo de desconto por linha */
+  [data-cart-items] .rounded-button.bg-scheme-accent-1 {
+    background: #d7282d !important;
+    color: #fff !important;
+  }
+
+  [data-cart-items] a[href*="remove" i],
+  [data-cart-items] p a {
+    color: rgba(14, 27, 51, 0.55);
+    text-decoration: underline;
+  }
+
+  [data-cart-items] p a:hover {
+    color: #d7282d;
+  }
+
+  /* ---------- Rodapé (subtotal + checkout) ---------- */
+  [data-cart-footer] dt,
+  [data-cart-footer] dd {
+    font-family: var(--heading-font-stack);
+  }
+
+  [data-cart-footer] dd {
+    font-weight: 800;
+    font-size: 19px;
+    color: #0e1b33;
+  }
+
+  /* Botão "Atualizar": estilo secundário discreto, como .btn-light da LP */
+  [data-cart-footer] input[name='update'] {
+    border-radius: 999px;
+    border-color: rgba(14, 27, 51, 0.2);
+    padding: 10px 20px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    color: #0e1b33;
+  }
+
+  /* Botão "Finalizar compra": pílula vermelha, igual ao .btn-primary da LP.
+     Mesmo truque de variáveis usado no CTA do hero e do header — não mexe
+     no fluxo de checkout, só na cor. */
+  [data-cart-footer] .push-btn__surface {
+    --color-button-background: #d7282d;
+    --color-button-text: #ffffff;
+    --color-button-border: #d7282d;
+    border-radius: 999px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+  }
+
+  [data-cart-footer] .push-btn:hover .push-btn__surface {
+    --color-button-background-hover: #a81e22;
+    --color-button-text-hover: #ffffff;
+    --color-button-border-hover: #a81e22;
+  }
+
+  [data-cart-footer] #cart-errors {
+    background: #d7282d !important;
+    color: #fff !important;
+    border-radius: 12px;
+  }
+
+  /* ---------- Carrinho vazio ---------- */
+  [data-cart-items] .py-5.text-center p {
+    font-family: var(--main-font-stack);
+    color: rgba(14, 27, 51, 0.6);
+  }
+</style>

@@ -11,6 +11,13 @@
   assign uid = section.id
   assign accordion_items = section.blocks | where: 'type', 'accordion_item'
   assign nutrient_rows = section.blocks | where: 'type', 'nutrient_row'
+
+  assign product_flavor = 'sabor baunilha'
+  if product.handle == 'neutralizador-de-estresse'
+    assign product_flavor = 'sabor maracujá'
+  endif
+
+  assign flavor_token = '[sabor]'
 -%}
 
 {%- comment -%}
@@ -194,7 +201,14 @@
                 </svg>
               </button>
               <div class="spa-panel">
-                <div class="rte">{{ block.settings.content }}</div>
+                {%- comment -%}
+                  O conteúdo é compartilhado pelos 4 produtos (mesmo template),
+                  então o sabor entra via troca do token [sabor] pelo valor
+                  real do produto, em vez de um texto fixo por bloco. Usa
+                  colchetes (não chaves) porque {{ }} colide com a sintaxe
+                  de dynamic sources do próprio Shopify.
+                {%- endcomment -%}
+                <div class="rte">{{ block.settings.content | replace: flavor_token, product_flavor }}</div>
               </div>
             </div>
           {%- endfor -%}
@@ -293,7 +307,12 @@
       "name": "Item do sanfona",
       "settings": [
         { "type": "text", "id": "title", "label": "Título", "default": "Título" },
-        { "type": "richtext", "id": "content", "label": "Conteúdo" }
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Conteúdo",
+          "info": "Use o token [sabor] para inserir automaticamente \"sabor baunilha\" ou \"sabor maracujá\" conforme o produto."
+        }
       ]
     }
   ],
@@ -305,14 +324,14 @@
           "type": "accordion_item",
           "settings": {
             "title": "Modo de uso e conservação",
-            "content": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e calor excessivo. Após aberto, consumir em até 60 dias.</p>"
+            "content": "<p>Suplemento super premium mastigável para cães, [sabor]. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e do calor excessivo. Após aberto, consumir em até 60 dias.</p>"
           }
         },
         {
           "type": "accordion_item",
           "settings": {
             "title": "Fabricação e SAC",
-            "content": "<p>Distribuído por Drogavet Farmácias de Manipulação e Indústria Ltda — Barracão 06, Campo Largo/PR. SAC: <a href=\"tel:+554132098989\">(41) 3209-8989</a> · <a href=\"mailto:sac@drogavet.com.br\">sac@drogavet.com.br</a> · <a href=\"https://www.drogavet.com.br/\" target=\"_blank\" rel=\"noopener noreferrer\">www.drogavet.com.br</a>.</p>"
+            "content": "<p>DrogaVET Farmácias de Manipulação e Indústria Ltda. CNPJ: 06.110.511/0007-38. Rua Agostinho Mocelin, 700, Barracão 06, CEP 83606-310, Ferrari, Campo Largo/PR. SAC: <a href=\"tel:+554132098989\">(41) 3209-8989</a> · <a href=\"mailto:sac@drogavet.com.br\">sac@drogavet.com.br</a> · <a href=\"https://www.drogavet.com.br/\" target=\"_blank\" rel=\"noopener noreferrer\">www.drogavet.com.br</a>.</p>"
           }
         }
       ]

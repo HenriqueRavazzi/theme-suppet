@@ -140,7 +140,10 @@
 
   #SuppetBenefits-{{ uid }} .sb-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* LP: .benefits__grid tem 4 colunas, mas .benefits__grid--three (usada
+       aqui, na home) tem 3 — o número de colunas segue a quantidade real de
+       cards cadastrados, então volta a 4 sozinho se um card for adicionado. */
+    grid-template-columns: repeat({{ benefits.size | at_least: 1 }}, 1fr);
     gap: 28px;
   }
 
@@ -243,6 +246,7 @@
   class="relative overflow-hidden bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}"
   data-color-scheme="{{ section.settings.color_scheme }}"
 >
+  <span id="beneficios" class="visually-hidden" tabindex="-1"></span>
   <div class="section-content px-section py-section-vertical-spacing">
     <div class="mx-auto sb-container">
       <div class="sb-kv">
@@ -440,7 +444,7 @@
           "settings": {
             "icon": "paw",
             "title": "Alta palatabilidade",
-            "text": "Formato mastigável que facilita a rotina e aumenta a adesão do pet ao suplemento."
+            "text": "Formato mastigável que facilita a rotina e aumenta a aceitação do suplemento pelo pet."
           }
         },
         {
@@ -448,7 +452,7 @@
           "settings": {
             "icon": "heart",
             "title": "Qualidade de vida",
-            "text": "Fórmulas pensadas para apoiar bem-estar, disposição e conforto em diferentes momentos do dia a dia."
+            "text": "Fórmulas desenvolvidas para promover o bem-estar, a disposição e o conforto em diferentes momentos do dia a dia."
           }
         },
         {
@@ -464,7 +468,7 @@
           "settings": {
             "icon": "shield",
             "title": "Especialistas DrogaVET",
-            "text": "Uma linha super premium criada por quem entende da rotina veterinária e da saúde dos pets."
+            "text": "Uma linha super premium desenvolvida por quem entende da rotina veterinária e da saúde dos pets."
           }
         }
       ]

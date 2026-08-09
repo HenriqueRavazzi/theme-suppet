@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer",
@@ -7,51 +16,99 @@
       "blocks": {
         "link-institutional-0": {
           "type": "link",
-          "settings": { "column": "institutional", "label": "Sobre a DrogaVET", "url": "https://www.drogavet.com.br/" }
+          "settings": {
+            "column": "institutional",
+            "label": "Sobre a DrogaVET",
+            "url": "https://www.drogavet.com.br/"
+          }
         },
         "link-institutional-1": {
           "type": "link",
-          "settings": { "column": "institutional", "label": "Nossa campanha", "url": "" }
+          "settings": {
+            "column": "institutional",
+            "label": "Nossa campanha",
+            "url": "/#campanha"
+          }
         },
         "link-institutional-2": {
           "type": "link",
-          "settings": { "column": "institutional", "label": "Conheça a linha Suppet", "url": "" }
+          "settings": {
+            "column": "institutional",
+            "label": "Conheça a linha Suppet",
+            "url": "/#produtos"
+          }
         },
         "link-institutional-3": {
           "type": "link",
-          "settings": { "column": "institutional", "label": "Site institucional", "url": "https://www.drogavet.com.br/" }
+          "settings": {
+            "column": "institutional",
+            "label": "Site institucional",
+            "url": "https://www.drogavet.com.br/"
+          }
         },
         "link-help-0": {
           "type": "link",
-          "settings": { "column": "help", "label": "Perguntas frequentes", "url": "mailto:sac@drogavet.com.br" }
+          "settings": {
+            "column": "help",
+            "label": "Perguntas frequentes",
+            "url": "mailto:sac@drogavet.com.br"
+          }
         },
         "link-help-1": {
           "type": "link",
-          "settings": { "column": "help", "label": "Trocas e devoluções", "url": "https://wa.me/554132098989" }
+          "settings": {
+            "column": "help",
+            "label": "Trocas e devoluções",
+            "url": "https://wa.me/554132098989"
+          }
         },
         "link-help-2": {
           "type": "link",
-          "settings": { "column": "help", "label": "Política de privacidade", "url": "mailto:sac@drogavet.com.br" }
+          "settings": {
+            "column": "help",
+            "label": "Política de privacidade",
+            "url": "mailto:sac@drogavet.com.br?subject=Politica%20de%20privacidade%20Suppet"
+          }
         },
         "link-help-3": {
           "type": "link",
-          "settings": { "column": "help", "label": "Termos de uso", "url": "mailto:sac@drogavet.com.br" }
+          "settings": {
+            "column": "help",
+            "label": "Termos de uso",
+            "url": "mailto:sac@drogavet.com.br?subject=Termos%20de%20uso%20Suppet"
+          }
         },
         "link-contact-0": {
           "type": "link",
-          "settings": { "column": "contact", "label": "(41) 3209-8989", "url": "tel:+554132098989" }
+          "settings": {
+            "column": "contact",
+            "label": "(41) 3209-8989",
+            "url": "tel:+554132098989"
+          }
         },
         "link-contact-1": {
           "type": "link",
-          "settings": { "column": "contact", "label": "sac@drogavet.com.br", "url": "mailto:sac@drogavet.com.br" }
+          "settings": {
+            "column": "contact",
+            "label": "sac@drogavet.com.br",
+            "url": "mailto:sac@drogavet.com.br"
+          }
         },
         "link-contact-2": {
           "type": "link",
-          "settings": { "column": "contact", "label": "www.drogavet.com.br", "url": "https://www.drogavet.com.br/" }
+          "settings": {
+            "column": "contact",
+            "label": "www.drogavet.com.br",
+            "url": "https://www.drogavet.com.br/"
+          }
         },
         "link-contact-3": {
           "type": "link",
-          "settings": { "column": "contact", "label": "Barracão 06 — Campo Largo/PR", "url": "" }
+          "settings": {
+            "column": "contact",
+            "label": "DrogaVET Farmácias de Manipulação e Indústria Ltda. CNPJ: 06.110.511/0007-38<br>Rua Agostinho Mocelin, 700, Barracão 06, CEP 83606-310, Ferrari, Campo Largo/PR.",
+            "url": ""
+          }
         }
       },
       "block_order": [
@@ -69,7 +126,7 @@
         "link-contact-3"
       ],
       "settings": {
-        "tagline": "Suppet é a linha de suplementos super premium mastigáveis da DrogaVET — reforço imunológico, proteção articular, equilíbrio digestivo e emocional para o seu pet.",
+        "tagline": "Suppet é a linha de suplementos mastigáveis super premium da DrogaVET, desenvolvida para ativar o super que existe em cada pet. Uma combinação de ciência e cuidado para fortalecer a imunidade, apoiar a saúde das articulações, favorecer a digestão e promover o equilíbrio emocional.",
         "instagram_url": "https://www.instagram.com/drogavet/",
         "facebook_url": "https://www.facebook.com/drogavet/",
         "whatsapp_number": "554132098989",
@@ -78,27 +135,14 @@
         "contact_heading": "Contato (SAC)",
         "copyright_owner": "DrogaVET · Suppet",
         "copyright_text": "Todos os direitos reservados.",
-        "disclaimer": "Suplemento alimentar. Uso veterinário — para cães.",
+        "disclaimer": "Suplemento alimentar. Uso veterinário para cães.",
         "content_max_width": 1240,
-        "background_color": "#0E1B33",
-        "accent_color": "#D7282D"
-      }
-    },
-    "hero-logo": {
-      "type": "hero-logo",
-      "settings": {
-        "home_page_only": false,
-        "mobile_text_scale": 6,
-        "desktop_text_scale": 10,
-        "alignment": "center",
-        "logo_max_width": 100,
-        "disable_vertical_spacing": false,
-        "enable_overlay": false,
-        "overlay_offset": 100,
-        "color_scheme": "scheme3",
-        "use_gradient_background": false
+        "background_color": "#0e1b33",
+        "accent_color": "#d7282d"
       }
     }
   },
-  "order": ["footer", "hero-logo"]
+  "order": [
+    "footer"
+  ]
 }

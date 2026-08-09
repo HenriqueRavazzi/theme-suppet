@@ -73,36 +73,6 @@
     margin-top: 40px;
   }
 
-  #SuppetProducts-{{ uid }} .sp-arrows {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    margin-bottom: 18px;
-  }
-
-  #SuppetProducts-{{ uid }} .sp-arrow {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    border: 1px solid rgba(var(--color-scheme-text), 0.25);
-    background: rgba(var(--color-scheme-text), 0.06);
-    color: rgb(var(--color-scheme-text));
-    display: grid;
-    place-items: center;
-    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  }
-
-  #SuppetProducts-{{ uid }} .sp-arrow svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  #SuppetProducts-{{ uid }} .sp-arrow:hover {
-    background: rgb(var(--color-scheme-text));
-    color: rgb(var(--color-scheme-background));
-    transform: scale(1.06);
-  }
-
   #SuppetProducts-{{ uid }} .sp-track {
     display: grid;
     grid-auto-flow: column;
@@ -141,14 +111,26 @@
        diferentes não podem esticar o card e desalinhar o título abaixo.
        330px é o valor final da LP (@media min-width:1200px). */
     height: 330px;
-    padding: 18px 18px 0;
+    /* Padding lateral/superior >= border-radius do card (28px): abaixo
+       disso, os cantos arredondados do .sp-card cortavam a ponta da
+       embalagem quando a imagem preenchia a largura toda da caixa. */
+    padding: 28px 28px 0;
     background: #16264a;
+    /* Sem isto, a sombra do filter: drop-shadow() da imagem (que cresce
+       junto no hover) vazava pra fora da área azul, sobre o fundo
+       branco do corpo do card. */
+    overflow: hidden;
   }
 
   #SuppetProducts-{{ uid }} .sp-card__media img {
     display: block;
-    width: 100%;
-    height: 100%;
+    /* Não usa 100%/100%: a caixa da imagem (área de transform) ficava do
+       tamanho do quadro inteiro, então o zoom do hover girava/escalava
+       a partir do centro do quadro — não do centro do pack — e cortava
+       a embalagem na borda. Com margem fixa, sempre sobra espaço. */
+    width: 90%;
+    height: 90%;
+    margin: 0 auto;
     object-fit: contain;
     object-position: center bottom;
     filter: drop-shadow(0 26px 28px rgba(0, 0, 0, 0.42));
@@ -183,10 +165,63 @@
     color: #0e1b33;
   }
 
-  #SuppetProducts-{{ uid }} .sp-card__desc {
-    font-size: 13.5px;
-    line-height: 1.55;
+  #SuppetProducts-{{ uid }} .sp-card__campaign-line {
+    font-size: 13px;
+    font-weight: 800;
     color: #5b6b84;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__mission,
+  #SuppetProducts-{{ uid }} .sp-card__powers,
+  #SuppetProducts-{{ uid }} .sp-card__allies {
+    padding-top: 10px;
+    border-top: 1px solid #e4e7ec;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__mission b,
+  #SuppetProducts-{{ uid }} .sp-card__powers b,
+  #SuppetProducts-{{ uid }} .sp-card__allies b {
+    display: block;
+    margin-bottom: 5px;
+    font-family: var(--heading-font-stack);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.65px;
+    text-transform: uppercase;
+    color: #0e1b33;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__mission p,
+  #SuppetProducts-{{ uid }} .sp-card__allies p {
+    font-size: 12.5px;
+    line-height: 1.48;
+    color: #5b6b84;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__powers ul {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__powers li {
+    position: relative;
+    padding-left: 14px;
+    font-size: 12.25px;
+    line-height: 1.35;
+    color: #5b6b84;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__powers li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.52em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.65;
   }
 
   #SuppetProducts-{{ uid }} .sp-card__foot {
@@ -241,9 +276,6 @@
     #SuppetProducts-{{ uid }} .sp-track {
       grid-auto-columns: minmax(78%, 1fr);
     }
-    #SuppetProducts-{{ uid }} .sp-arrows {
-      display: none;
-    }
     #SuppetProducts-{{ uid }} .sp-card__media {
       height: 290px;
     }
@@ -255,6 +287,7 @@
   class="bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}"
   data-color-scheme="{{ section.settings.color_scheme }}"
 >
+  <span id="produtos" class="visually-hidden" tabindex="-1"></span>
   <div class="section-content px-section py-section-vertical-spacing">
     <div class="sp-container">
       {%- if section.settings.eyebrow != blank -%}
@@ -273,19 +306,6 @@
 
       {%- if products.size > 0 -%}
         <div class="sp-scroller">
-          <div class="sp-arrows">
-            <button type="button" class="sp-arrow" data-sp-prev aria-label="{{ 'general.slider.previous_slide' | t }}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M15 5l-7 7 7 7"></path>
-              </svg>
-            </button>
-            <button type="button" class="sp-arrow" data-sp-next aria-label="{{ 'general.slider.next_slide' | t }}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 5l7 7-7 7"></path>
-              </svg>
-            </button>
-          </div>
-
           <div class="sp-track" data-sp-track>
             {%- for block in products -%}
               {%- liquid
@@ -301,12 +321,11 @@
                   assign card_link = block.settings.link
                 endif
 
-                assign card_desc = block.settings.description
-                if card_desc == blank and p != blank
-                  assign card_desc = p.description | strip_html | truncatewords: 28
-                endif
-
-                assign card_image = p.featured_image | default: block.settings.image
+                # De propósito, NÃO usa p.featured_image aqui: a foto real do
+                # produto no Shopify normalmente não tem a margem de respiro
+                # ao redor do pack que as artes "pack-*.webp" têm, e isso
+                # cortava a embalagem no zoom do hover.
+                assign card_image = block.settings.image
               -%}
               <article class="sp-card" style="--sp-accent: {{ block.settings.accent }};" {{ block.shopify_attributes }}>
                 <div class="sp-card__media">
@@ -340,8 +359,32 @@
                     <p class="sp-card__tagline">{{ block.settings.tagline }}</p>
                   {%- endif -%}
                   {%- if card_name != blank -%}<h3>{{ card_name }}</h3>{%- endif -%}
-                  {%- if card_desc != blank -%}
-                    <p class="sp-card__desc">{{ card_desc }}</p>
+                  {%- if block.settings.campaign_line != blank -%}
+                    <p class="sp-card__campaign-line">{{ block.settings.campaign_line }}.</p>
+                  {%- endif -%}
+                  {%- if block.settings.mission != blank -%}
+                    <div class="sp-card__mission">
+                      <b>Missão</b>
+                      <p>{{ block.settings.mission }}</p>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.powers != blank -%}
+                    <div class="sp-card__powers">
+                      <b>Superpoderes ativados</b>
+                      <ul>
+                        {%- assign power_lines = block.settings.powers | newline_to_br | split: '<br />' -%}
+                        {%- for power in power_lines -%}
+                          {%- assign power = power | strip -%}
+                          {%- if power != blank -%}<li>{{ power }}</li>{%- endif -%}
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.allies != blank -%}
+                    <div class="sp-card__allies">
+                      <b>Aliados da missão</b>
+                      <p>{{ block.settings.allies }}</p>
+                    </div>
                   {%- endif -%}
                   <div class="sp-card__foot">
                     <div class="sp-card__price">
@@ -373,47 +416,6 @@
     </div>
   </div>
 </section>
-
-<script>
-  (function () {
-    function initSuppetProducts(root) {
-      if (!root || root.dataset.spReady === 'true') return;
-      root.dataset.spReady = 'true';
-
-      var track = root.querySelector('[data-sp-track]');
-      var prev = root.querySelector('[data-sp-prev]');
-      var next = root.querySelector('[data-sp-next]');
-      if (!track) return;
-
-      function scrollByCard(dir) {
-        var card = track.querySelector('.sp-card');
-        var dist = card ? card.getBoundingClientRect().width + 26 : 320;
-        track.scrollBy({ left: dir * dist, behavior: 'smooth' });
-      }
-
-      if (prev) prev.addEventListener('click', function () { scrollByCard(-1); });
-      if (next) next.addEventListener('click', function () { scrollByCard(1); });
-    }
-
-    function initAll() {
-      Array.prototype.forEach.call(
-        document.querySelectorAll('[id^="SuppetProducts-"]'),
-        initSuppetProducts
-      );
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initAll);
-    } else {
-      initAll();
-    }
-
-    document.addEventListener('shopify:section:load', function (event) {
-      var root = event.target.querySelector('[id^="SuppetProducts-"]');
-      if (root) initSuppetProducts(root);
-    });
-  })();
-</script>
 
 {% schema %}
 {
@@ -482,10 +484,24 @@
         },
         { "type": "text", "id": "tagline", "label": "Selo (sobre a imagem)", "default": "Superpoder" },
         { "type": "color", "id": "accent", "label": "Cor do produto", "default": "#D7282D" },
+        { "type": "header", "content": "Narrativa da missão" },
+        {
+          "type": "text",
+          "id": "campaign_line",
+          "label": "Frase de impacto",
+          "info": "Ex.: \"A defesa da vitalidade\" — o ponto final é adicionado automaticamente."
+        },
+        { "type": "textarea", "id": "mission", "label": "Missão" },
+        { "type": "textarea", "id": "powers", "label": "Superpoderes ativados", "info": "Um por linha." },
+        {
+          "type": "text",
+          "id": "allies",
+          "label": "Aliados da missão",
+          "info": "Ex.: \"EPA + DHA • Taurina • Biotina • Zinco • Beta-glucanos\""
+        },
         { "type": "header", "content": "Sobrescrever produto (opcional)" },
         { "type": "image_picker", "id": "image", "label": "Imagem do pack" },
         { "type": "text", "id": "name", "label": "Nome" },
-        { "type": "textarea", "id": "description", "label": "Descrição" },
         { "type": "text", "id": "price", "label": "Preço (se não houver produto selecionado)" },
         { "type": "text", "id": "price_note", "label": "Legenda do preço", "default": "caixa com 30 sachês" },
         { "type": "url", "id": "link", "label": "Link do produto" }
@@ -501,7 +517,10 @@
           "settings": {
             "tagline": "Reforço Imunológico e Suporte Nutricional",
             "name": "Campo de Vitaforça",
-            "description": "Suplemento mastigável super premium que fortalece as defesas naturais do seu cão e entrega suporte nutricional completo — o campo de força que todo super-herói de quatro patas merece.",
+            "campaign_line": "A defesa da vitalidade",
+            "mission": "Oferecer energia e suporte nutricional para as aventuras do dia a dia.",
+            "powers": "Auxilia o metabolismo energético;\nFortalece a imunidade;\nFavorece pele e pelagem;\nSaúde intestinal;\nAção antioxidante.",
+            "allies": "EPA + DHA • Taurina • Biotina • Zinco • Beta-glucanos",
             "accent": "#D7282D"
           }
         },
@@ -510,7 +529,10 @@
           "settings": {
             "tagline": "Proteção para as Articulações",
             "name": "Escudo Condroprotetor",
-            "description": "Suplemento mastigável com condroitina e glucosamina para proteger as articulações e manter a mobilidade — o escudo que blinda cada passo, corrida e brincadeira do seu pet.",
+            "campaign_line": "A proteção da mobilidade",
+            "mission": "Proteger as articulações para que nenhuma aventura precise parar.",
+            "powers": "Auxilia a saúde articular;\nProtege a cartilagem;\nFavorece a mobilidade;\nContribui para o conforto;\nMais qualidade de vida.",
+            "allies": "Glucosamina • Condroitina • Colágeno Tipo II",
             "accent": "#DD6E1F"
           }
         },
@@ -519,7 +541,10 @@
           "settings": {
             "tagline": "Redução do Hábito de Ingestão das Fezes",
             "name": "Barreira AntiCopro",
-            "description": "Suplemento mastigável formulado com prebióticos e probióticos que ajuda a reduzir o hábito de ingestão das fezes e favorece o equilíbrio da flora intestinal.",
+            "campaign_line": "A potência da saúde intestinal",
+            "mission": "Impedir que a coprofagia atrapalhe o bem-estar do seu herói.",
+            "powers": "Auxilia no controle da coprofagia;\nFavorece a saúde intestinal;\nReduz o odor das fezes;\nMelhora a digestibilidade dos nutrientes;\nAlta palatabilidade.",
+            "allies": "Yucca • Probióticos • Prebióticos • Enzimas Digestivas",
             "accent": "#3A7CAE"
           }
         },
@@ -528,7 +553,10 @@
           "settings": {
             "tagline": "Equilíbrio e Bem-Estar",
             "name": "Neutralizador de Estresse",
-            "description": "Suplemento mastigável com L-triptofano e L-teanina que ajuda a promover calma, equilíbrio emocional e bem-estar em momentos de tensão, viagens ou mudanças de rotina.",
+            "campaign_line": "A diferença do equilíbrio",
+            "mission": "Transformar momentos desafiadores em mais tranquilidade.",
+            "powers": "Auxilia no controle do estresse e da ansiedade;\nPromove relaxamento;\nFavorece o equilíbrio comportamental;\nSuporte ao sistema nervoso;\nIdeal para viagens, fogos e mudanças de rotina.",
+            "allies": "L-Triptofano • L-Teanina • Camomila • Melissa • Valeriana",
             "accent": "#2FA39C"
           }
         }

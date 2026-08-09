@@ -1,0 +1,20 @@
+SUPPET — CHECKLIST DA REVISÃO 05.08
+
+1. Hero atualizado com o texto exato “cerca de 34 biscoitos por sachê”.
+2. Subtítulo secundário do Campo de Vitaforça removido.
+3. Lista de superpoderes do Campo de Vitaforça com ponto e vírgula e ponto final no último item.
+4. Subtítulo secundário da Barreira AntiCopro removido.
+5. Lista de superpoderes da Barreira AntiCopro com ponto e vírgula e ponto final no último item.
+6. Área do Escudo Condroprotetor revisada.
+7. Subtítulo secundário de mobilidade removido. Como o PDF mostra “guerreiro” na imagem e “guardião” na anotação, nenhuma das duas variações permanece no projeto.
+8. Lista de superpoderes do Escudo Condroprotetor com ponto e vírgula e ponto final no último item.
+9. Subtítulo secundário do Neutralizador de Estresse removido.
+10. Lista de superpoderes do Neutralizador de Estresse com ponto e vírgula e ponto final no último item. Texto ajustado para “Suporte ao sistema nervoso;”.
+11. Texto da campanha atualizado para: “Coloque no carrinho e compre facilmente.”
+12. Texto de avaliação atualizado em todos os produtos para: “Suplementação com rotina simples de uso e compra facilitada.”
+
+VALIDAÇÕES EXECUTADAS
+- Sintaxe dos quatro arquivos JavaScript validada com Node.js.
+- Referências locais de HTML, CSS, JavaScript e imagens verificadas.
+- Busca automática confirmou a remoção dos textos antigos nas páginas renderizadas pelo código.
+- Estrutura para servidor preservada, incluindo .htaccess, robots.txt e sitemap.xml.

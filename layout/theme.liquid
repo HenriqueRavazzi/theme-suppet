@@ -160,6 +160,8 @@
     {%- liquid
       render 'css-bridge'
       render 'critical-css'
+      render 'suppet-fonts'
+      render 'suppet-cart-skin'
     -%}
 
     <style id="manual-critical-css">
@@ -239,6 +241,7 @@
 
     {%- sections 'footer-group' -%}
     {%- sections 'overlay-group' -%}
+    {% section 'suppet-discount-toast' %}
 
     <div
       id="screenreader-announce"

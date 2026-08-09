@@ -60,6 +60,7 @@
     inset: -10%;
     z-index: 0;
     opacity: 0.5;
+    will-change: transform;
     background: repeating-conic-gradient(
       from 0deg at 82% 30%,
       {{ section.settings.brand_color | default: '#DD6E1F' }}29 0deg 6deg,
@@ -141,6 +142,7 @@
     color: rgb(var(--color-scheme-text));
     font-family: var(--heading-font-stack);
     font-weight: var(--heading-font-weight, 700);
+    font-size: 15px;
     text-transform: var(--button-text-transform, none);
     line-height: 1.2;
     transition: background-color 0.3s var(--sh-ease), border-color 0.3s var(--sh-ease),
@@ -158,15 +160,22 @@
      por isso sobrescrevemos só aqui dentro do hero. */
   #SuppetHero-{{ uid }} .sh-ctas .push-btn__surface {
     padding: 16px 30px;
+    font-size: 15px;
     --color-button-background: var(--color-scheme-accent-1);
     --color-button-text: var(--color-scheme-accent-1-contrast);
     --color-button-border: var(--color-scheme-accent-1);
+    /* Sobrescreve o box-shadow inteiro (não só a variável de cor da
+       borda): o tema soma um anel inset + a sombra 3D do botão global,
+       e mesmo com a cor "certa" isso deixava um contorno visível por
+       cima do brilho. Aqui usa só o glow da LP, sem anel nenhum. */
+    box-shadow: 0 10px 24px -8px rgba(215, 40, 45, 0.55) !important;
   }
 
   #SuppetHero-{{ uid }} .sh-ctas .push-btn:hover .push-btn__surface {
     --color-button-background-hover: var(--color-scheme-accent-1);
     --color-button-text-hover: var(--color-scheme-accent-1-contrast);
     --color-button-border-hover: var(--color-scheme-accent-1);
+    box-shadow: 0 16px 30px -8px rgba(215, 40, 45, 0.6) !important;
   }
 
   #SuppetHero-{{ uid }} .sh-stats {
@@ -182,6 +191,7 @@
     font-size: 26px;
     line-height: 1;
     color: var(--sh-brand);
+    white-space: nowrap;
   }
 
   #SuppetHero-{{ uid }} .sh-stat span {
@@ -191,9 +201,22 @@
     color: rgba(var(--color-scheme-text), 0.6);
   }
 
+  /* Revisão 05.08 da LP: estatística com redação completa ("cerca de 34")
+     é maior que "4"/"100%", então o valor usa fonte menor pra não quebrar. */
+  #SuppetHero-{{ uid }} .sh-stat:last-child b {
+    font-size: 22px;
+  }
+
+  @media (max-width: 520px) {
+    #SuppetHero-{{ uid }} .sh-stat:last-child b {
+      font-size: 20px;
+    }
+  }
+
   #SuppetHero-{{ uid }} .sh-art {
     position: relative;
     z-index: 2;
+    will-change: transform;
   }
 
   #SuppetHero-{{ uid }} .sh-showcase {
@@ -299,6 +322,7 @@
     padding: 9px 20px;
     border-radius: 999px;
     white-space: nowrap;
+    text-decoration: none;
     color: #fff;
     font-family: var(--heading-font-stack);
     font-weight: 700;
@@ -543,19 +567,25 @@
           <div class="sh-slides">
             {%- if visible_slides.size > 0 -%}
               {%- for block in visible_slides -%}
-                {%- assign accent = block.settings.accent | default: '#D7282D' -%}
+                {%- liquid
+                  assign accent = block.settings.accent | default: '#D7282D'
+                  assign slide_product = all_products[block.settings.product]
+                  assign slide_link = slide_product.url | default: block.settings.link
+                  assign slide_name = slide_product.title | default: block.settings.name
+                -%}
                 <div
                   class="sh-slide{% if forloop.first %} is-active{% endif %}"
                   data-sh-slide
                   data-accent="{{ accent }}"
-                  data-name="{{ block.settings.name | escape }}"
+                  data-name="{{ slide_name | escape }}"
+                  data-link="{{ slide_link | escape }}"
                   data-index="{{ forloop.index0 }}"
                   {% unless forloop.first %}
                     aria-hidden="true"
                   {% endunless %}
                   {{ block.shopify_attributes }}
                 >
-                  {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{%- endif -%}
+                  {%- if slide_link != blank -%}<a href="{{ slide_link }}">{%- endif -%}
                   {%- if block.settings.image != blank -%}
                     {%- if forloop.first -%}
                       {{
@@ -564,7 +594,7 @@
                         | image_tag:
                           widths: '300, 500, 700, 900',
                           sizes: '(min-width: 981px) 34vw, 80vw',
-                          alt: block.settings.name,
+                          alt: slide_name,
                           loading: 'eager',
                           fetchpriority: 'high'
                       }}
@@ -575,14 +605,14 @@
                         | image_tag:
                           widths: '300, 500, 700, 900',
                           sizes: '(min-width: 981px) 34vw, 80vw',
-                          alt: block.settings.name,
+                          alt: slide_name,
                           loading: 'lazy'
                       }}
                     {%- endif -%}
                   {%- else -%}
                     {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
                   {%- endif -%}
-                  {%- if block.settings.link != blank -%}</a>{%- endif -%}
+                  {%- if slide_link != blank -%}</a>{%- endif -%}
                 </div>
               {%- endfor -%}
             {%- else -%}
@@ -593,7 +623,12 @@
           </div>
 
           {%- if slides.size > 0 and first_slide.settings.name != blank -%}
-            <span class="sh-tag" data-sh-tag>{{ first_slide.settings.name }}</span>
+            {%- liquid
+              assign first_slide_product = all_products[first_slide.settings.product]
+              assign first_slide_link = first_slide_product.url | default: first_slide.settings.link
+              assign first_slide_name = first_slide_product.title | default: first_slide.settings.name
+            -%}
+            <a class="sh-tag" data-sh-tag href="{{ first_slide_link | default: '#' }}">{{ first_slide_name }}</a>
           {%- endif -%}
         </div>
 
@@ -624,6 +659,10 @@
       // Modo estático: nenhum listener, nenhum timer.
       if (root.dataset.motion === 'false') return;
 
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      initParallax(root, reduced);
+
       var slides = Array.prototype.slice.call(root.querySelectorAll('[data-sh-slide]'));
       if (slides.length === 0) return;
 
@@ -631,7 +670,6 @@
       var tag = root.querySelector('[data-sh-tag]');
       var speed = parseInt(root.dataset.speed, 10) || 3800;
       var autoplay = root.dataset.autoplay === 'true';
-      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var current = 0;
       var timer = null;
 
@@ -654,6 +692,9 @@
 
         var name = slides[current].dataset.name;
         if (tag && name) tag.textContent = name;
+
+        var link = slides[current].dataset.link;
+        if (tag) tag.setAttribute('href', link || '#');
       }
 
       function stop() {
@@ -692,6 +733,49 @@
       start();
     }
 
+    function initParallax(root, reduced) {
+      if (reduced) return;
+
+      var art = root.querySelector('.sh-art');
+      var rays = root.querySelector('.sh-rays');
+      if (!art && !rays) return;
+
+      if (art && window.matchMedia('(pointer: fine)').matches) {
+        var mx = 0;
+        var my = 0;
+        var tx = 0;
+        var ty = 0;
+
+        root.addEventListener('mousemove', function (event) {
+          var rect = root.getBoundingClientRect();
+          mx = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+          my = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+        });
+
+        // Nota: o selo (.sh-badge) já anima o próprio transform via
+        // @keyframes (flutuar), então não recebe o parallax aqui — as
+        // duas animações disputariam a mesma propriedade no mesmo elemento.
+        function raf() {
+          tx += (mx - tx) * 0.06;
+          ty += (my - ty) * 0.06;
+          art.style.transform = 'translate(' + tx * -14 + 'px, ' + ty * -10 + 'px) rotate(' + tx * -1.2 + 'deg)';
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+      }
+
+      if (rays) {
+        window.addEventListener(
+          'scroll',
+          function () {
+            var y = window.scrollY;
+            rays.style.transform = 'translateY(' + y * 0.18 + 'px) rotate(' + y * 0.01 + 'deg)';
+          },
+          { passive: true }
+        );
+      }
+    }
+
     function initAll() {
       Array.prototype.forEach.call(
         document.querySelectorAll('[data-suppet-hero]'),
@@ -728,7 +812,7 @@
       "type": "inline_richtext",
       "id": "title",
       "label": "Título",
-      "default": "O <em>power up</em> na saúde e na longevidade do seu pet."
+      "default": "O <em>power-up</em> na saúde e na longevidade do seu pet."
     },
     {
       "type": "richtext",
@@ -823,10 +907,16 @@
       "type": "slide",
       "name": "Produto",
       "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produto da loja",
+          "info": "O link (e o nome, se \"Nome\" abaixo ficar em branco) vem deste produto."
+        },
         { "type": "image_picker", "id": "image", "label": "Imagem do pack" },
-        { "type": "text", "id": "name", "label": "Nome", "default": "Campo de Vitaforça" },
+        { "type": "text", "id": "name", "label": "Nome (se não houver produto selecionado)", "default": "Campo de Vitaforça" },
         { "type": "color", "id": "accent", "label": "Cor do produto", "default": "#D7282D" },
-        { "type": "url", "id": "link", "label": "Link do produto" }
+        { "type": "url", "id": "link", "label": "Link (se não houver produto selecionado)" }
       ]
     },
     {
@@ -843,13 +933,13 @@
       "name": "Suppet hero",
       "settings": { "enable_motion": true },
       "blocks": [
-        { "type": "slide", "settings": { "name": "Campo de Vitaforça", "accent": "#D7282D" } },
-        { "type": "slide", "settings": { "name": "Escudo Condroprotetor", "accent": "#DD6E1F" } },
-        { "type": "slide", "settings": { "name": "Barreira AntiCopro", "accent": "#3A7CAE" } },
-        { "type": "slide", "settings": { "name": "Neutralizador de Estresse", "accent": "#2FA39C" } },
+        { "type": "slide", "settings": { "product": "campo-de-vitaforca", "name": "Campo de Vitaforça", "accent": "#D7282D" } },
+        { "type": "slide", "settings": { "product": "escudo-condroprotetor", "name": "Escudo Condroprotetor", "accent": "#DD6E1F" } },
+        { "type": "slide", "settings": { "product": "barreira-anticopro", "name": "Barreira AntiCopro", "accent": "#3A7CAE" } },
+        { "type": "slide", "settings": { "product": "neutralizador-de-estresse", "name": "Neutralizador de Estresse", "accent": "#2FA39C" } },
         { "type": "stat", "settings": { "value": "4", "label": "fórmulas exclusivas" } },
-        { "type": "stat", "settings": { "value": "100%", "label": "mastigável & palatável" } },
-        { "type": "stat", "settings": { "value": "30", "label": "sachês por caixa" } }
+        { "type": "stat", "settings": { "value": "100%", "label": "mastigável e palatável" } },
+        { "type": "stat", "settings": { "value": "Cerca de 34", "label": "biscoitos por sachê" } }
       ]
     }
   ]

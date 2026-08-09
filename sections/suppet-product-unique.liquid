@@ -18,6 +18,53 @@
   endif
 -%}
 
+{%- comment -%}
+  Sem blocks cadastrados, usa os 4 benefícios reais de cada fórmula
+  (mesmos dados declarados na LP de referência), pelo handle do
+  produto — mesma lógica usada na tabela de garantia do sanfona,
+  já que os 4 produtos compartilham este mesmo template.
+{%- endcomment -%}
+{%- unless benefits.size > 0 -%}
+  {%- case product.handle -%}
+    {%- when 'campo-de-vitaforca' -%}
+      {%- assign fb_title_0 = 'Praticidade' -%}
+      {%- assign fb_text_0 = 'Biscoito pronto para consumo. Não é em pó e nem precisa misturar, sem complicação na rotina diária.' -%}
+      {%- assign fb_title_1 = 'Reforço Imunológico' -%}
+      {%- assign fb_text_1 = 'Vitaminas, minerais e aminoácidos essenciais ajudam a fortalecer as defesas naturais do organismo.' -%}
+      {%- assign fb_title_2 = 'Alta Palatabilidade' -%}
+      {%- assign fb_text_2 = 'Sabor baunilha, aprovado até pelos pets mais exigentes. Parece petisco.' -%}
+      {%- assign fb_title_3 = 'Suporte Nutricional' -%}
+      {%- assign fb_text_3 = 'Fórmula super premium desenvolvida para complementar a dieta diária de cães adultos.' -%}
+    {%- when 'escudo-condroprotetor' -%}
+      {%- assign fb_title_0 = 'Proteção Articular' -%}
+      {%- assign fb_text_0 = 'A condroitina e a glucosamina atuam na manutenção das articulações.' -%}
+      {%- assign fb_title_1 = 'Mastigável' -%}
+      {%- assign fb_text_1 = 'Fácil de oferecer e pronto para consumo, sem necessidade de misturar em outros alimentos.' -%}
+      {%- assign fb_title_2 = 'Mobilidade e Conforto' -%}
+      {%- assign fb_text_2 = 'Contribui para a mobilidade, o conforto e a qualidade de vida em diferentes fases da vida.' -%}
+      {%- assign fb_title_3 = 'Praticidade' -%}
+      {%- assign fb_text_3 = 'Ideal para uma rotina diária de suplementação simples e consistente.' -%}
+    {%- when 'barreira-anticopro' -%}
+      {%- assign fb_title_0 = 'Barreira Anticoprofagia' -%}
+      {%- assign fb_text_0 = 'Ajuda a reduzir o hábito de ingestão das fezes e contribui para o bem-estar do cão.' -%}
+      {%- assign fb_title_1 = 'Equilíbrio Intestinal' -%}
+      {%- assign fb_text_1 = 'Os prebióticos e os probióticos favorecem uma microbiota intestinal saudável.' -%}
+      {%- assign fb_title_2 = 'Mastigável' -%}
+      {%- assign fb_text_2 = 'Formato prático, fácil de oferecer e adequado para a rotina diária.' -%}
+      {%- assign fb_title_3 = 'Bem-Estar Digestivo' -%}
+      {%- assign fb_text_3 = 'Contribui para uma digestão mais equilibrada e para o melhor aproveitamento dos nutrientes.' -%}
+    {%- when 'neutralizador-de-estresse' -%}
+      {%- assign fb_title_0 = 'Equilíbrio Emocional' -%}
+      {%- assign fb_text_0 = 'O L-triptofano e a L-teanina ajudam a promover calma e equilíbrio.' -%}
+      {%- assign fb_title_1 = 'Bem-Estar' -%}
+      {%- assign fb_text_1 = 'Auxilia em momentos de tensão, viagens, fogos ou mudanças de rotina.' -%}
+      {%- assign fb_title_2 = 'Mastigável' -%}
+      {%- assign fb_text_2 = 'Sabor maracujá e formato prático para oferecer no dia a dia.' -%}
+      {%- assign fb_title_3 = 'Consumo Flexível' -%}
+      {%- assign fb_text_3 = 'Pode integrar a rotina sempre que o cão precisar de mais tranquilidade.' -%}
+  {%- endcase -%}
+{%- endunless -%}
+
 <style>
   #SuppetProductUnique-{{ uid }} {
     background: {{ section.settings.background_color | default: '#ffffff' }};
@@ -83,6 +130,17 @@
     padding: 22px 26px;
     color: #fff;
     background: {{ accent_color | default: '#D7282D' }};
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetProductUnique-{{ uid }} .spu-petal:hover {
+    transform: translateY(-6px) scale(1.02);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #SuppetProductUnique-{{ uid }} .spu-petal {
+      transition: none;
+    }
   }
 
   #SuppetProductUnique-{{ uid }} .spu-petal.is-dark {
@@ -160,17 +218,8 @@
         </h2>
       </div>
 
-      {%- if benefits.size > 0 -%}
-        <div class="spu-petals">
-          <div class="spu-col">
-            {%- for block in left_benefits -%}
-              <div class="spu-petal{% if forloop.index0 == 1 %} is-dark{% endif %}" {{ block.shopify_attributes }}>
-                <h4>{{ block.settings.title }}</h4>
-                <p>{{ block.settings.text }}</p>
-              </div>
-            {%- endfor -%}
-          </div>
-
+      {%- if benefits.size > 0 or fb_title_0 != blank -%}
+        {%- capture spu_center -%}
           <div class="spu-center">
             {%- if product.featured_image != blank -%}
               {{
@@ -180,15 +229,41 @@
               }}
             {%- endif -%}
           </div>
+        {%- endcapture -%}
+        <div class="spu-petals">
+          {%- if benefits.size > 0 -%}
+            <div class="spu-col">
+              {%- for block in left_benefits -%}
+                <div class="spu-petal{% if forloop.index0 == 1 %} is-dark{% endif %}" {{ block.shopify_attributes }}>
+                  <h4>{{ block.settings.title }}</h4>
+                  <p>{{ block.settings.text }}</p>
+                </div>
+              {%- endfor -%}
+            </div>
 
-          <div class="spu-col">
-            {%- for block in right_benefits -%}
-              <div class="spu-petal{% if forloop.index0 == 0 %} is-dark{% endif %}" {{ block.shopify_attributes }}>
-                <h4>{{ block.settings.title }}</h4>
-                <p>{{ block.settings.text }}</p>
-              </div>
-            {%- endfor -%}
-          </div>
+            {{ spu_center }}
+
+            <div class="spu-col">
+              {%- for block in right_benefits -%}
+                <div class="spu-petal{% if forloop.index0 == 0 %} is-dark{% endif %}" {{ block.shopify_attributes }}>
+                  <h4>{{ block.settings.title }}</h4>
+                  <p>{{ block.settings.text }}</p>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="spu-col">
+              <div class="spu-petal"><h4>{{ fb_title_0 }}</h4><p>{{ fb_text_0 }}</p></div>
+              <div class="spu-petal is-dark"><h4>{{ fb_title_1 }}</h4><p>{{ fb_text_1 }}</p></div>
+            </div>
+
+            {{ spu_center }}
+
+            <div class="spu-col">
+              <div class="spu-petal is-dark"><h4>{{ fb_title_2 }}</h4><p>{{ fb_text_2 }}</p></div>
+              <div class="spu-petal"><h4>{{ fb_title_3 }}</h4><p>{{ fb_text_3 }}</p></div>
+            </div>
+          {%- endif -%}
         </div>
       {%- endif -%}
     </div>
@@ -201,6 +276,10 @@
   "tag": "section",
   "class": "suppet-product-unique-section",
   "settings": [
+    {
+      "type": "paragraph",
+      "content": "Sem blocos de \"Benefício\" cadastrados, os 4 pontos são preenchidos automaticamente com o conteúdo real de cada uma das 4 fórmulas Suppet (pelo handle do produto). Cadastre blocos aqui só para sobrescrever esse conteúdo."
+    },
     {
       "type": "text",
       "id": "title_prefix",
@@ -245,37 +324,7 @@
   ],
   "presets": [
     {
-      "name": "Suppet product unique",
-      "blocks": [
-        {
-          "type": "benefit",
-          "settings": {
-            "title": "Praticidade",
-            "text": "Vem pronto para consumo. Sem pó, sem misturar e sem complicação na rotina diária."
-          }
-        },
-        {
-          "type": "benefit",
-          "settings": {
-            "title": "Suplemento Mastigável",
-            "text": "Fácil de oferecer, sem necessidade de disfarçar em outros alimentos."
-          }
-        },
-        {
-          "type": "benefit",
-          "settings": {
-            "title": "Alta Palatabilidade",
-            "text": "Sabores aprovados até pelos pets mais exigentes — parece agrado, não remédio."
-          }
-        },
-        {
-          "type": "benefit",
-          "settings": {
-            "title": "Fórmula Super Premium",
-            "text": "Desenvolvida para complementar a dieta diária de cães adultos."
-          }
-        }
-      ]
+      "name": "Suppet product unique"
     }
   ]
 }

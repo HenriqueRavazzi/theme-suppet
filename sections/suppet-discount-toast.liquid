@@ -1,0 +1,148 @@
+{%- comment -%}
+  Suppet discount toast — porte do ".discount-toast" da LP estática
+  (Suppet (1)/index.html + produto.html + css/style.css:430-440). Aparece
+  em toda página (incluída direto em layout/theme.liquid, fora de qualquer
+  template), fixo no canto inferior esquerdo, com botão de fechar.
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+-%}
+
+{%- if section.settings.enabled and section.settings.message_prefix != blank -%}
+  <style>
+    #SuppetDiscountToast-{{ uid }} {
+      position: fixed;
+      left: 24px;
+      bottom: 24px;
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: {{ section.settings.background_color | default: '#0E1B33' }};
+      color: #fff;
+      font-family: var(--main-font-stack);
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 20px 40px -16px rgba(0, 0, 0, 0.5);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #SuppetDiscountToast-{{ uid }} b {
+      color: {{ section.settings.accent_color | default: '#DD6E1F' }};
+    }
+
+    #SuppetDiscountToast-{{ uid }}[hidden] {
+      transform: translateY(140%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #SuppetDiscountToast-{{ uid }} .sdt-close {
+      background: none;
+      border: none;
+      padding: 0;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    #SuppetDiscountToast-{{ uid }} .sdt-close:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 560px) {
+      #SuppetDiscountToast-{{ uid }} {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #SuppetDiscountToast-{{ uid }} {
+        transition: none;
+      }
+    }
+  </style>
+
+  <div
+    id="SuppetDiscountToast-{{ uid }}"
+    data-suppet-discount-toast
+    role="status"
+    aria-live="polite"
+  >
+    <span>
+      {{- section.settings.message_prefix }}
+      <b>{{ section.settings.coupon_code }}</b>
+      {{ section.settings.message_suffix -}}
+    </span>
+    <button type="button" class="sdt-close" data-suppet-discount-toast-close aria-label="Fechar aviso">
+      &#10005;
+    </button>
+  </div>
+
+  <script>
+    (function () {
+      function initSuppetDiscountToast(root) {
+        if (!root || root.dataset.sdtReady === 'true') return;
+        root.dataset.sdtReady = 'true';
+
+        var closeButton = root.querySelector('[data-suppet-discount-toast-close]');
+        if (closeButton) {
+          closeButton.addEventListener('click', function () {
+            root.setAttribute('hidden', '');
+          });
+        }
+      }
+
+      function initAll() {
+        Array.prototype.forEach.call(
+          document.querySelectorAll('[data-suppet-discount-toast]'),
+          initSuppetDiscountToast
+        );
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAll);
+      } else {
+        initAll();
+      }
+
+      document.addEventListener('shopify:section:load', function (event) {
+        var root = event.target.querySelector('[data-suppet-discount-toast]');
+        if (root) initSuppetDiscountToast(root);
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Suppet discount toast",
+  "tag": "div",
+  "class": "suppet-discount-toast",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Aviso flutuante fixo, exibido em todas as páginas da loja (incluído direto no layout do tema)."
+    },
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Ativar aviso",
+      "default": true
+    },
+    { "type": "text", "id": "message_prefix", "label": "Texto antes do cupom", "default": "Use o cupom" },
+    { "type": "text", "id": "coupon_code", "label": "Código do cupom", "default": "SUPPET10" },
+    { "type": "text", "id": "message_suffix", "label": "Texto depois do cupom", "default": "na primeira compra" },
+    { "type": "header", "content": "Cores" },
+    { "type": "color", "id": "background_color", "label": "Fundo", "default": "#0E1B33" },
+    { "type": "color", "id": "accent_color", "label": "Cor do cupom", "default": "#DD6E1F" }
+  ]
+}
+{% endschema %}

@@ -7,10 +7,25 @@
 
 {%- liquid
   assign uid = section.id
-  assign links = section.blocks | where: 'type', 'link'
-  assign institutional_links = links | where: 'settings.column', 'institutional'
-  assign help_links = links | where: 'settings.column', 'help'
-  assign contact_links = links | where: 'settings.column', 'contact'
+  comment
+    where: 'settings.column' não funciona em settings aninhados de blocks —
+    as colunas sumiam. Contamos e filtramos no loop.
+  endcomment
+  assign has_institutional = false
+  assign has_help = false
+  assign has_contact = false
+  for block in section.blocks
+    if block.type == 'link'
+      case block.settings.column
+        when 'institutional'
+          assign has_institutional = true
+        when 'help'
+          assign has_help = true
+        when 'contact'
+          assign has_contact = true
+      endcase
+    endif
+  endfor
 -%}
 
 <style>
@@ -125,17 +140,18 @@
 </style>
 
 <footer id="SuppetFooter-{{ uid }}">
+  <span id="contato" class="visually-hidden" tabindex="-1"></span>
   <div class="section-content px-section">
     <div class="sf-container">
       <div class="sf-grid">
         <div class="sf-col">
           {%- if section.settings.logo != blank -%}
-            {{ section.settings.logo | image_url: width: 300 | image_tag: class: 'sf-logo', alt: shop.name }}
+            {{ section.settings.logo | image_url: width: 300 | image_tag: class: 'sf-logo', alt: 'DrogaVET' }}
           {%- else -%}
             <img
               class="sf-logo"
               src="{{ 'logo_white.png' | asset_url }}"
-              alt="{{ shop.name }}"
+              alt="DrogaVET"
               loading="lazy"
               width="2400"
               height="560"
@@ -176,66 +192,108 @@
           </div>
         </div>
 
-        {%- if institutional_links.size > 0 -%}
-          <div class="sf-col">
-            {%- if section.settings.institutional_heading != blank -%}
-              <h5>{{ section.settings.institutional_heading }}</h5>
-            {%- endif -%}
-            <ul>
-              {%- for block in institutional_links -%}
-                <li {{ block.shopify_attributes }}>
-                  <a href="{{ block.settings.url | default: '#' }}">{{ block.settings.label }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </div>
-        {%- endif -%}
-
-        {%- if help_links.size > 0 -%}
-          <div class="sf-col">
-            {%- if section.settings.help_heading != blank -%}
-              <h5>{{ section.settings.help_heading }}</h5>
-            {%- endif -%}
-            <ul>
-              {%- for block in help_links -%}
-                <li {{ block.shopify_attributes }}>
-                  <a href="{{ block.settings.url | default: '#' }}">{{ block.settings.label }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </div>
-        {%- endif -%}
-
-        {%- if contact_links.size > 0 -%}
-          <div class="sf-col">
-            {%- if section.settings.contact_heading != blank -%}
-              <h5>{{ section.settings.contact_heading }}</h5>
-            {%- endif -%}
-            <ul>
-              {%- for block in contact_links -%}
-                <li {{ block.shopify_attributes }}>
-                  {%- if block.settings.url != blank -%}
-                    <a href="{{ block.settings.url }}">{{ block.settings.label }}</a>
-                  {%- else -%}
-                    <span>{{ block.settings.label }}</span>
+          {%- if has_institutional -%}
+            <div class="sf-col">
+              {%- if section.settings.institutional_heading != blank -%}
+                <h5>{{ section.settings.institutional_heading }}</h5>
+              {%- endif -%}
+              <ul>
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'link' and block.settings.column == 'institutional' -%}
+                    <li {{ block.shopify_attributes }}>
+                      {%- liquid
+                        assign link_url = block.settings.url | default: '#'
+                        assign link_external = false
+                        if link_url contains '://' or link_url contains 'wa.me'
+                          assign link_external = true
+                        endif
+                      -%}
+                      <a
+                        href="{{ link_url }}"
+                        {% if link_external %}target="_blank" rel="noopener noreferrer"{% endif %}
+                      >
+                        {{- block.settings.label -}}
+                      </a>
+                    </li>
                   {%- endif -%}
-                </li>
-              {%- endfor -%}
-            </ul>
-          </div>
-        {%- endif -%}
-      </div>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
 
-      <div class="sf-bottom">
-        <span>
-          &copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright_owner | default: shop.name }}. {{ section.settings.copyright_text }}
-        </span>
-        {%- if section.settings.disclaimer != blank -%}
-          <span>{{ section.settings.disclaimer }}</span>
-        {%- endif -%}
+          {%- if has_help -%}
+            <div class="sf-col">
+              {%- if section.settings.help_heading != blank -%}
+                <h5>{{ section.settings.help_heading }}</h5>
+              {%- endif -%}
+              <ul>
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'link' and block.settings.column == 'help' -%}
+                    <li {{ block.shopify_attributes }}>
+                      {%- liquid
+                        assign link_url = block.settings.url | default: '#'
+                        assign link_external = false
+                        if link_url contains '://' or link_url contains 'wa.me'
+                          assign link_external = true
+                        endif
+                      -%}
+                      <a
+                        href="{{ link_url }}"
+                        {% if link_external %}target="_blank" rel="noopener noreferrer"{% endif %}
+                      >
+                        {{- block.settings.label -}}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          {%- if has_contact -%}
+            <div class="sf-col">
+              {%- if section.settings.contact_heading != blank -%}
+                <h5>{{ section.settings.contact_heading }}</h5>
+              {%- endif -%}
+              <ul>
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'link' and block.settings.column == 'contact' -%}
+                    <li {{ block.shopify_attributes }}>
+                      {%- if block.settings.url != blank -%}
+                        {%- liquid
+                          assign link_url = block.settings.url
+                          assign link_external = false
+                          if link_url contains '://' or link_url contains 'wa.me'
+                            assign link_external = true
+                          endif
+                        -%}
+                        <a
+                          href="{{ link_url }}"
+                          {% if link_external %}target="_blank" rel="noopener noreferrer"{% endif %}
+                        >
+                          {{- block.settings.label -}}
+                        </a>
+                      {%- else -%}
+                        <span>{{ block.settings.label }}</span>
+                      {%- endif -%}
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="sf-bottom">
+          <span>
+            &copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright_owner | default: shop.name }}. {{ section.settings.copyright_text }}
+          </span>
+          {%- if section.settings.disclaimer != blank -%}
+            <span>{{ section.settings.disclaimer }}</span>
+          {%- endif -%}
+        </div>
       </div>
     </div>
-  </div>
 </footer>
 
 {% schema %}
@@ -292,7 +350,12 @@
           "default": "institutional"
         },
         { "type": "text", "id": "label", "label": "Texto", "default": "Link" },
-        { "type": "url", "id": "url", "label": "URL" }
+        {
+          "type": "text",
+          "id": "url",
+          "label": "URL",
+          "info": "Aceita https, mailto, tel ou âncoras (#produtos, /#campanha)."
+        }
       ]
     }
   ]

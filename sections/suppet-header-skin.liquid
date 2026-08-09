@@ -11,8 +11,11 @@
   Gancho de CSS: .shopify-section-group-header-group, classe que a própria
   Shopify aplica a toda seção dentro do grupo "header".
 
-  NÃO inclui o comportamento de encolher/ficar translúcido no scroll
-  (.site-header.shrink na LP) — apenas forma e cores, conforme pedido.
+  Encolher no scroll (.site-header.shrink na LP): usa o atributo nativo
+  [data-sticky-header] (só existe quando "sticky_header" está ligado no
+  header.liquid) como gancho — mesmo elemento que carrega a classe
+  site-header. Precisa de um pouco de JS aqui porque é um estado (rolou/
+  não rolou) que CSS puro não detecta sozinho.
 {%- endcomment -%}
 
 {%- liquid
@@ -35,6 +38,16 @@
     .shopify-section-group-header-group [data-color-scheme] {
       --color-scheme-background: {{ bg.red }}, {{ bg.green }}, {{ bg.blue }};
     }
+
+    /* LP: o header não é opaco — é rgba(14,27,51,.75) com blur por baixo
+       (fica translúcido sobre o hero ao rolar). A variável de esquema
+       acima não carrega alpha, então a cor final (com transparência +
+       blur) é aplicada direto aqui, por cima da classe bg-scheme-background. */
+    .shopify-section-group-header-group .site-header {
+      background: rgba({{ bg.red }}, {{ bg.green }}, {{ bg.blue }}, {{ section.settings.header_opacity | divided_by: 100.0 }}) !important;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
   {%- endif -%}
 
   /* ---------- Altura ----------
@@ -46,6 +59,9 @@
       min-height: {{ section.settings.header_height }}px;
       display: flex;
       align-items: center;
+      {%- if section.settings.enable_shrink -%}
+      transition: min-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      {%- endif -%}
     }
 
     /* A LP contém o header num .container de 1240px centralizado; o tema
@@ -62,7 +78,44 @@
       padding-top: 0;
       padding-bottom: 0;
     }
+
+    {%- if section.settings.enable_shrink -%}
+    [data-sticky-header].suppet-header-shrink .px-section.py-2 {
+      min-height: {{ section.settings.shrink_height }}px;
+    }
+    {%- endif -%}
   }
+
+  {%- if section.settings.enable_shrink -%}
+    /* ---------- Encolher no scroll ----------
+       LP: .site-header.shrink — some do padding, encolhe a logo e mostra
+       uma sombra sutil embaixo. A classe .suppet-header-shrink quem liga
+       é o JS lá embaixo, olhando window.scrollY (mesmo limite da LP: 30px). */
+    [data-sticky-header] {
+      transition: box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-sticky-header].suppet-header-shrink {
+      box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.6);
+    }
+
+    [data-sticky-header] .logo-image {
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: left center;
+    }
+
+    [data-sticky-header].suppet-header-shrink .logo-image {
+      transform: scale(0.8);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-sticky-header],
+      [data-sticky-header] .logo-image,
+      .shopify-section-group-header-group .px-section.py-2 {
+        transition: none;
+      }
+    }
+  {%- endif -%}
 
   /* ---------- Tudo numa linha só ----------
      O grupo da direita do tema tem flex-wrap, então o CTA cai para uma
@@ -185,6 +238,12 @@
   /* ---------- CTA em pílula ---------- */
   {%- if section.settings.style_cta -%}
     .shopify-section-group-header-group .push-btn__surface {
+      /* LP: .pill-cta é fundo branco / texto navy — o botão nativo usa a
+         cor do esquema do header (que não é branca), por isso sobrescreve
+         aqui, igual já é feito no CTA do hero. */
+      --color-button-background: #fff;
+      --color-button-text: {{ section.settings.cta_text_color }};
+      --color-button-border: #fff;
       padding: 11px 22px;
       border-radius: 999px;
       font-family: var(--heading-font-stack);
@@ -201,6 +260,12 @@
     .shopify-section-group-header-group .push-btn {
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
         box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .shopify-section-group-header-group .push-btn:hover .push-btn__surface {
+      --color-button-background-hover: #fff;
+      --color-button-text-hover: {{ section.settings.cta_text_color }};
+      --color-button-border-hover: #fff;
     }
 
     .shopify-section-group-header-group .push-btn:hover {
@@ -225,6 +290,35 @@
     }
   }
 </style>
+
+{%- if section.settings.enable_shrink -%}
+  <script>
+    (function () {
+      function initSuppetHeaderShrink() {
+        var header = document.querySelector('[data-sticky-header]');
+        if (!header || header.dataset.suppetShrinkReady === 'true') return;
+        header.dataset.suppetShrinkReady = 'true';
+
+        var threshold = 30;
+
+        function onScroll() {
+          header.classList.toggle('suppet-header-shrink', window.scrollY > threshold);
+        }
+
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSuppetHeaderShrink);
+      } else {
+        initSuppetHeaderShrink();
+      }
+
+      document.addEventListener('shopify:section:load', initSuppetHeaderShrink);
+    })();
+  </script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -259,6 +353,24 @@
       "default": 82,
       "unit": "px"
     },
+    { "type": "header", "content": "Encolher no scroll" },
+    {
+      "type": "checkbox",
+      "id": "enable_shrink",
+      "label": "Encolher ao rolar a página",
+      "info": "Precisa do \"Cabeçalho fixo\" ligado nas configurações do bloco \"header\" nativo (sections/header.liquid) pra fazer sentido — sem isso o header rola pra fora da tela junto com o resto da página.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "shrink_height",
+      "label": "Altura do header encolhido",
+      "min": 48,
+      "max": 120,
+      "step": 2,
+      "default": 62,
+      "unit": "px"
+    },
     { "type": "header", "content": "Fundo" },
     {
       "type": "checkbox",
@@ -272,7 +384,17 @@
       "id": "header_background",
       "label": "Fundo do header",
       "info": "Na LP é rgba(14,27,51,.75) sobre o gradiente da hero. Ajuste até casar.",
-      "default": "#1C2A47"
+      "default": "#0E1B33"
+    },
+    {
+      "type": "range",
+      "id": "header_opacity",
+      "label": "Opacidade do fundo",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "default": 75,
+      "unit": "%"
     },
     { "type": "header", "content": "Navegação" },
     {
@@ -325,19 +447,19 @@
       "type": "color",
       "id": "icon_bg_color",
       "label": "Fundo do círculo",
-      "default": "#1B2946"
+      "default": "rgba(255,255,255,0.08)"
     },
     {
       "type": "color",
       "id": "icon_bg_hover_color",
       "label": "Fundo no hover",
-      "default": "#2A3A5C"
+      "default": "rgba(255,255,255,0.18)"
     },
     {
       "type": "color",
       "id": "icon_border_color",
       "label": "Borda do círculo",
-      "default": "#2E3D5C"
+      "default": "rgba(255,255,255,0.14)"
     },
     {
       "type": "range",
@@ -356,6 +478,13 @@
       "label": "Formato de pílula",
       "info": "Aplica-se ao bloco \"Link em destaque\" do header.",
       "default": true
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "Cor do texto do CTA",
+      "info": "LP: fundo branco fixo, então o texto precisa de uma cor escura pra contrastar.",
+      "default": "#0E1B33"
     },
     { "type": "header", "content": "Borda" },
     {

@@ -11,46 +11,13 @@
   "sections": {
     "main": {
       "type": "suppet-product-hero",
-      "blocks": {
-        "mini-benefit-0": {
-          "type": "mini_benefit",
-          "settings": {
-            "icon": "paw",
-            "label": "Mastigável"
-          }
-        },
-        "mini-benefit-1": {
-          "type": "mini_benefit",
-          "settings": {
-            "icon": "heart",
-            "label": "Alta Palatabilidade"
-          }
-        },
-        "mini-benefit-2": {
-          "type": "mini_benefit",
-          "settings": {
-            "icon": "leaf",
-            "label": "Sem Aditivos"
-          }
-        },
-        "mini-benefit-3": {
-          "type": "mini_benefit",
-          "settings": {
-            "icon": "shield",
-            "label": "Super Premium"
-          }
-        }
-      },
-      "block_order": [
-        "mini-benefit-0",
-        "mini-benefit-1",
-        "mini-benefit-2",
-        "mini-benefit-3"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "tagline_fallback": "Suplemento Super Premium",
+        "package_text": "Sachê de 150 g (com aproximadamente 34 biscoitos)",
         "note_text": "Suplemento mastigável para cães. Em caso de dúvidas, consulte o médico-veterinário.",
-        "rating_text": "Suplemento com rotina simples de uso e finalização facilitada pelo WhatsApp",
+        "rating_text": "Suplementação com rotina simples de uso e compra facilitada.",
         "tier_quantity": 2,
         "tier_discount_percent": 10,
         "content_max_width": 1180,
@@ -61,42 +28,6 @@
     },
     "unique": {
       "type": "suppet-product-unique",
-      "blocks": {
-        "benefit-0": {
-          "type": "benefit",
-          "settings": {
-            "title": "Praticidade",
-            "text": "Vem pronto para consumo. Sem pó, sem misturar e sem complicação na rotina diária."
-          }
-        },
-        "benefit-1": {
-          "type": "benefit",
-          "settings": {
-            "title": "Suplemento Mastigável",
-            "text": "Fácil de oferecer, sem necessidade de disfarçar em outros alimentos."
-          }
-        },
-        "benefit-2": {
-          "type": "benefit",
-          "settings": {
-            "title": "Alta Palatabilidade",
-            "text": "Sabores aprovados até pelos pets mais exigentes — parece agrado, não remédio."
-          }
-        },
-        "benefit-3": {
-          "type": "benefit",
-          "settings": {
-            "title": "Fórmula Super Premium",
-            "text": "Desenvolvida para complementar a dieta diária de cães adultos."
-          }
-        }
-      },
-      "block_order": [
-        "benefit-0",
-        "benefit-1",
-        "benefit-2",
-        "benefit-3"
-      ],
       "settings": {
         "title_prefix": "O que torna",
         "title_suffix": "único?",
@@ -112,14 +43,14 @@
           "type": "accordion_item",
           "settings": {
             "title": "Modo de uso e conservação",
-            "content": "<p>Suplemento super premium mastigável para cães, pronto para consumo. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e calor excessivo. Após aberto, consumir em até 60 dias.</p>"
+            "content": "<p>Suplemento super premium mastigável para cães, [sabor]. Consulte a recomendação diária de acordo com o peso do pet na embalagem. Conservar em lugar seco, ventilado, ao abrigo dos raios solares e do calor excessivo. Após aberto, consumir em até 60 dias.</p>"
           }
         },
         "accordion-2": {
           "type": "accordion_item",
           "settings": {
             "title": "Fabricação e SAC",
-            "content": "<p>Distribuído por Drogavet Farmácias de Manipulação e Indústria Ltda — Barracão 06, Campo Largo/PR. SAC: <a href=\"tel:+554132098989\">(41) 3209-8989</a> · <a href=\"mailto:sac@drogavet.com.br\">sac@drogavet.com.br</a> · <a href=\"https://www.drogavet.com.br/\" target=\"_blank\" rel=\"noopener noreferrer\">www.drogavet.com.br</a>.</p>"
+            "content": "<p>DrogaVET Farmácias de Manipulação e Indústria Ltda. CNPJ: 06.110.511/0007-38. Rua Agostinho Mocelin, 700, Barracão 06, CEP 83606-310, Ferrari, Campo Largo/PR. SAC: <a href=\"tel:+554132098989\">(41) 3209-8989</a> · <a href=\"mailto:sac@drogavet.com.br\">sac@drogavet.com.br</a> · <a href=\"https://www.drogavet.com.br/\" target=\"_blank\" rel=\"noopener noreferrer\">www.drogavet.com.br</a>.</p>"
           }
         }
       },
