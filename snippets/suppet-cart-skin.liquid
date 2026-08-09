@@ -13,6 +13,30 @@
 {%- endcomment -%}
 
 <style>
+  /* ---------- Modal centralizado, não gaveta lateral ----------
+     LP: #cartModal é um .modal-card centralizado na tela, com fundo
+     escurecido atrás — não uma faixa que desliza da direita. O tema
+     usa o mesmo componente de "gaveta direita" (right-drawer.liquid)
+     pra carrinho, ordenação e outras coisas, então não dá pra só
+     redimensionar #right-drawer-slot (afetaria todo mundo que usa
+     aquele slot). Em vez disso, tira SÓ o [data-cart-drawer] (que só
+     existe pro carrinho) da faixa e fixa ele centralizado na tela —
+     como position:fixed escapa da largura/posição do pai, funciona
+     mesmo com o resto da gaveta continuando do jeito nativo. */
+  @media (min-width: 768px) {
+    [data-cart-drawer] {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: min(90vw, 480px) !important;
+      height: auto !important;
+      max-height: 85vh !important;
+      border-radius: 24px !important;
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.5);
+    }
+  }
+
   /* ---------- Cabeçalho do carrinho ---------- */
   [data-cart-drawer] > div:first-child {
     background: #0e1b33;

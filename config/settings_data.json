@@ -97,6 +97,8 @@
     "social_whatsapp_link": "https://wa.me/554132098989",
     "social_email_link": "mailto:sac@drogavet.com.br",
     "cart_icon": "cart",
+    "cart_type": "modal",
+    "open_modal_on_add_to_cart": true,
     "enable_free_shipping_progress_in_cart": true,
     "free_shipping_threshold": "199",
     "navigation_font": "font-main",
