@@ -96,6 +96,17 @@
     color: #fff;
   }
 
+  #SuppetFooter-{{ uid }} .sf-credit a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.25s ease;
+  }
+
+  #SuppetFooter-{{ uid }} .sf-credit a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+
   #SuppetFooter-{{ uid }} .sf-col h5 {
     color: #fff;
     font-family: var(--heading-font-stack);
@@ -199,7 +210,16 @@
               </a>
             {%- endif -%}
           </div>
-          <p class="sf-credit">Desenvolvido por HRTech</p>
+          <p class="sf-credit">
+            Desenvolvido por
+            <a
+              href="https://wa.me/554188440752?text={{ 'Olá, eu vim pelo e-commerce de Suppet e gostaria de ajuda para desenvolver minha loja' | url_encode }}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HRTech
+            </a>
+          </p>
         </div>
 
           {%- if has_institutional -%}
