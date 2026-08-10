@@ -41,21 +41,13 @@
             "text": "Ative o super do seu pet",
             "link": ""
           }
-        },
-        "msg-whatsapp": {
-          "type": "message",
-          "settings": {
-            "text": "Compra facilitada pelo WhatsApp",
-            "link": ""
-          }
         }
       },
       "block_order": [
         "msg-frete",
         "msg-cupom",
         "msg-premium",
-        "msg-super",
-        "msg-whatsapp"
+        "msg-super"
       ],
       "settings": {
         "aria_label": "Destaques da campanha",
@@ -132,9 +124,9 @@
         "nav_hover_color": "#ffffff",
         "underline_color": "#dd6e1f",
         "circular_icons": true,
-        "icon_bg_color": "rgba(255,255,255,0.08)",
-        "icon_bg_hover_color": "rgba(255,255,255,0.18)",
-        "icon_border_color": "rgba(255,255,255,0.14)",
+        "icon_bg_color": "#ffffff14",
+        "icon_bg_hover_color": "#ffffff2e",
+        "icon_border_color": "#ffffff24",
         "icon_gap": 18,
         "style_cta": true,
         "cta_text_color": "#0e1b33",

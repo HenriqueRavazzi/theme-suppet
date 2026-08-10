@@ -69,8 +69,8 @@
         "stat-saches": {
           "type": "stat",
           "settings": {
-            "value": "Cerca de 34",
-            "label": "biscoitos por sachê"
+            "value": "cerca de 34",
+            "label": "biscoitos por pacote"
           }
         }
       },
@@ -183,7 +183,7 @@
             "allies": "EPA + DHA • Taurina • Biotina • Zinco • Beta-glucanos",
             "name": "",
             "price": "",
-            "price_note": "caixa com 30 sachês",
+            "price_note": "34 biscoitos por pacote",
             "link": ""
           }
         },
@@ -199,7 +199,7 @@
             "allies": "Glucosamina • Condroitina • Colágeno Tipo II",
             "name": "",
             "price": "",
-            "price_note": "caixa com 30 sachês",
+            "price_note": "34 biscoitos por pacote",
             "link": ""
           }
         },
@@ -215,7 +215,7 @@
             "allies": "Yucca • Probióticos • Prebióticos • Enzimas Digestivas",
             "name": "",
             "price": "",
-            "price_note": "caixa com 30 sachês",
+            "price_note": "34 biscoitos por pacote",
             "link": ""
           }
         },
@@ -231,7 +231,7 @@
             "allies": "L-Triptofano • L-Teanina • Camomila • Melissa • Valeriana",
             "name": "",
             "price": "",
-            "price_note": "caixa com 30 sachês",
+            "price_note": "34 biscoitos por pacote",
             "link": ""
           }
         }
