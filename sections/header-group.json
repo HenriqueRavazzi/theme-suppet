@@ -83,7 +83,7 @@
         "logo_max_width": 130,
         "main_linklist": "main-menu",
         "nested_nav_style": "mega_menu",
-        "showcase_top_level_collections": true,
+        "showcase_top_level_collections": false,
         "show_all_navigation_links": false,
         "showcase_second_level_links": false,
         "crop": "",
