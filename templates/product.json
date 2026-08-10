@@ -11,8 +11,6 @@
   "sections": {
     "main": {
       "type": "suppet-product-hero",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "tagline_fallback": "Suplemento Super Premium",
         "package_text": "Sachê de 150 g (com aproximadamente 34 biscoitos)",
