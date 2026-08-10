@@ -1,12 +1,21 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "404": {
-      "title": "404 Page Not Found",
+      "title": "404 Pagina não encontrada",
       "subtext_html": "The page you requested does not exist."
     },
     "accessibility": {
-      "skip_to_content": "Skip to content",
-      "close_modal": "Close (esc)",
+      "skip_to_content": "Pular para o conteudo",
+      "close_modal": "Fechar (esc)",
       "link_messages": {
         "new_window": "Opens in a new window.",
         "external": "Opens external website.",
@@ -14,13 +23,13 @@
       },
       "refresh_page": "Choosing a selection results in a full page refresh.",
       "selection_help": "Press the space key then arrow keys to make a selection.",
-      "unit_price_separator": "per",
-      "error": "Error",
-      "increment_one": "Add one",
-      "decrement_one": "Remove one",
-      "total_reviews": "total reviews",
-      "star_reviews_info": "{{ rating_value }} out of {{ rating_max }} stars",
-      "loading": "Loading",
+      "unit_price_separator": "por",
+      "error": "Erro",
+      "increment_one": "Adicionar um",
+      "decrement_one": "Remover um",
+      "total_reviews": "Total de reviews",
+      "star_reviews_info": "{{ rating_value }} de{{ rating_max }} estrelas",
+      "loading": "Carregando",
       "scroll_left_to_right": "Scroll left to right"
     },
     "pagination": {
@@ -131,13 +140,13 @@
   },
   "cart": {
     "general": {
-      "title": "Your cart",
-      "remove": "Remove",
-      "note": "Add a note to your order",
+      "title": "Seu carrinho",
+      "remove": "Remover",
+      "note": "Adicionar nota",
       "subtotal": "Subtotal",
-      "shipping_at_checkout": "Shipping & taxes calculated at checkout",
-      "update": "Update Cart",
-      "checkout": "Check Out",
+      "shipping_at_checkout": "...",
+      "update": "Atualizar carrinho",
+      "checkout": "Checkout",
       "empty": "Your cart is currently empty.",
       "taxes_and_shipping_at_checkout": "Taxes and shipping calculated at checkout",
       "taxes_and_shipping_policy_at_checkout_html": "Taxes and <a href=\"{{ link }}\">shipping</a> calculated at checkout",
@@ -179,9 +188,9 @@
   },
   "collections": {
     "general": {
-      "title": "Collection",
-      "all_of_collection": "View All",
-      "no_matches": "Sorry, there are no products in this collection",
+      "title": "Coleção",
+      "all_of_collection": "Veja todos",
+      "no_matches": "Desculpe, não encontramos sua pesquisa",
       "link_title": "Browse our {{ title }} collection",
       "grid_view": "Grid view",
       "list_view": "List view",
@@ -227,13 +236,13 @@
   },
   "contact": {
     "form": {
-      "name": "Name",
+      "name": "Nome",
       "email": "Email",
-      "phone": "Phone Number",
-      "message": "Message",
-      "send": "Send",
-      "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
-      "error_heading": "Please adjust the following:"
+      "phone": "Celular",
+      "message": "Mensagem",
+      "send": "Enviar",
+      "post_success": "Obrigado por entrar em contato, logo mais te enviaremos um mensagem.",
+      "error_heading": "Por favor, ajuste os campos antes de enviar a mensagem"
     }
   },
   "customer": {

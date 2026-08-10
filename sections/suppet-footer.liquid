@@ -87,6 +87,13 @@
     transform: translateY(-3px);
   }
 
+  #SuppetFooter-{{ uid }} .sf-credit {
+    margin: 14px 0 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
   #SuppetFooter-{{ uid }} .sf-col h5 {
     color: #fff;
     font-family: var(--heading-font-stack);
@@ -190,6 +197,7 @@
               </a>
             {%- endif -%}
           </div>
+          <p class="sf-credit">Desenvolvido por HRTech</p>
         </div>
 
           {%- if has_institutional -%}
