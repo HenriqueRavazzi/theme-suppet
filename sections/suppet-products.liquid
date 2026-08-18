@@ -321,6 +321,11 @@
                   assign card_link = block.settings.link
                 endif
 
+                assign card_price = block.settings.price
+                if p != blank
+                  assign card_price = p.price | money_without_currency
+                endif
+
                 # De propósito, NÃO usa p.featured_image aqui: a foto real do
                 # produto no Shopify normalmente não tem a margem de respiro
                 # ao redor do pack que as artes "pack-*.webp" têm, e isso
@@ -401,6 +406,10 @@
                       href="{{ card_link | default: '#' }}"
                       class="sp-card__go"
                       aria-label="{{ 'general.pagination.next' | t }} {{ card_name }}"
+                      data-product-id="{{ p.id }}"
+                      data-product-handle="{{ p.handle }}"
+                      data-product-title="{{ card_name }}"
+                      data-product-price="{{ card_price }}"
                     >
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 5l7 7-7 7"></path>
