@@ -90,7 +90,7 @@
         "min_height": 88,
         "content_max_width": 1240,
         "cta_primary_label": "Ver os 4 superpoderes",
-        "cta_primary_url": "",
+        "cta_primary_url": "shopify://collections/suppet",
         "cta_secondary_label": "Conhecer o Suppet",
         "cta_secondary_url": "",
         "badge_kicker": "Primeira compra",
@@ -137,7 +137,7 @@
           "settings": {
             "icon": "heart",
             "title": "Qualidade de vida",
-            "text": "Fórmulas desenvolvidas para promover o bem-estar, a disposição e o conforto em diferentes momentos do dia a dia."
+            "text": "Fórmulas desenvolvidas para promover o bem-estar, disposição e conforto em diferentes momentos."
           }
         },
         "benefit-3": {
@@ -354,7 +354,7 @@
         "richtext": "<p>Coloque no carrinho e compre facilmente.</p>",
         "content_max_width": 1240,
         "cta_primary_label": "Ver todos os produtos",
-        "cta_primary_url": "",
+        "cta_primary_url": "shopify://collections/suppet",
         "cta_secondary_label": "Fale com a gente",
         "cta_secondary_url": "https://wa.me/554132098989",
         "enable_motion": true,

@@ -94,6 +94,7 @@
         "enable_overlay_on_homepage": false,
         "enable_overlay_on_collection_pages": false,
         "enable_overlay_on_product_pages": false,
+        "overlay_logo": "shopify://shop_images/logo_dark.png",
         "overlay_color_scheme": "scheme3",
         "transparent_when_overlaid_and_stuck": true,
         "overlay_show_separator_border": false,
