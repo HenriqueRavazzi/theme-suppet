@@ -14,6 +14,9 @@
   assign has_institutional = false
   assign has_help = false
   assign has_contact = false
+  if section.settings.help_menu != blank
+    assign has_help = true
+  endif
   for block in section.blocks
     if block.type == 'link'
       case block.settings.column
@@ -257,25 +260,38 @@
                 <h5>{{ section.settings.help_heading }}</h5>
               {%- endif -%}
               <ul>
-                {%- for block in section.blocks -%}
-                  {%- if block.type == 'link' and block.settings.column == 'help' -%}
-                    <li {{ block.shopify_attributes }}>
-                      {%- liquid
-                        assign link_url = block.settings.url | default: '#'
-                        assign link_external = false
-                        if link_url contains '://' or link_url contains 'wa.me'
-                          assign link_external = true
-                        endif
-                      -%}
+                {%- if section.settings.help_menu != blank -%}
+                  {%- for link in linklists[section.settings.help_menu].links -%}
+                    <li>
                       <a
-                        href="{{ link_url }}"
-                        {% if link_external %}target="_blank" rel="noopener noreferrer"{% endif %}
+                        href="{{ link.url }}"
+                        {% if link.url contains '://' %}target="_blank" rel="noopener noreferrer"{% endif %}
                       >
-                        {{- block.settings.label -}}
+                        {{- link.title -}}
                       </a>
                     </li>
-                  {%- endif -%}
-                {%- endfor -%}
+                  {%- endfor -%}
+                {%- else -%}
+                  {%- for block in section.blocks -%}
+                    {%- if block.type == 'link' and block.settings.column == 'help' -%}
+                      <li {{ block.shopify_attributes }}>
+                        {%- liquid
+                          assign link_url = block.settings.url | default: '#'
+                          assign link_external = false
+                          if link_url contains '://' or link_url contains 'wa.me'
+                            assign link_external = true
+                          endif
+                        -%}
+                        <a
+                          href="{{ link_url }}"
+                          {% if link_external %}target="_blank" rel="noopener noreferrer"{% endif %}
+                        >
+                          {{- block.settings.label -}}
+                        </a>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endif -%}
               </ul>
             </div>
           {%- endif -%}
@@ -344,6 +360,12 @@
     { "type": "header", "content": "Colunas de links" },
     { "type": "text", "id": "institutional_heading", "label": "Título da coluna 1", "default": "Institucional" },
     { "type": "text", "id": "help_heading", "label": "Título da coluna 2", "default": "Ajuda" },
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Menu da coluna Ajuda",
+      "info": "Se selecionado, substitui os links manuais abaixo pelos itens deste menu (Navegação)."
+    },
     { "type": "text", "id": "contact_heading", "label": "Título da coluna 3", "default": "Contato (SAC)" },
     { "type": "header", "content": "Barra inferior" },
     { "type": "text", "id": "copyright_owner", "label": "Titular dos direitos", "default": "DrogaVET · Suppet" },
