@@ -1,0 +1,104 @@
+{
+  "sections": {
+    "banner": {
+      "type": "suppet-ajuda-banner",
+      "settings": {
+        "subtitle": "Tudo o que tutores perguntam antes de começar a suplementar o pet."
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "question-0": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "O que é a linha SUPPET?",
+            "answer": "<p>A SUPPET é uma linha de suplementos desenvolvida para complementar os cuidados com a saúde e o bem-estar dos pets, podendo ser associada às formulações manipuladas prescritas pelo veterinário.</p>"
+          }
+        },
+        "question-1": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Posso usar junto com a fórmula manipulada?",
+            "answer": "<p>Sim! Os produtos SUPPET foram desenvolvidos para complementar os cuidados do seu pet e podem ser utilizados juntamente com a fórmula prescrita pelo médico-veterinário.</p>"
+          }
+        },
+        "question-2": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Qual produto é indicado para o meu pet?",
+            "answer": "<p>Depende da necessidade dele:</p><ul><li>Escudo Condroprotetor serve para articulações e mobilidade.</li><li>Neutralizador de Estresse serve para ansiedade, agitação e estresse.</li><li>Campo de Vitaforça serve para imunidade, energia e vitalidade.</li><li>Barreira AntiCopro serve para inibir a coprofagia (vontade de ingerir fezes).</li></ul>"
+          }
+        },
+        "question-3": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Posso oferecer mais de uma fórmula ao mesmo tempo?",
+            "answer": "<p>Sim. Mas siga a recomendação de dosagem descrita em cada embalagem.</p>"
+          }
+        },
+        "question-4": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Os produtos SUPPET substituem medicamentos?",
+            "answer": "<p>Não. Os produtos SUPPET atuam como suplementos nutricionais, complementando os cuidados já prescritos pelo médico-veterinário. Eles não substituem tratamentos medicamentosos ou terapias específicas.</p>"
+          }
+        },
+        "question-5": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Quantos biscoitos posso dar para o meu cão por dia?",
+            "answer": "<p>A quantidade varia conforme o peso do seu cão. Cães de raças pequenas poderão ingerir, em média, um biscoito por dia. Cães de raças grandes podem ingerir até 4 biscoitos por dia. Cada suplemento tem a sua indicação de dosagem na própria embalagem. Cuidado com o Olhar Pidão! Siga a recomendação diária.</p>"
+          }
+        },
+        "question-6": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Qual é o prazo de validade do suplemento?",
+            "answer": "<p>A embalagem fechada possui validade de 12 meses. No entanto, quando aberta, é necessário consumir em até 60 dias.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question-0",
+        "question-1",
+        "question-2",
+        "question-3",
+        "question-4",
+        "question-5",
+        "question-6"
+      ],
+      "settings": {
+        "display_on_card": true,
+        "heading_text_style": "heading",
+        "two_columns_desktop": true,
+        "title": "",
+        "richtext": "",
+        "color_scheme": "scheme2",
+        "use_gradient_background": false
+      }
+    },
+    "cta": {
+      "type": "rich-text",
+      "settings": {
+        "title": "Não achou sua pergunta aqui?",
+        "heading_size": "heading-standard",
+        "rich_text": "<p>Fale com o nosso SAC — a gente responde rapidinho.</p>",
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-2/3",
+        "button_link": "https://wa.me/554132098989",
+        "button_label": "Falar no WhatsApp",
+        "color_scheme": "scheme4",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": ["banner", "faq", "cta"]
+}

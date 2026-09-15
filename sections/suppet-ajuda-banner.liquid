@@ -1,0 +1,209 @@
+{%- comment -%}
+  Suppet ajuda banner — faixa navy com onda + trilha de pílulas usada no
+  topo das páginas de Ajuda (políticas nativas + página de Perguntas
+  frequentes). O título vem de `policy.title` ou `page.title` conforme o
+  contexto, já que templates/policy.json é um único template
+  compartilhado por todas as políticas.
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign banner_title = section.settings.title
+  if banner_title == blank
+    if policy
+      assign banner_title = policy.title
+    elsif page
+      assign banner_title = page.title
+    endif
+  endif
+
+  assign faq_page = pages['perguntas-frequentes']
+  assign trocas_page = pages['trocas-e-devolucoes']
+  assign privacidade_page = pages['politica-de-privacidade']
+  assign termos_page = pages['termos-de-uso']
+  assign frete_page = pages['politica-de-frete']
+  assign pagamento_page = pages['politica-de-pagamento']
+-%}
+
+<style>
+  #SuppetAjudaBanner-{{ uid }} {
+    background: #0e1b33;
+    color: #fff;
+    padding-top: 44px;
+  }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-inner {
+    max-width: {{ section.settings.content_max_width | default: 1240 }}px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-crumbs {
+    font-size: 12.5px;
+    letter-spacing: .3px;
+    color: rgba(255, 255, 255, .55);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-crumbs .sab-sep { color: rgba(255, 255, 255, .3); }
+  #SuppetAjudaBanner-{{ uid }} .sab-crumbs .sab-current { color: rgba(255, 255, 255, .85); }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-title {
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: clamp(28px, 4.6vw, 42px);
+    line-height: 1.08;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-sub {
+    margin: 10px 0 0;
+    max-width: 46ch;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, .68);
+  }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-nav::-webkit-scrollbar { display: none; }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-nav a {
+    flex-shrink: 0;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .16);
+    color: rgba(255, 255, 255, .65);
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+  }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-nav a:hover { border-color: rgba(255, 255, 255, .35); color: #fff; }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-nav a[aria-current="page"] {
+    background: #d7282d;
+    border-color: #d7282d;
+    color: #fff;
+  }
+
+  #SuppetAjudaBanner-{{ uid }} .sab-wave {
+    display: block;
+    margin-top: 28px;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 560px) {
+    #SuppetAjudaBanner-{{ uid }} { padding-top: 32px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #SuppetAjudaBanner-{{ uid }} * { transition: none !important; }
+  }
+</style>
+
+<div id="SuppetAjudaBanner-{{ uid }}" class="px-section">
+  <div class="sab-inner">
+    <nav class="sab-crumbs" aria-label="Navegação">
+      <span>{{ shop.name }}</span><span class="sab-sep">/</span><span>Ajuda</span>
+      {%- if banner_title != blank -%}
+        <span class="sab-sep">/</span><span class="sab-current">{{ banner_title }}</span>
+      {%- endif -%}
+    </nav>
+
+    <div class="sab-head">
+      <div>
+        <h1 class="sab-title">{{ banner_title }}</h1>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="sab-sub">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <nav class="sab-nav" aria-label="Outras páginas de ajuda">
+      {%- if faq_page -%}
+        <a href="{{ faq_page.url }}" {% if request.path == faq_page.url %}aria-current="page"{% endif %}>Perguntas frequentes</a>
+      {%- endif -%}
+      {%- if trocas_page -%}
+        <a href="{{ trocas_page.url }}" {% if request.path == trocas_page.url %}aria-current="page"{% endif %}>Trocas e devoluções</a>
+      {%- endif -%}
+      {%- if privacidade_page -%}
+        <a href="{{ privacidade_page.url }}" {% if request.path == privacidade_page.url %}aria-current="page"{% endif %}>Política de privacidade</a>
+      {%- endif -%}
+      {%- if termos_page -%}
+        <a href="{{ termos_page.url }}" {% if request.path == termos_page.url %}aria-current="page"{% endif %}>Termos de uso</a>
+      {%- endif -%}
+      {%- if frete_page -%}
+        <a href="{{ frete_page.url }}" {% if request.path == frete_page.url %}aria-current="page"{% endif %}>Política de frete</a>
+      {%- endif -%}
+      {%- if pagamento_page -%}
+        <a href="{{ pagamento_page.url }}" {% if request.path == pagamento_page.url %}aria-current="page"{% endif %}>Política de pagamento</a>
+      {%- endif -%}
+    </nav>
+  </div>
+
+  <svg class="sab-wave" viewBox="0 0 1440 74" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,32 C240,74 480,0 720,26 C960,52 1200,10 1440,40 L1440,74 L0,74 Z" fill="{{ section.settings.wave_color | default: '#f7f1e6' }}"></path>
+  </svg>
+</div>
+
+{% schema %}
+{
+  "name": "Ajuda: faixa + navegação",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título (opcional)",
+      "info": "Deixe vazio para usar automaticamente o título da política/página."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtítulo (opcional)"
+    },
+    {
+      "type": "color",
+      "id": "wave_color",
+      "label": "Cor da onda / fundo da página abaixo",
+      "default": "#f7f1e6"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "min": 1100,
+      "max": 1820,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    }
+  ],
+  "presets": [
+    { "name": "Ajuda: faixa + navegação" }
+  ]
+}
+{% endschema %}

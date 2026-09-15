@@ -1,0 +1,542 @@
+{%- comment -%}
+  Suppet policy (static) — conteúdo das páginas de Ajuda escrito direto
+  no código (Privacidade, Trocas/Devoluções, Frete, Pagamento, Termos de
+  uso), a pedido do time: como o Shopify não permite substituir o
+  template nativo de Políticas (templates/policy.json não é suportado),
+  essas viraram Páginas normais com o texto fixo aqui — para editar,
+  mexa neste arquivo, não dá para editar pelo admin.
+  Cada <h2> vira automaticamente um item numerado no sumário lateral e
+  ganha o selo vermelho numerado (ver CSS abaixo).
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign content_key = section.settings.content_key
+-%}
+
+<style>
+  #SuppetPolicyStatic-{{ uid }} {
+    background: #f7f1e6;
+    color: #0e1b33;
+    padding-block: 40px 90px;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-inner {
+    max-width: {{ section.settings.content_max_width | default: 1240 }}px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 236px minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-toc {
+    position: sticky;
+    top: 24px;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-toc-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: rgba(14, 27, 51, .55);
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-left: 2px solid rgba(14, 27, 51, .08);
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-toc a {
+    display: block;
+    text-decoration: none;
+    padding: 8px 0 8px 16px;
+    margin-left: -2px;
+    border-left: 2px solid transparent;
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: rgba(14, 27, 51, .55);
+    transition: color .18s ease, border-color .18s ease;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-toc a:hover { color: #0e1b33; }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-toc a.active {
+    color: #0e1b33;
+    border-left-color: #d7282d;
+    font-weight: 700;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-card {
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 1px 2px rgba(14, 27, 51, .06), 0 8px 24px -12px rgba(14, 27, 51, .18);
+    padding: 34px 36px;
+    counter-reset: sp-section;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-card p {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: rgba(14, 27, 51, .7);
+    margin: 0 0 13px;
+    max-width: 66ch;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-card ul {
+    margin: 0 0 13px;
+    padding-left: 20px;
+    color: rgba(14, 27, 51, .7);
+    font-size: 14.5px;
+    line-height: 1.75;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-card strong { color: #0e1b33; }
+  #SuppetPolicyStatic-{{ uid }} .sp-card a { color: #d7282d; text-decoration: underline; }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-card h2 {
+    counter-increment: sp-section;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.3;
+    color: #0e1b33;
+    margin: 34px 0 16px;
+    scroll-margin-top: 24px;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-card h2:first-of-type { margin-top: 0; }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-card h2::before {
+    content: counter(sp-section);
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #d7282d;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 14.5px;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-toc-mobile { display: none; }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-cta {
+    margin-top: 28px;
+    background: #d7282d;
+    border-radius: 24px;
+    padding: 32px 32px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-cta h3 {
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0 0 6px;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-cta p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, .85);
+    max-width: 42ch;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-cta-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  #SuppetPolicyStatic-{{ uid }} .sp-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+  #SuppetPolicyStatic-{{ uid }} .sp-btn-solid { background: #fff; color: #a81e22; }
+  #SuppetPolicyStatic-{{ uid }} .sp-btn-outline { background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .35); color: #fff; }
+
+  @media (max-width: 880px) {
+    #SuppetPolicyStatic-{{ uid }} .sp-inner { grid-template-columns: 1fr; gap: 0; }
+    #SuppetPolicyStatic-{{ uid }} .sp-toc { display: none; }
+
+    #SuppetPolicyStatic-{{ uid }} .sp-toc-mobile[data-has-toc] {
+      display: block;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 1px 2px rgba(14, 27, 51, .06), 0 8px 24px -12px rgba(14, 27, 51, .18);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    #SuppetPolicyStatic-{{ uid }} .sp-toc-mobile summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--heading-font-stack);
+      font-weight: 700;
+      font-size: 14.5px;
+    }
+
+    #SuppetPolicyStatic-{{ uid }} .sp-toc-mobile summary::-webkit-details-marker { display: none; }
+
+    #SuppetPolicyStatic-{{ uid }} .sp-toc-mobile ol {
+      list-style: none;
+      margin: 0;
+      padding: 0 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    #SuppetPolicyStatic-{{ uid }} .sp-toc-mobile a {
+      text-decoration: none;
+      color: rgba(14, 27, 51, .7);
+      font-size: 13.5px;
+      padding: 7px 0;
+      display: block;
+    }
+  }
+
+  @media (max-width: 560px) {
+    #SuppetPolicyStatic-{{ uid }} .sp-card { padding: 24px 20px; }
+    #SuppetPolicyStatic-{{ uid }} .sp-cta { padding: 26px 22px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<div id="SuppetPolicyStatic-{{ uid }}" class="px-section">
+  <div class="sp-inner">
+    <aside class="sp-toc" data-sp-toc-desktop hidden>
+      <span class="sp-toc-label">Nesta página</span>
+      <ol data-sp-toc-list></ol>
+    </aside>
+
+    <div>
+      <details class="sp-toc-mobile" data-sp-toc-mobile hidden>
+        <summary>Sumário da página</summary>
+        <ol data-sp-toc-list-mobile></ol>
+      </details>
+
+      <div class="sp-card" data-sp-body>
+        {%- case content_key -%}
+
+          {%- when 'privacidade' -%}
+            <p>Esta Política estabelece a forma como o SUPPET gerencia as informações coletadas e realiza o tratamento de dados pessoais, conforme a legislação aplicável. A sua privacidade e a segurança de seus dados pessoais são muito importantes para nós.</p>
+            <p>Ela se aplica a todas as interações realizadas com o SUPPET, independentemente do canal: nosso site lojasuppet.com.br, lojas físicas DrogaVET, pontos de venda e parceiros autorizados, eventos e campanhas da marca, e canais de atendimento (telefone, e-mail, WhatsApp e outros).</p>
+
+            <h2>Quem é responsável pelo tratamento dos seus dados?</h2>
+            <p>O SUPPET é uma linha desenvolvida pela DrogaVET. A responsável pelo tratamento dos dados pessoais relacionados às operações do SUPPET é:</p>
+            <p><strong>DrogaVET Farmácias de Manipulação e Indústria Ltda.</strong><br>CNPJ: 06.110.511/0007-38<br>Rua Agostinho Mocelin, 700, Barracão 06 — Ferrari, Campo Largo/PR — CEP 83606-310</p>
+            <p>Para dúvidas ou solicitações relacionadas à privacidade e proteção de dados pessoais, entre em contato pelo SAC: telefone (41) 3209-8989 ou 0800 591 5249, e-mail <a href="mailto:sac@drogavet.com.br">sac@drogavet.com.br</a>.</p>
+
+            <h2>Coleta de dados</h2>
+            <p>O SUPPET poderá coletar dados pessoais necessários para o relacionamento com clientes, consumidores e demais pessoas que interajam com a marca — informações de identificação, contato, cadastro, compra, pagamento, entrega, atendimento, participação em campanhas, promoções, pesquisas ou eventos, além de dados de navegação e interação com nossos ambientes digitais.</p>
+            <p>Os dados poderão ser fornecidos diretamente pelo titular ou coletados durante sua interação com o SUPPET por meio de nossos canais próprios, lojas, pontos de venda, parceiros autorizados, eventos e ambientes físicos ou digitais.</p>
+
+            <h2>Uso dos dados</h2>
+            <p>Os dados pessoais poderão ser utilizados para:</p>
+            <ul>
+              <li>Viabilizar compras, pedidos, pagamentos, entregas e demais etapas da aquisição de produtos</li>
+              <li>Realizar cadastros e prestar atendimento</li>
+              <li>Esclarecer dúvidas e responder solicitações</li>
+              <li>Fornecer informações sobre produtos, serviços, campanhas e ações do SUPPET</li>
+              <li>Compreender necessidades, preferências e comportamentos de clientes e consumidores</li>
+              <li>Melhorar produtos, serviços, canais e experiência de relacionamento</li>
+              <li>Enviar comunicações institucionais, promocionais e de relacionamento, conforme a legislação</li>
+              <li>Realizar pesquisas, avaliações e ações promocionais</li>
+              <li>Prevenir fraudes e contribuir para a segurança de nossos ambientes e operações</li>
+              <li>Cumprir obrigações legais, regulatórias ou exercer direitos da empresa</li>
+            </ul>
+
+            <h2>Cookies</h2>
+            <p>Ao navegar em nossos ambientes digitais, poderão ser utilizados cookies e tecnologias semelhantes, que reconhecem preferências, ajudam a compreender a utilização do site, melhoram a experiência de navegação e apoiam ações de comunicação e publicidade.</p>
+            <p>Você pode gerenciar ou desativar cookies pelas configurações do navegador. A desativação de determinados cookies pode limitar algumas funcionalidades do site.</p>
+
+            <h2>Prazo de armazenamento dos dados</h2>
+            <p>Os dados pessoais serão armazenados pelo período necessário para o cumprimento das finalidades para as quais foram coletados e das obrigações legais, regulatórias ou contratuais aplicáveis. Encerrada essa necessidade, os dados poderão ser eliminados, anonimizados ou conservados nas hipóteses permitidas pela legislação vigente.</p>
+
+            <h2>Direitos dos titulares dos dados</h2>
+            <p>Nos termos da Lei Geral de Proteção de Dados Pessoais (LGPD), você pode exercer os direitos previstos em lei, incluindo:</p>
+            <ul>
+              <li>Confirmação da existência de tratamento e acesso aos dados</li>
+              <li>Correção de dados incompletos, inexatos ou desatualizados</li>
+              <li>Anonimização, bloqueio ou eliminação de dados nas hipóteses previstas em lei</li>
+              <li>Informação sobre o compartilhamento dos dados</li>
+              <li>Revogação do consentimento, quando aplicável</li>
+              <li>Oposição ao tratamento nos casos previstos pela legislação</li>
+            </ul>
+            <p>Para exercer esses direitos, entre em contato pelo SAC: (41) 3209-8989 ou <a href="mailto:sac@drogavet.com.br">sac@drogavet.com.br</a>.</p>
+
+            <h2>Compartilhamento de dados pessoais</h2>
+            <p>Para viabilizar nossas atividades, os dados pessoais poderão ser compartilhados, quando necessário, com empresas, fornecedores, prestadores de serviços e parceiros envolvidos na operação do SUPPET — tecnologia, e-commerce, atendimento, comunicação, meios de pagamento, operadores logísticos, transportadoras e pontos de venda, entre outros.</p>
+            <p>Também poderão ser compartilhados para cumprimento de obrigação legal ou regulatória, determinação de autoridade competente, exercício regular de direitos ou em decorrência de operações societárias.</p>
+
+            <h2>Privacidade relacionada a crianças e adolescentes</h2>
+            <p>Os canais do SUPPET não são direcionados especificamente a crianças e adolescentes. Caso ocorra tratamento de dados pessoais desses titulares, serão observadas as disposições da legislação aplicável, especialmente quanto à proteção e ao melhor interesse deles. O responsável legal pode entrar em contato pelos canais informados nesta política.</p>
+
+            <h2>Alterações nesta política</h2>
+            <p>O SUPPET e a DrogaVET poderão atualizar esta Política de Privacidade sempre que necessário para refletir alterações legais, regulatórias, operacionais, tecnológicas ou relacionadas aos produtos, serviços e canais oferecidos. Recomendamos a consulta periódica desta página.</p>
+
+            <h2>Dúvidas</h2>
+            <p>Em caso de dúvidas, comentários ou solicitações relacionadas a esta política ou ao tratamento de dados pessoais no âmbito do SUPPET, fale com a gente pelos canais abaixo.</p>
+
+          {%- when 'trocas' -%}
+            <p>Esta Política estabelece as condições aplicáveis às trocas, devoluções e reembolsos relacionados aos produtos SUPPET, observada a legislação de proteção e defesa do consumidor.</p>
+
+            <h2>Identificação e canais de atendimento</h2>
+            <p>O SUPPET é uma linha desenvolvida pela DrogaVET.</p>
+            <p><strong>DrogaVET Farmácias de Manipulação e Indústria Ltda.</strong><br>CNPJ: 06.110.511/0007-38<br>Rua Agostinho Mocelin, 700, Barracão 06 — Ferrari, Campo Largo/PR — CEP 83606-310</p>
+            <p>SAC: (41) 3209-8989 ou 0800 591 5249 · <a href="mailto:sac@drogavet.com.br">sac@drogavet.com.br</a></p>
+
+            <h2>Direito de arrependimento</h2>
+            <p>Nas compras realizadas fora de estabelecimento comercial, incluindo pelo site, WhatsApp ou outros canais de venda à distância, o consumidor poderá exercer o direito de arrependimento no prazo de até 7 (sete) dias corridos, contado do recebimento do produto, conforme legislação aplicável.</p>
+            <p>Para solicitar a devolução, o consumidor deverá entrar em contato com o SAC, informando os dados necessários para identificação da compra. A devolução será orientada pelo atendimento e não acarretará custos ao consumidor quando decorrente do exercício regular do direito de arrependimento.</p>
+            <p>Após o recebimento e processamento da devolução, os valores pagos serão restituídos de acordo com a forma de pagamento utilizada na compra e observados os procedimentos e prazos das instituições responsáveis pelo processamento financeiro.</p>
+
+            <h2>Produto com avaria, defeito ou divergência</h2>
+            <p>Caso o consumidor receba produto danificado, com embalagem violada, com defeito ou desvio de qualidade, diferente daquele adquirido, em quantidade divergente da compra, ou em desacordo com as informações apresentadas no momento da aquisição, deverá entrar em contato com o SAC para orientação sobre troca, devolução ou outra solução aplicável.</p>
+            <p>Recomendamos comunicar qualquer divergência logo após a identificação do problema e preservar o produto e sua embalagem para análise, sem prejuízo dos direitos e prazos assegurados pela legislação vigente.</p>
+
+            <h2>Reembolso</h2>
+            <p>Quando cabível a devolução dos valores pagos, o reembolso será realizado preferencialmente pelo mesmo meio utilizado para pagamento da compra. Os prazos para disponibilização efetiva dos valores podem variar conforme a instituição financeira, administradora do cartão ou meio de pagamento utilizado.</p>
+            <p>Nos casos de cancelamento ou devolução relacionados ao exercício do direito de arrependimento, serão observadas as condições previstas na legislação aplicável.</p>
+
+            <h2>Compras em lojas físicas e pontos de venda parceiros</h2>
+            <p>O direito de arrependimento previsto para compras realizadas fora do estabelecimento comercial não se aplica automaticamente às compras realizadas presencialmente em lojas físicas.</p>
+            <p>Para compras realizadas em unidades DrogaVET ou em outros pontos de venda autorizados, o consumidor deverá procurar preferencialmente o estabelecimento onde realizou a compra, observadas a legislação vigente e as condições comerciais aplicáveis. Os direitos relacionados a defeitos, vícios ou problemas de qualidade permanecem assegurados conforme a legislação aplicável. O SAC também poderá ser acionado para orientação e suporte.</p>
+
+          {%- when 'frete' -%}
+            <p>Esta Política estabelece as condições gerais de entrega dos produtos adquiridos por meio dos canais de venda à distância do SUPPET.</p>
+
+            <h2>Identificação e atendimento</h2>
+            <p><strong>DrogaVET Farmácias de Manipulação e Indústria Ltda.</strong> — CNPJ: 06.110.511/0007-38</p>
+            <p>SAC: (41) 3209-8989 ou 0800 591 5249 · <a href="mailto:sac@drogavet.com.br">sac@drogavet.com.br</a></p>
+
+            <h2>Locais e formas de entrega</h2>
+            <p>As localidades atendidas, modalidades de entrega, eventuais opções de retirada e respectivos valores serão informados durante o processo de compra ou atendimento. As entregas poderão ser realizadas diretamente ou por meio de transportadoras, operadores logísticos, serviços postais, unidades DrogaVET ou outros parceiros contratados ou autorizados. As opções disponíveis poderão variar conforme o produto, endereço de entrega, região e canal utilizado.</p>
+
+            <h2>Prazo de entrega</h2>
+            <p>O prazo estimado será informado durante o processo de compra ou confirmação do pedido. A contagem do prazo de entrega terá início após a confirmação e aprovação do pedido e do respectivo pagamento, quando aplicável. O prazo poderá variar conforme localização, disponibilidade dos produtos, modalidade de entrega escolhida e condições operacionais dos responsáveis pelo transporte.</p>
+
+            <h2>Valor do frete</h2>
+            <p>Quando houver cobrança de frete, seu valor será informado ao consumidor antes da conclusão da compra. O valor poderá variar conforme localidade, peso, quantidade de produtos, modalidade de entrega escolhida e condições comerciais vigentes. O SUPPET poderá disponibilizar, de forma temporária ou permanente, condições especiais ou promocionais de frete.</p>
+
+            <h2>Recebimento</h2>
+            <p>No momento do recebimento, recomendamos que o consumidor verifique as condições da embalagem e a correspondência entre os produtos entregues e os produtos adquiridos. Caso sejam identificados sinais de violação, avaria ou divergência, o consumidor poderá recusar o recebimento ou entrar em contato com o SAC para orientação.</p>
+
+            <h2>Tentativas e impossibilidade de entrega</h2>
+            <p>É responsabilidade do consumidor fornecer corretamente os dados necessários à entrega e garantir que haja pessoa apta a receber o pedido no endereço informado. Caso a entrega não possa ser concluída por ausência do destinatário, endereço incorreto ou incompleto ou outra situação não atribuível ao SUPPET, uma nova tentativa ou novo envio poderá estar sujeito às condições e custos informados pelo atendimento, observada a legislação aplicável.</p>
+
+            <h2>Atrasos e situações excepcionais</h2>
+            <p>Situações excepcionais podem ocasionar alterações nos prazos de entrega, incluindo eventos climáticos, restrições de transporte, greves, acidentes, períodos de alta demanda ou outras situações fora do controle razoável da empresa. Nesses casos, serão adotadas as medidas possíveis para regularização da entrega e atendimento ao consumidor.</p>
+
+          {%- when 'pagamento' -%}
+            <p>Esta Política estabelece as condições gerais aplicáveis aos pagamentos realizados para aquisição de produtos SUPPET por meio de seus canais de venda à distância.</p>
+
+            <h2>Identificação e atendimento</h2>
+            <p><strong>DrogaVET Farmácias de Manipulação e Indústria Ltda.</strong> — CNPJ: 06.110.511/0007-38</p>
+            <p>SAC: (41) 3209-8989 ou 0800 591 5249 · <a href="mailto:sac@drogavet.com.br">sac@drogavet.com.br</a></p>
+
+            <h2>Formas de pagamento</h2>
+            <p>As formas de pagamento disponíveis serão informadas ao consumidor durante o processo de compra e poderão variar de acordo com o canal utilizado, condições comerciais vigentes e disponibilidade dos prestadores responsáveis pelo processamento financeiro. O SUPPET poderá disponibilizar diferentes formas de pagamento, à vista ou parceladas, quando aplicável. Antes da confirmação da compra, o consumidor terá acesso ao valor dos produtos, eventuais descontos, frete e demais valores incidentes sobre o pedido.</p>
+
+            <h2>Aprovação do pagamento</h2>
+            <p>A conclusão do pedido poderá estar condicionada à aprovação do pagamento pela instituição financeira ou empresa responsável por seu processamento. Por motivos de segurança e prevenção a fraudes, poderão ser realizadas verificações adicionais antes da aprovação definitiva da compra. Caso o pagamento não seja aprovado, o pedido poderá ser cancelado.</p>
+
+            <h2>Alteração ou cancelamento do pedido</h2>
+            <p>Após a confirmação do pedido, alterações relacionadas a produtos, quantidades, endereço, forma de pagamento ou entrega poderão depender da etapa em que o pedido se encontra. O consumidor deverá entrar em contato com o SAC o mais breve possível para verificar a possibilidade de alteração ou cancelamento. Os direitos previstos na legislação de defesa do consumidor permanecem assegurados.</p>
+
+            <h2>Estornos e reembolsos</h2>
+            <p>Quando houver cancelamento, devolução ou reembolso devido, a restituição será realizada preferencialmente pelo mesmo meio utilizado para pagamento. Após a solicitação do estorno ou reembolso pelo SUPPET, o prazo para disponibilização dos valores poderá depender das regras e procedimentos da instituição financeira, administradora ou meio de pagamento utilizado. As condições de troca, devolução e reembolso estão detalhadas na <a href="{{ pages['trocas-e-devolucoes'].url }}">Política de Trocas, Devoluções e Reembolsos</a>.</p>
+
+          {%- when 'termos' -%}
+            <p>Estes Termos e Condições regulam o acesso e a utilização do site lojasuppet.com.br e dos demais ambientes digitais disponibilizados pelo SUPPET. Ao utilizar nossos canais digitais, o usuário declara estar ciente destes Termos e das demais políticas relacionadas.</p>
+
+            <h2>Identificação</h2>
+            <p>O SUPPET é uma linha de suplementos alimentares de uso veterinário desenvolvida pela DrogaVET.</p>
+            <p><strong>DrogaVET Farmácias de Manipulação e Indústria Ltda.</strong><br>CNPJ: 06.110.511/0007-38<br>Rua Agostinho Mocelin, 700, Barracão 06 — Ferrari, Campo Largo/PR — CEP 83606-310</p>
+            <p>SAC: (41) 3209-8989 ou 0800 591 5249 · <a href="mailto:sac@drogavet.com.br">sac@drogavet.com.br</a></p>
+
+            <h2>Utilização dos canais digitais</h2>
+            <p>O usuário compromete-se a utilizar o site e demais canais SUPPET de forma lícita, responsável e de acordo com estes Termos e com a legislação vigente. Não é permitida a utilização dos ambientes digitais para práticas fraudulentas, ilícitas ou que possam prejudicar sua operação, segurança, usuários ou terceiros.</p>
+
+            <h2>Produtos e informações</h2>
+            <p>O SUPPET disponibiliza informações sobre seus produtos, características, composição, formas de utilização, conservação e demais orientações pertinentes. As informações apresentadas nos canais SUPPET não substituem a orientação e o acompanhamento de médico-veterinário.</p>
+            <p>Os produtos SUPPET são suplementos alimentares de uso veterinário e não substituem medicamentos, tratamentos ou terapias prescritos por profissional habilitado. O consumidor deverá observar as informações, recomendações de uso e conservação constantes nas respectivas embalagens e materiais oficiais dos produtos.</p>
+
+            <h2>Disponibilidade dos produtos</h2>
+            <p>A disponibilidade dos produtos poderá variar conforme estoque, região, canal de venda ou outras condições operacionais. A inclusão de um produto no site ou em materiais de comunicação não garante sua disponibilidade permanente.</p>
+
+            <h2>Preços e promoções</h2>
+            <p>Os preços, condições comerciais, promoções, cupons e benefícios poderão variar conforme canal de venda, região, período ou campanha. As condições praticadas no site poderão ser diferentes das condições oferecidas em lojas físicas DrogaVET ou em outros pontos de venda parceiros. Promoções e benefícios não serão necessariamente cumulativos, salvo quando expressamente informado. O consumidor deverá verificar as condições aplicáveis no momento da compra.</p>
+
+            <h2>Compras</h2>
+            <p>As compras realizadas por canais digitais estarão sujeitas à disponibilidade do produto, confirmação dos dados necessários, aprovação do pagamento e demais condições informadas no momento da contratação. O consumidor é responsável pela veracidade e atualização das informações fornecidas durante a realização do pedido.</p>
+
+            <h2>Privacidade e proteção de dados</h2>
+            <p>O tratamento de dados pessoais realizado no âmbito das atividades do SUPPET é disciplinado pela <a href="{{ pages['politica-de-privacidade'].url }}">Política de Privacidade</a>, que integra estes Termos.</p>
+
+            <h2>Pagamento, entrega, trocas e devoluções</h2>
+            <p>As condições relacionadas a pagamentos, entregas, trocas, devoluções e reembolsos são disciplinadas pelas respectivas políticas disponibilizadas pelo SUPPET, que integram estes Termos e Condições.</p>
+
+            <h2>Propriedade intelectual</h2>
+            <p>Os nomes, marcas, logotipos, textos, imagens, fotografias, vídeos, layouts, materiais gráficos e demais conteúdos disponibilizados nos canais SUPPET são protegidos pela legislação de propriedade intelectual e não poderão ser utilizados, reproduzidos, modificados ou distribuídos sem autorização de seus respectivos titulares, ressalvadas as hipóteses permitidas por lei.</p>
+
+            <h2>Disponibilidade dos ambientes digitais</h2>
+            <p>O SUPPET empregará esforços para manter seus ambientes digitais disponíveis e funcionando adequadamente. Entretanto, poderão ocorrer interrupções temporárias, falhas técnicas, manutenções, atualizações ou situações decorrentes de terceiros ou de eventos fora de seu controle.</p>
+
+            <h2>Links e serviços de terceiros</h2>
+            <p>Os ambientes SUPPET poderão conter links, ferramentas ou integrações mantidas por terceiros. A utilização desses ambientes poderá estar sujeita aos termos e políticas dos respectivos responsáveis.</p>
+
+            <h2>Alterações</h2>
+            <p>Estes Termos e as políticas relacionadas poderão ser atualizados sempre que necessário para refletir mudanças legais, regulatórias, operacionais, tecnológicas ou comerciais. A versão vigente estará disponível nos canais oficiais do SUPPET.</p>
+
+            <h2>Legislação aplicável</h2>
+            <p>Estes Termos serão interpretados de acordo com a legislação brasileira, especialmente as normas aplicáveis às relações de consumo e à proteção de dados pessoais.</p>
+
+            <h2>Contato</h2>
+            <p>Em caso de dúvidas ou solicitações: SAC (41) 3209-8989 ou 0800 591 5249 · <a href="mailto:sac@drogavet.com.br">sac@drogavet.com.br</a></p>
+
+        {%- endcase -%}
+      </div>
+
+      <div class="sp-cta">
+        <div>
+          <h3>{{ section.settings.cta_title | default: 'Ainda com dúvidas?' }}</h3>
+          <p>{{ section.settings.cta_text | default: 'Nosso SAC responde solicitações sobre esta página.' }}</p>
+        </div>
+        <div class="sp-cta-actions">
+          {%- if section.settings.whatsapp_number != blank -%}
+            <a class="sp-btn sp-btn-solid" href="https://wa.me/{{ section.settings.whatsapp_number }}" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Zm0 1.8a7.2 7.2 0 0 1 6.2 10.9c-.2.3-3 4.4-6.2 4.4a7.1 7.1 0 0 1-3.6-1l-.3-.2-2.6.7.7-2.5-.2-.3A7.2 7.2 0 0 1 12 4.8Z"></path></svg>
+              WhatsApp
+            </a>
+          {%- endif -%}
+          {%- if section.settings.contact_email != blank -%}
+            <a class="sp-btn sp-btn-outline" href="mailto:{{ section.settings.contact_email }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="m4 7 8 6 8-6"></path></svg>
+              {{ section.settings.contact_email }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  try{
+    var root = document.getElementById('SuppetPolicyStatic-{{ uid }}');
+    var body = root.querySelector('[data-sp-body]');
+    var headings = body.querySelectorAll('h2');
+    if (headings.length < 2) return;
+
+    var desktop = root.querySelector('[data-sp-toc-desktop]');
+    var mobile = root.querySelector('[data-sp-toc-mobile]');
+    var listDesktop = root.querySelector('[data-sp-toc-list]');
+    var listMobile = root.querySelector('[data-sp-toc-list-mobile]');
+    desktop.hidden = false;
+    mobile.hidden = false;
+    mobile.setAttribute('data-has-toc', '');
+
+    var links = [];
+    headings.forEach(function(h, i){
+      var id = 'sp-section-{{ uid }}-' + (i + 1);
+      h.id = id;
+      var text = h.textContent;
+      [listDesktop, listMobile].forEach(function(list){
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = '#' + id;
+        a.dataset.target = id;
+        a.textContent = text;
+        li.appendChild(a);
+        list.appendChild(li);
+        if (list === listDesktop) links.push(a);
+      });
+    });
+
+    if ('IntersectionObserver' in window){
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting){
+            links.forEach(function(l){ l.classList.remove('active'); });
+            var active = listDesktop.querySelector('a[data-target="' + entry.target.id + '"]');
+            if (active) active.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+      headings.forEach(function(h){ observer.observe(h); });
+    }
+  } catch(e){}
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Conteúdo da página (fixo)",
+  "settings": [
+    {
+      "type": "select",
+      "id": "content_key",
+      "label": "Conteúdo",
+      "options": [
+        { "value": "privacidade", "label": "Política de privacidade" },
+        { "value": "trocas", "label": "Trocas e devoluções" },
+        { "value": "frete", "label": "Política de frete" },
+        { "value": "pagamento", "label": "Política de pagamento" },
+        { "value": "termos", "label": "Termos de uso" }
+      ],
+      "default": "privacidade"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura do conteúdo",
+      "min": 1100,
+      "max": 1820,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    { "type": "header", "content": "Card de contato (rodapé da página)" },
+    { "type": "text", "id": "cta_title", "label": "Título", "default": "Ainda com dúvidas?" },
+    { "type": "text", "id": "cta_text", "label": "Texto", "default": "Nosso SAC responde solicitações sobre esta página." },
+    { "type": "text", "id": "whatsapp_number", "label": "WhatsApp (só números, com DDI)", "default": "554132098989" },
+    { "type": "text", "id": "contact_email", "label": "E-mail", "default": "sac@drogavet.com.br" }
+  ],
+  "presets": [
+    { "name": "Conteúdo da página (fixo)" }
+  ]
+}
+{% endschema %}

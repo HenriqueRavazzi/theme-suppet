@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "banner": { "type": "suppet-ajuda-banner", "settings": {} },
+    "main": {
+      "type": "suppet-policy-static",
+      "settings": { "content_key": "privacidade" }
+    }
+  },
+  "order": ["banner", "main"]
+}
