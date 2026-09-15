@@ -125,7 +125,8 @@
   }
 </style>
 
-<div id="SuppetAjudaBanner-{{ uid }}" class="px-section">
+<div id="SuppetAjudaBanner-{{ uid }}">
+  <div class="px-section">
   <div class="sab-inner">
     <nav class="sab-crumbs" aria-label="Navegação">
       <span>{{ shop.name }}</span><span class="sab-sep">/</span><span>Ajuda</span>
@@ -163,6 +164,7 @@
         <a href="{{ pagamento_page.url }}" {% if request.path == pagamento_page.url %}aria-current="page"{% endif %}>Política de pagamento</a>
       {%- endif -%}
     </nav>
+  </div>
   </div>
 
   <svg class="sab-wave" viewBox="0 0 1440 74" preserveAspectRatio="none" aria-hidden="true">
