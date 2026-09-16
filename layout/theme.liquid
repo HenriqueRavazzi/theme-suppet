@@ -260,12 +260,12 @@
     {% render 'header-group-support' %}
     {%- comment -%}
       Suppet: overflow-hidden aqui quebra position:sticky em qualquer
-      seção descendente (ex: sumário lateral das páginas de Ajuda), pois
-      cria um "scrolling container" novo. overflow:clip corta visualmente
-      igual (mantém o corte dos shape dividers/blobs de outras seções)
-      mas não quebra sticky, então trocamos só neste elemento.
+      seção descendente (ex: sumário lateral das páginas de Ajuda).
+      overflow-x:clip mantém o corte horizontal (shape dividers/blobs que
+      bleedam pra fora nas laterais); overflow-y:visible é o que evita
+      quebrar o sticky verticalmente.
     {%- endcomment -%}
-    <main id="MainContent" style="overflow: clip;">
+    <main id="MainContent" style="overflow-x: clip; overflow-y: visible;">
       {{ content_for_layout }}
     </main>
 

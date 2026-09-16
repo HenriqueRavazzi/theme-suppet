@@ -30,7 +30,7 @@
     gap: 48px;
   }
 
-  #SuppetPolicyStatic-{{ uid }} .sp-toc {
+  #SuppetPolicyStatic-{{ uid }} .sp-toc-sticky {
     position: sticky;
     top: calc(var(--header-group-height, 0px) + 24px);
   }
@@ -235,8 +235,10 @@
 <div id="SuppetPolicyStatic-{{ uid }}" class="px-section">
   <div class="sp-inner">
     <aside class="sp-toc" data-sp-toc-desktop hidden>
-      <span class="sp-toc-label">Nesta página</span>
-      <ol data-sp-toc-list></ol>
+      <div class="sp-toc-sticky">
+        <span class="sp-toc-label">Nesta página</span>
+        <ol data-sp-toc-list></ol>
+      </div>
     </aside>
 
     <div>
