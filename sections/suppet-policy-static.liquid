@@ -33,7 +33,7 @@
 
   #SuppetPolicyStatic-{{ uid }} .sp-toc {
     position: sticky;
-    top: 24px;
+    top: calc(var(--header-group-height, 0px) + 24px);
   }
 
   #SuppetPolicyStatic-{{ uid }} .sp-toc-label {
@@ -114,7 +114,7 @@
     line-height: 1.3;
     color: #0e1b33;
     margin: 34px 0 16px;
-    scroll-margin-top: 24px;
+    scroll-margin-top: calc(var(--header-group-height, 0px) + 24px);
   }
 
   #SuppetPolicyStatic-{{ uid }} .sp-card h2:first-of-type { margin-top: 0; }
