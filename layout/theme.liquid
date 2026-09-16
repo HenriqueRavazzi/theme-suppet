@@ -258,7 +258,14 @@
     </a>
     {%- sections 'header-group' -%}
     {% render 'header-group-support' %}
-    <main id="MainContent" class="overflow-hidden">
+    {%- comment -%}
+      Suppet: overflow-hidden aqui quebra position:sticky em qualquer
+      seção descendente (ex: sumário lateral das páginas de Ajuda), pois
+      cria um "scrolling container" novo. overflow:clip corta visualmente
+      igual (mantém o corte dos shape dividers/blobs de outras seções)
+      mas não quebra sticky, então trocamos só neste elemento.
+    {%- endcomment -%}
+    <main id="MainContent" style="overflow: clip;">
       {{ content_for_layout }}
     </main>
 
