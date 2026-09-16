@@ -149,6 +149,24 @@
     font-size: 12.5px;
   }
 
+  #SuppetFooter-{{ uid }} .sf-manufacturing {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 18px 0;
+    text-align: center;
+  }
+
+  #SuppetFooter-{{ uid }} .sf-manufacturing p {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  #SuppetFooter-{{ uid }} .sf-manufacturing p + p {
+    margin-top: 4px;
+  }
+
   @media (max-width: 880px) {
     #SuppetFooter-{{ uid }} .sf-grid {
       grid-template-columns: 1fr 1fr;
@@ -339,6 +357,17 @@
           {%- endif -%}
         </div>
       </div>
+
+      {%- if section.settings.manufacturing_text != blank or section.settings.distribution_text != blank -%}
+        <div class="sf-manufacturing">
+          {%- if section.settings.manufacturing_text != blank -%}
+            <p>{{ section.settings.manufacturing_text }}</p>
+          {%- endif -%}
+          {%- if section.settings.distribution_text != blank -%}
+            <p>{{ section.settings.distribution_text }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     </div>
 </footer>
 
@@ -371,6 +400,19 @@
     { "type": "text", "id": "copyright_owner", "label": "Titular dos direitos", "default": "DrogaVET · Suppet" },
     { "type": "text", "id": "copyright_text", "label": "Texto complementar", "default": "Todos os direitos reservados." },
     { "type": "text", "id": "disclaimer", "label": "Aviso legal", "default": "Suplemento alimentar. Uso veterinário — para cães." },
+    { "type": "header", "content": "Fabricação e distribuição" },
+    {
+      "type": "textarea",
+      "id": "manufacturing_text",
+      "label": "Fabricação",
+      "default": "Fabricação: Coralina Ind. e Com. de Cosméticos e Alimentos Ltda - Rua Ireno Marchesini, 546- Boqueirão - CEP 81730-270 - Curitiba-PR - CNPJ: 33.149.544/0001-79 - INDÚSTRIA BRASILEIRA."
+    },
+    {
+      "type": "textarea",
+      "id": "distribution_text",
+      "label": "Distribuição",
+      "default": "Distribuição: DrogaVET Farmácias de Manipulação e Indústria Ltda., Rua Agostinho Mocelin, 700, Barracão 06 — Ferrari, Campo Largo/PR — CEP 83606-310, CNPJ: 06.110.511/0007-38, SAC: (41) 3209-8989 ou 0800 591 5249 · sac@drogavet.com.br"
+    },
     { "type": "header", "content": "Layout e cores" },
     {
       "type": "range",
