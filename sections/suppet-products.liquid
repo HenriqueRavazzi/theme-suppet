@@ -314,7 +314,7 @@
   class="bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}"
   data-color-scheme="{{ section.settings.color_scheme }}"
 >
-  <span id="produtos" class="visually-hidden" tabindex="-1" style="scroll-margin-top: calc(var(--header-group-height, 0px) + 16px);"></span>
+  <span id="produtos" class="visually-hidden" tabindex="-1" style="top: 0; scroll-margin-top: var(--header-height, 0px);"></span>
   <div class="section-content px-section py-section-vertical-spacing">
     <div class="sp-container">
       {%- if section.settings.eyebrow != blank -%}
