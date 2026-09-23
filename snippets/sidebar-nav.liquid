@@ -25,8 +25,47 @@
         else
           assign menu = section.settings.main_linklist
         endif
+      -%}
+      {%- comment -%}
+        Suppet: itens fixos (quiz e revenda), na mesma posição do menu do
+        desktop (ver `suppet_fixed_position` em sections/header.liquid).
+      {%- endcomment -%}
+      {%- capture suppet_fixed_items -%}
+        {%- if section.settings.suppet_quiz_label != blank -%}
+          <li class="text-lg lg:text-xl">
+            <a
+              class="font-heading block py-2.5 {{ section.settings.sidebar_menu_font_size }}"
+              href="#quiz"
+              data-suppet-quiz-open
+            >
+              {{- section.settings.suppet_quiz_label -}}
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if section.settings.suppet_reseller_label != blank -%}
+          <li class="text-lg lg:text-xl">
+            <a
+              class="font-heading block py-2.5 {{ section.settings.sidebar_menu_font_size }}"
+              href="{{ section.settings.suppet_reseller_url | default: '/pages/quero-revender' }}"
+            >
+              {{- section.settings.suppet_reseller_label -}}
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endcapture -%}
+      {%- liquid
+        assign suppet_fixed_position = section.settings.suppet_fixed_position | default: 0
+        if suppet_fixed_position > menu.links.size
+          assign suppet_fixed_position = menu.links.size
+        endif
+        if suppet_fixed_position == 0
+          echo suppet_fixed_items
+        endif
         for link in menu.links
           render 'sidebar-nav-list-item', link: link
+          if forloop.index == suppet_fixed_position
+            echo suppet_fixed_items
+          endif
         endfor
       -%}
     </ul>

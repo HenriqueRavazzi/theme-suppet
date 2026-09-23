@@ -1,0 +1,1168 @@
+{%- comment -%}
+  Suppet quiz — "Qual superpoder seu pet precisa ativar?"
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+
+  Renderizado uma vez por página em layout/theme.liquid (seção estática).
+  Abre por cima de toda a página, abaixo do header fixo (o header tem
+  z-index 40 em sections/header.liquid; o quiz usa 39), deixando só o header
+  visível. Gatilhos:
+  - qualquer elemento com [data-suppet-quiz-open] (botão fixo do header,
+    seção "Ajuda para escolher" da home);
+  - qualquer link terminando em "#quiz" (dá pra criar pelo editor/menus);
+  - abrir uma URL com #quiz.
+
+  Regras de indicação (documento "Alterações Ecommerce"): cada comportamento
+  marcado indica um produto; vários grupos marcados indicam vários produtos.
+  Idade, porte e atividade não mudam o resultado — só vão junto no lead.
+
+  Lead: ao revelar o resultado dispara o evento `suppet:quiz:lead` (detail =
+  dados do lead) e guarda em window.SuppetQuiz.lastLead. A integração com o
+  RD Station escuta esse evento (etapa separada).
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign product_vitaforca = section.settings.product_vitaforca | default: all_products['campo-de-vitaforca']
+  assign product_condro = section.settings.product_condro | default: all_products['escudo-condroprotetor']
+  assign product_anticopro = section.settings.product_anticopro | default: all_products['barreira-anticopro']
+  assign product_estresse = section.settings.product_estresse | default: all_products['neutralizador-de-estresse']
+-%}
+
+{%- capture products_json -%}
+  {
+    "condro": {
+      "name": {{ product_condro.title | default: 'Escudo Condroprotetor' | json }},
+      "text": {{ section.settings.text_condro | json }},
+      "accent": "#dd6e1f",
+      "image": {{ 'pack-condroprotetor.webp' | asset_url | json }},
+      "variant": {{ product_condro.selected_or_first_available_variant.id | default: 0 | json }},
+      "price": {{ product_condro.price | default: 0 | json }},
+      "url": {{ product_condro.url | default: '' | json }}
+    },
+    "anticopro": {
+      "name": {{ product_anticopro.title | default: 'Barreira AntiCopro' | json }},
+      "text": {{ section.settings.text_anticopro | json }},
+      "accent": "#3a7cae",
+      "image": {{ 'pack-anticopro.webp' | asset_url | json }},
+      "variant": {{ product_anticopro.selected_or_first_available_variant.id | default: 0 | json }},
+      "price": {{ product_anticopro.price | default: 0 | json }},
+      "url": {{ product_anticopro.url | default: '' | json }}
+    },
+    "estresse": {
+      "name": {{ product_estresse.title | default: 'Neutralizador de Estresse' | json }},
+      "text": {{ section.settings.text_estresse | json }},
+      "accent": "#2fa39c",
+      "image": {{ 'pack-estresse.webp' | asset_url | json }},
+      "variant": {{ product_estresse.selected_or_first_available_variant.id | default: 0 | json }},
+      "price": {{ product_estresse.price | default: 0 | json }},
+      "url": {{ product_estresse.url | default: '' | json }}
+    },
+    "vitaforca": {
+      "name": {{ product_vitaforca.title | default: 'Campo de Vitaforça' | json }},
+      "text": {{ section.settings.text_vitaforca | json }},
+      "accent": "#d7282d",
+      "image": {{ 'pack-vitaforca.webp' | asset_url | json }},
+      "variant": {{ product_vitaforca.selected_or_first_available_variant.id | default: 0 | json }},
+      "price": {{ product_vitaforca.price | default: 0 | json }},
+      "url": {{ product_vitaforca.url | default: '' | json }}
+    }
+  }
+{%- endcapture -%}
+
+<style>
+  #SuppetQuiz-{{ uid }} {
+    --sq-navy: #0e1b33;
+    --sq-red: #d7282d;
+    --sq-orange: #dd6e1f;
+    --sq-muted: #5b6b84;
+    --sq-line: rgba(14, 27, 51, 0.12);
+    --sq-top: 0px;
+    position: fixed;
+    inset: 0;
+    z-index: 39;
+    display: none;
+    padding-top: var(--sq-top);
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(221, 110, 31, 0.18), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(58, 124, 174, 0.22), transparent 60%),
+      var(--sq-navy);
+    color: var(--sq-navy);
+    font-family: var(--main-font-stack);
+  }
+
+  #SuppetQuiz-{{ uid }}.is-open {
+    display: block;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-scroll {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 16px 32px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-card {
+    position: relative;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 32px 40px 30px;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.6);
+    animation: sq-in-{{ uid }} 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes sq-in-{{ uid }} {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    color: var(--sq-navy);
+    background: rgba(14, 27, 51, 0.06);
+    transition: background 0.2s;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-close:hover {
+    background: rgba(14, 27, 51, 0.12);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-progress {
+    display: flex;
+    gap: 6px;
+    margin: 0 56px 20px 0;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-progress span {
+    flex: 1;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--sq-line);
+    transition: background 0.3s;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-progress span.is-done {
+    background: var(--sq-orange);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-step {
+    display: none;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-step.is-active {
+    display: block;
+    animation: sq-in-{{ uid }} 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--sq-orange);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-eyebrow::before {
+    content: '';
+    width: 28px;
+    height: 3px;
+    border-radius: 3px;
+    background: currentColor;
+  }
+
+  #SuppetQuiz-{{ uid }} h2,
+  #SuppetQuiz-{{ uid }} h3 {
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--sq-navy);
+  }
+
+  #SuppetQuiz-{{ uid }} [tabindex='-1']:focus {
+    outline: none;
+  }
+
+  #SuppetQuiz-{{ uid }} h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    margin-bottom: 14px;
+  }
+
+  #SuppetQuiz-{{ uid }} h3 {
+    font-size: clamp(22px, 3vw, 28px);
+    margin-bottom: 8px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-lead {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--sq-muted);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(221, 110, 31, 0.1);
+    color: var(--sq-orange);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-packs {
+    display: flex;
+    justify-content: center;
+    gap: 4%;
+    margin: 28px 0 8px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-packs img {
+    width: 22%;
+    max-width: 120px;
+    height: auto;
+    filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.25));
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-packs img:nth-child(odd) {
+    transform: rotate(-4deg) translateY(6px);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-packs img:nth-child(even) {
+    transform: rotate(4deg);
+  }
+
+  #SuppetQuiz-{{ uid }} fieldset {
+    border: 0;
+    margin: 0 0 22px;
+    padding: 0;
+    min-width: 0;
+  }
+
+  #SuppetQuiz-{{ uid }} legend {
+    margin-bottom: 10px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--sq-navy);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-options--list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-option {
+    position: relative;
+    cursor: pointer;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-option span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+    padding: 12px 18px;
+    border: 2px solid var(--sq-line);
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--sq-navy);
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-options:not(.sq-options--list) .sq-option span {
+    border-radius: 999px;
+    padding: 10px 22px;
+    font-weight: 600;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-options--list .sq-option span::before {
+    content: '';
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(14, 27, 51, 0.3);
+    border-radius: 6px;
+    background: #fff center / 12px no-repeat;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-option:hover span {
+    border-color: rgba(221, 110, 31, 0.5);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-option input:focus-visible + span {
+    outline: 2px solid var(--sq-orange);
+    outline-offset: 2px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-option input:checked + span {
+    border-color: var(--sq-orange);
+    background: rgba(221, 110, 31, 0.08);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-options--list .sq-option input:checked + span::before {
+    border-color: var(--sq-orange);
+    background-color: var(--sq-orange);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-field {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-field b {
+    display: block;
+    margin-bottom: 6px;
+    font-family: var(--heading-font-stack);
+    font-size: 15px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-field input {
+    width: 100%;
+    padding: 14px 20px;
+    border: 2px solid var(--sq-line);
+    border-radius: 999px;
+    font-size: 16px;
+    color: var(--sq-navy);
+    background: #fff;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-field input:focus {
+    outline: none;
+    border-color: var(--sq-orange);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-consent {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 4px 0 8px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--sq-muted);
+    cursor: pointer;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-consent input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    accent-color: var(--sq-orange);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-actions--center {
+    justify-content: center;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 30px;
+    border-radius: 999px;
+    background: var(--sq-red);
+    color: #fff;
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+    box-shadow: 0 14px 28px -12px rgba(215, 40, 45, 0.7);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s, opacity 0.2s;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-btn:hover {
+    transform: translateY(-2px);
+    background: #a81e22;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-btn[disabled] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    background: var(--sq-red);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-btn--block {
+    width: 100%;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-back {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--sq-muted);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-back:hover {
+    color: var(--sq-navy);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-error {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--sq-red);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-error:empty {
+    display: none;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-results {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 4px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-result {
+    display: grid;
+    grid-template-columns: 84px 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 20px 14px 14px;
+    border-radius: 20px;
+    border: 2px solid var(--sq-line);
+    border-left: 6px solid var(--sq-accent);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-result__media {
+    display: grid;
+    place-items: center;
+    height: 96px;
+    border-radius: 14px;
+    background: #16264a;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-result__media img {
+    height: 84px;
+    width: auto;
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35));
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-result h4 {
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--sq-accent);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-result p {
+    margin-top: 4px;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--sq-navy);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-result__price {
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-gift {
+    margin-top: 18px;
+    padding: 22px 24px;
+    border-radius: 22px;
+    background: var(--sq-navy);
+    color: #fff;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-gift h3 {
+    color: #fff;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-gift p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-gift__offer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-gift__offer strong {
+    font-family: var(--heading-font-stack);
+    font-size: 17px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px 8px 16px;
+    border: 2px dashed var(--sq-orange);
+    border-radius: 999px;
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--sq-orange);
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-code button {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--sq-orange);
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+  }
+
+  #SuppetQuiz-{{ uid }} .sq-gift .sq-btn {
+    margin-top: 16px;
+  }
+
+  @media (max-width: 640px) {
+    #SuppetQuiz-{{ uid }} .sq-scroll {
+      padding: 16px 12px 32px;
+    }
+    #SuppetQuiz-{{ uid }} .sq-card {
+      padding: 28px 20px 24px;
+      border-radius: 22px;
+    }
+    #SuppetQuiz-{{ uid }} .sq-options--list {
+      grid-template-columns: 1fr;
+    }
+    #SuppetQuiz-{{ uid }} .sq-result {
+      grid-template-columns: 64px 1fr;
+      gap: 14px;
+    }
+    #SuppetQuiz-{{ uid }} .sq-result__media {
+      height: 76px;
+    }
+    #SuppetQuiz-{{ uid }} .sq-result__media img {
+      height: 66px;
+    }
+    #SuppetQuiz-{{ uid }} .sq-result__price {
+      grid-column: 2;
+    }
+    #SuppetQuiz-{{ uid }} .sq-actions .sq-btn {
+      flex: 1;
+      padding-inline: 20px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #SuppetQuiz-{{ uid }} .sq-card,
+    #SuppetQuiz-{{ uid }} .sq-step.is-active {
+      animation: none;
+    }
+  }
+
+  /* Só no <html>: travar o body também faz dele um container de rolagem
+     próprio, e o header (position: sticky) deixa de grudar no topo. */
+  html.suppet-quiz-open {
+    overflow: hidden;
+  }
+
+  /* O aviso de cupom (suppet-discount-toast) fica acima do quiz no celular. */
+  html.suppet-quiz-open .suppet-discount-toast {
+    display: none;
+  }
+</style>
+
+<div
+  id="SuppetQuiz-{{ uid }}"
+  class="suppet-quiz"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="SuppetQuizTitle-{{ uid }}"
+  data-suppet-quiz
+  hidden
+>
+  <div class="sq-scroll">
+    <div class="sq-card">
+      <button type="button" class="sq-close" data-sq-close aria-label="Fechar quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="sq-progress" aria-hidden="true" data-sq-progress>
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <form data-sq-form novalidate>
+        {%- comment -%} Passo 0 — abertura {%- endcomment -%}
+        <div class="sq-step is-active" data-sq-step="0">
+          <p class="sq-eyebrow">{{ section.settings.eyebrow }}</p>
+          <h2 id="SuppetQuizTitle-{{ uid }}">{{ section.settings.title }}</h2>
+          <p class="sq-lead">{{ section.settings.subtitle }}</p>
+          {%- if section.settings.duration != blank -%}
+            <p class="sq-pill">⏱ {{ section.settings.duration }}</p>
+          {%- endif -%}
+          <div class="sq-packs" aria-hidden="true">
+            <img src="{{ 'pack-vitaforca.webp' | asset_url }}" alt="" width="120" height="158" loading="lazy">
+            <img src="{{ 'pack-condroprotetor.webp' | asset_url }}" alt="" width="120" height="158" loading="lazy">
+            <img src="{{ 'pack-anticopro.webp' | asset_url }}" alt="" width="120" height="158" loading="lazy">
+            <img src="{{ 'pack-estresse.webp' | asset_url }}" alt="" width="120" height="158" loading="lazy">
+          </div>
+          <div class="sq-actions sq-actions--center">
+            <button type="button" class="sq-btn" data-sq-next>{{ section.settings.start_label }}</button>
+          </div>
+        </div>
+
+        {%- comment -%} Passo 1 — perfil do pet (não muda o resultado) {%- endcomment -%}
+        <div class="sq-step" data-sq-step="1">
+          <p class="sq-eyebrow">Passo 1 de 3</p>
+          <h3>Conte um pouco mais sobre seu herói</h3>
+
+          <fieldset>
+            <legend>Idade</legend>
+            <div class="sq-options">
+              {%- assign options = 'Filhote,Adulto,Sênior' | split: ',' -%}
+              {%- for option in options -%}
+                <label class="sq-option">
+                  <input type="radio" name="idade" value="{{ option }}" required>
+                  <span>{{ option }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Porte</legend>
+            <div class="sq-options">
+              {%- assign options = 'Pequeno,Médio,Grande' | split: ',' -%}
+              {%- for option in options -%}
+                <label class="sq-option">
+                  <input type="radio" name="porte" value="{{ option }}" required>
+                  <span>{{ option }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Nível de atividade diária</legend>
+            <div class="sq-options">
+              {%- assign options = 'Baixo,Moderado,Alto' | split: ',' -%}
+              {%- for option in options -%}
+                <label class="sq-option">
+                  <input type="radio" name="atividade" value="{{ option }}" required>
+                  <span>{{ option }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+
+          <div class="sq-actions">
+            <button type="button" class="sq-back" data-sq-prev>← Voltar</button>
+            <button type="button" class="sq-btn" data-sq-next disabled>Continuar</button>
+          </div>
+        </div>
+
+        {%- comment -%}
+          Passo 2 — comportamentos. data-product = produto indicado.
+          "Nenhuma" é exclusiva (desmarca as outras e vice-versa).
+        {%- endcomment -%}
+        <div class="sq-step" data-sq-step="2">
+          <p class="sq-eyebrow">Passo 2 de 3</p>
+          <h3>O que mais chamou sua atenção no comportamento ou na rotina do seu pet?</h3>
+          <p class="sq-lead">Marque todas as opções que se aplicam.</p>
+
+          <fieldset>
+            <legend class="visually-hidden">Comportamentos e rotina</legend>
+            <div class="sq-options sq-options--list">
+              {%- liquid
+                assign behaviors = 'Parece ter dificuldade ou desconforto para se movimentar|condro;Evita subir escadas, sofá ou outros lugares|condro;Apresenta rigidez ao levantar ou depois de ficar parado|condro;Come as próprias fezes ou as fezes de outros animais|anticopro;Tem gases ou alterações digestivas (cocô mole ou muito duro)|anticopro;Fica muito agitado ou ansioso|estresse;Tem medo de fogos, trovões ou barulhos altos|estresse;Fica estressado em viagens ou mudanças de ambiente|estresse;Fica diferente quando há mudança na rotina|estresse;Está com menos disposição para brincar|vitaforca;Tem coceiras ou alterações na pele|vitaforca;Nenhuma anterior, quero apenas prevenir e cuidar melhor da saúde dele|vitaforca' | split: ';'
+              -%}
+              {%- for behavior in behaviors -%}
+                {%- assign parts = behavior | split: '|' -%}
+                <label class="sq-option">
+                  <input
+                    type="checkbox"
+                    name="comportamentos"
+                    value="{{ parts[0] }}"
+                    data-product="{{ parts[1] }}"
+                    {% if forloop.last %}data-sq-none{% endif %}
+                  >
+                  <span>{{ parts[0] }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+
+          <div class="sq-actions">
+            <button type="button" class="sq-back" data-sq-prev>← Voltar</button>
+            <button type="button" class="sq-btn" data-sq-next disabled>Continuar</button>
+          </div>
+        </div>
+
+        {%- comment -%} Passo 3 — captura do lead {%- endcomment -%}
+        <div class="sq-step" data-sq-step="3">
+          <p class="sq-eyebrow">Passo 3 de 3</p>
+          <h3>🐾 Descobrimos os superpoderes que seu pet pode ativar!</h3>
+          <p class="sq-lead" style="margin-bottom: 22px;">Só falta um detalhe para mostrar o resultado.</p>
+
+          <label class="sq-field">
+            <b>Como podemos te chamar?</b>
+            <input type="text" name="nome" autocomplete="given-name" placeholder="Seu nome" required>
+          </label>
+          <label class="sq-field">
+            <b>Para onde devemos enviar seu resultado?</b>
+            <input type="email" name="email" autocomplete="email" placeholder="Seu melhor e-mail" required>
+          </label>
+          <label class="sq-consent">
+            <input type="checkbox" name="consentimento" value="sim">
+            <span>Quero receber meu resultado e dicas de cuidados para o meu pet por e-mail.</span>
+          </label>
+          <p class="sq-error" data-sq-error aria-live="polite"></p>
+
+          <div class="sq-actions">
+            <button type="button" class="sq-back" data-sq-prev>← Voltar</button>
+            <button type="submit" class="sq-btn">Revelar meu resultado</button>
+          </div>
+        </div>
+
+        {%- comment -%} Passo 4 — resultado {%- endcomment -%}
+        <div class="sq-step" data-sq-step="4">
+          <p class="sq-eyebrow">Seu resultado</p>
+          <h3><span data-sq-name></span>, com base nas respostas, os principais pontos de atenção na rotina do seu pet são:</h3>
+
+          <div class="sq-results" data-sq-results></div>
+
+          <div class="sq-gift">
+            <h3>Seu superpoder foi ativado! ⚡</h3>
+            <p>Agora que você descobriu qual cuidado combina com o seu pet, que tal dar o próximo passo?</p>
+            <div class="sq-gift__offer">
+              <strong>🎁 Um presente para o seu herói:</strong>
+              <span>{{ section.settings.gift_text }}</span>
+              <span class="sq-code">
+                {{ section.settings.gift_code }}
+                <button type="button" data-sq-copy="{{ section.settings.gift_code }}">Copiar</button>
+              </span>
+            </div>
+            <button type="button" class="sq-btn sq-btn--block" data-sq-add-all>
+              <span data-sq-add-label>Adicionar ao carrinho</span>
+            </button>
+            <p class="sq-error" data-sq-cart-error aria-live="polite"></p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('SuppetQuiz-{{ uid }}');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = 'true';
+
+    var PRODUCTS = {{ products_json }};
+    var ORDER = ['condro', 'anticopro', 'estresse', 'vitaforca'];
+    var MONEY_FORMAT = {{ shop.money_format | json }};
+    var form = root.querySelector('[data-sq-form]');
+    var steps = root.querySelectorAll('[data-sq-step]');
+    var progress = root.querySelectorAll('[data-sq-progress] span');
+    var current = 0;
+    var lastFocus = null;
+    var recommended = [];
+
+    function formatMoney(cents) {
+      var value = (cents / 100).toFixed(2).split('.');
+      var amount = value[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',' + value[1];
+      return MONEY_FORMAT.replace(/\{\{\s*\w+\s*\}\}/, amount);
+    }
+
+    // Mede onde o header fixo termina para o quiz começar logo abaixo dele.
+    function headerBottom() {
+      var header = document.querySelector('[data-sticky-header]');
+      var section = header && header.closest('.shopify-section');
+      var el = section || header;
+      return el ? Math.max(0, el.getBoundingClientRect().bottom) : 0;
+    }
+
+    // O header muda de altura (encolhe ao rolar, com transição; a faixa do
+    // ticker aparece só no topo da página). Medir uma vez só na abertura
+    // deixava um vão acima do quiz — então acompanha a cada frame enquanto
+    // estiver aberto (só escreve quando o valor muda).
+    var lastTop = -1;
+    var rafId = null;
+
+    function setTop() {
+      var top = Math.round(headerBottom());
+      if (top !== lastTop) {
+        lastTop = top;
+        root.style.setProperty('--sq-top', top + 'px');
+      }
+    }
+
+    function trackTop() {
+      setTop();
+      rafId = window.requestAnimationFrame(trackTop);
+    }
+
+    function reset() {
+      form.reset();
+      recommended = [];
+      root.querySelector('[data-sq-results]').innerHTML = '';
+      root.querySelectorAll('.sq-error').forEach(function (el) {
+        el.textContent = '';
+      });
+      current = 0;
+    }
+
+    function show(index) {
+      current = index;
+      steps.forEach(function (step) {
+        step.classList.toggle('is-active', Number(step.dataset.sqStep) === index);
+      });
+      progress.forEach(function (bar, i) {
+        bar.classList.toggle('is-done', i < index || (index === 4 && i <= 3));
+      });
+      root.querySelector('.sq-scroll').scrollTop = 0;
+      validate();
+      var active = root.querySelector('.sq-step.is-active');
+      var focusable = active && active.querySelector('h2, h3');
+      if (focusable) {
+        focusable.setAttribute('tabindex', '-1');
+        focusable.focus({ preventScroll: true });
+      }
+    }
+
+    function validate() {
+      var step = root.querySelector('.sq-step.is-active');
+      var next = step && step.querySelector('[data-sq-next]');
+      if (!next) return;
+      var ok = true;
+      if (current === 1) {
+        ok = ['idade', 'porte', 'atividade'].every(function (name) {
+          return form.querySelector('input[name="' + name + '"]:checked');
+        });
+      } else if (current === 2) {
+        ok = !!form.querySelector('input[name="comportamentos"]:checked');
+      }
+      next.disabled = !ok;
+    }
+
+    function open() {
+      lastFocus = document.activeElement;
+      lastTop = -1;
+      trackTop();
+      root.hidden = false;
+      root.classList.add('is-open');
+      document.documentElement.classList.add('suppet-quiz-open');
+      show(current);
+    }
+
+    function close() {
+      root.classList.remove('is-open');
+      root.hidden = true;
+      document.documentElement.classList.remove('suppet-quiz-open');
+      if (rafId) window.cancelAnimationFrame(rafId);
+      rafId = null;
+      // Quiz concluído: a próxima abertura começa do início.
+      if (current === 4) reset();
+      if (window.location.hash === '#quiz') {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    function values(name) {
+      return Array.prototype.map.call(form.querySelectorAll('input[name="' + name + '"]:checked'), function (input) {
+        return input.value;
+      });
+    }
+
+    function computeRecommended() {
+      var picked = {};
+      form.querySelectorAll('input[name="comportamentos"]:checked').forEach(function (input) {
+        picked[input.dataset.product] = true;
+      });
+      return ORDER.filter(function (key) {
+        return picked[key];
+      });
+    }
+
+    function renderResults() {
+      var list = root.querySelector('[data-sq-results]');
+      var total = 0;
+      list.innerHTML = '';
+      recommended.forEach(function (key) {
+        var p = PRODUCTS[key];
+        total += p.price;
+        var item = document.createElement('article');
+        item.className = 'sq-result';
+        item.style.setProperty('--sq-accent', p.accent);
+        item.innerHTML =
+          '<div class="sq-result__media"><img alt="" width="64" height="84"></div>' +
+          '<div><h4></h4><p></p></div>' +
+          '<div class="sq-result__price"></div>';
+        item.querySelector('img').src = p.image;
+        item.querySelector('h4').textContent = p.name;
+        item.querySelector('p').textContent = p.text;
+        item.querySelector('.sq-result__price').textContent = p.price ? formatMoney(p.price) : '';
+        list.appendChild(item);
+      });
+      var label = recommended.length > 1 ? 'Adicionar os ' + recommended.length + ' ao carrinho' : 'Adicionar ao carrinho';
+      root.querySelector('[data-sq-add-label]').textContent = label + (total ? ' — ' + formatMoney(total) : '');
+    }
+
+    function buildLead() {
+      var data = new FormData(form);
+      return {
+        conversion_identifier: 'quiz-suppet',
+        name: (data.get('nome') || '').trim(),
+        email: (data.get('email') || '').trim(),
+        marketing_consent: data.get('consentimento') === 'sim',
+        pet_idade: data.get('idade'),
+        pet_porte: data.get('porte'),
+        pet_atividade: data.get('atividade'),
+        comportamentos: values('comportamentos'),
+        produtos_indicados: recommended.map(function (key) {
+          return PRODUCTS[key].name;
+        }),
+        page_url: window.location.href
+      };
+    }
+
+    // "Nenhuma anterior" é exclusiva.
+    form.addEventListener('change', function (event) {
+      var input = event.target;
+      if (input.name === 'comportamentos' && input.checked) {
+        var none = form.querySelector('[data-sq-none]');
+        if (input === none) {
+          form.querySelectorAll('input[name="comportamentos"]').forEach(function (other) {
+            if (other !== none) other.checked = false;
+          });
+        } else if (none) {
+          none.checked = false;
+        }
+      }
+      validate();
+    });
+
+    root.addEventListener('click', function (event) {
+      var target = event.target.closest('button');
+      if (!target) return;
+      if (target.hasAttribute('data-sq-close')) close();
+      if (target.hasAttribute('data-sq-next') && !target.disabled) show(current + 1);
+      if (target.hasAttribute('data-sq-prev')) show(Math.max(0, current - 1));
+      if (target.hasAttribute('data-sq-copy')) {
+        var code = target.getAttribute('data-sq-copy');
+        if (navigator.clipboard) navigator.clipboard.writeText(code);
+        target.textContent = 'Copiado!';
+        setTimeout(function () {
+          target.textContent = 'Copiar';
+        }, 1800);
+      }
+      if (target.hasAttribute('data-sq-add-all')) addAll(target);
+    });
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var error = root.querySelector('[data-sq-error]');
+      var name = form.querySelector('input[name="nome"]');
+      var email = form.querySelector('input[name="email"]');
+      if (!name.value.trim()) {
+        error.textContent = 'Conta pra gente como podemos te chamar.';
+        name.focus();
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())) {
+        error.textContent = 'Confira seu e-mail — ele parece incompleto.';
+        email.focus();
+        return;
+      }
+      error.textContent = '';
+      recommended = computeRecommended();
+      var lead = buildLead();
+      window.SuppetQuiz.lastLead = lead;
+      document.dispatchEvent(new CustomEvent('suppet:quiz:lead', { detail: lead }));
+      root.querySelector('[data-sq-name]').textContent = lead.name.split(' ')[0];
+      renderResults();
+      show(4);
+    });
+
+    function addAll(button) {
+      var error = root.querySelector('[data-sq-cart-error]');
+      var items = recommended
+        .map(function (key) {
+          return { id: PRODUCTS[key].variant, quantity: 1 };
+        })
+        .filter(function (item) {
+          return item.id;
+        });
+      if (!items.length) return;
+      button.disabled = true;
+      error.textContent = '';
+      fetch((window.theme && window.theme.routes.cart_add_url) || '/cart/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          items: items,
+          sections: 'cart-items,cart-footer,cart-item-count,cart-live-region',
+          sections_url: window.location.pathname
+        })
+      })
+        .then(function (res) {
+          return res.json().then(function (data) {
+            if (!res.ok) throw data;
+            return data;
+          });
+        })
+        .then(function (data) {
+          close();
+          document.body.dispatchEvent(
+            new CustomEvent('shapes:cart:afteradditem', {
+              bubbles: true,
+              detail: { response: data, sourceId: root.id }
+            })
+          );
+          if (window.Alpine && Alpine.store('modals')) Alpine.store('modals').open('cart');
+        })
+        .catch(function (data) {
+          error.textContent = (data && data.description) || 'Não foi possível adicionar ao carrinho. Tente novamente.';
+        })
+        .then(function () {
+          button.disabled = false;
+        });
+    }
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && root.classList.contains('is-open')) close();
+    });
+
+    // Fase de captura: o menu lateral do tema (drawer) para a propagação dos
+    // cliques dentro dele, então um listener comum nunca receberia o evento.
+    document.addEventListener(
+      'click',
+      function (event) {
+        var trigger = event.target.closest('[data-suppet-quiz-open], a[href$="#quiz"]');
+        if (!trigger) return;
+        event.preventDefault();
+        if (window.Alpine && Alpine.store('modals')) Alpine.store('modals').closeAll();
+        open();
+      },
+      true
+    );
+
+    window.SuppetQuiz = { open: open, close: close, lastLead: null };
+
+    if (window.location.hash === '#quiz') open();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Suppet quiz",
+  "class": "suppet-quiz-section",
+  "settings": [
+    { "type": "header", "content": "Abertura" },
+    { "type": "text", "id": "eyebrow", "label": "Selo", "default": "Quiz Suppet" },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Qual superpoder seu pet precisa ativar?"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Texto",
+      "default": "Descubra em poucos passos qual cuidado pode fazer parte da rotina do seu pet."
+    },
+    { "type": "text", "id": "duration", "label": "Duração", "default": "Leva menos de 3 minutos!" },
+    { "type": "text", "id": "start_label", "label": "Botão de início", "default": "Começar o quiz" },
+    { "type": "header", "content": "Resultado" },
+    {
+      "type": "text",
+      "id": "text_condro",
+      "label": "Escudo Condroprotetor",
+      "default": "Proteger as articulações para que nenhuma aventura precise parar."
+    },
+    {
+      "type": "text",
+      "id": "text_estresse",
+      "label": "Neutralizador de Estresse",
+      "default": "Transformar momentos desafiadores em mais tranquilidade."
+    },
+    {
+      "type": "text",
+      "id": "text_vitaforca",
+      "label": "Campo de Vitaforça",
+      "default": "Oferecer energia e suporte nutricional para as aventuras do dia a dia."
+    },
+    {
+      "type": "text",
+      "id": "text_anticopro",
+      "label": "Barreira AntiCopro",
+      "default": "Impedir que a coprofagia atrapalhe o bem-estar do seu herói."
+    },
+    {
+      "type": "text",
+      "id": "gift_text",
+      "label": "Presente",
+      "default": "Ganhe 15% OFF na sua primeira compra Suppet."
+    },
+    { "type": "text", "id": "gift_code", "label": "Cupom do presente", "default": "ATIVESEUPET" },
+    { "type": "header", "content": "Produtos indicados" },
+    {
+      "type": "paragraph",
+      "content": "Deixe em branco para usar os produtos padrão da linha."
+    },
+    { "type": "product", "id": "product_condro", "label": "Escudo Condroprotetor" },
+    { "type": "product", "id": "product_anticopro", "label": "Barreira AntiCopro" },
+    { "type": "product", "id": "product_estresse", "label": "Neutralizador de Estresse" },
+    { "type": "product", "id": "product_vitaforca", "label": "Campo de Vitaforça" }
+  ]
+}
+{% endschema %}

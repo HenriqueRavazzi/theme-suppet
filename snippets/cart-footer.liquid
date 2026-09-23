@@ -56,6 +56,30 @@
           </p>
         </div>
         <div class="col-span-14 row-start-3 {% if template == 'cart' %} md:row-start-2 md:col-span-6 md:col-end-last {% endif %}">
+          {% # Suppet: troca de cupom (substitui o atual; lógica em snippets/suppet-cart-coupon.liquid) %}
+          <form class="suppet-coupon" data-suppet-coupon-form>
+            <label class="suppet-coupon__label" for="SuppetCoupon-{{ template.name }}">
+              {%- assign applied_codes = cart.cart_level_discount_applications | where: 'type', 'discount_code' -%}
+              {%- if applied_codes.size > 0 -%}
+                Cupom aplicado: <b>{{ applied_codes.first.title }}</b> · trocar por outro
+              {%- else -%}
+                Tem um cupom?
+              {%- endif -%}
+            </label>
+            <div class="suppet-coupon__row">
+              <input
+                id="SuppetCoupon-{{ template.name }}"
+                class="input"
+                type="text"
+                name="suppet_coupon"
+                autocomplete="off"
+                autocapitalize="characters"
+                placeholder="Digite o cupom"
+              >
+              <button type="submit">Aplicar</button>
+            </div>
+            <p class="suppet-coupon__message" data-suppet-coupon-message aria-live="polite"></p>
+          </form>
           <div class="relative z-10">
             <input
               class="no-js ml-auto block cursor-pointer border-general border-scheme-text px-5 py-2.5"

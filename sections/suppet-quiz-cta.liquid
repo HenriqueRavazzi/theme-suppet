@@ -1,0 +1,319 @@
+{%- comment -%}
+  Suppet quiz CTA ("Ajuda para escolher") — chamada da home para o quiz.
+  Substitui a seção "Suppet campaign" na home. O botão abre o quiz global
+  (sections/suppet-quiz.liquid) via [data-suppet-quiz-open].
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign steps = section.blocks | where: 'type', 'step'
+  assign brand = section.settings.brand_color | default: '#D7282D'
+-%}
+
+<style>
+  #SuppetQuizCta-{{ uid }} .sqc-container {
+    max-width: {{ section.settings.content_max_width | default: 1240 }}px;
+    margin-inline: auto;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-card {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+    padding: 56px 60px;
+    border-radius: 32px;
+    background:
+      radial-gradient(700px 400px at 100% 0%, rgba(221, 110, 31, 0.22), transparent 60%),
+      radial-gradient(600px 400px at 0% 100%, rgba(58, 124, 174, 0.25), transparent 60%),
+      #0e1b33;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: #dd6e1f;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 3px;
+    border-radius: 3px;
+    background: currentColor;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-title {
+    margin-top: 12px;
+    font-family: var(--heading-font-stack);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-lead {
+    margin-top: 16px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-steps {
+    margin-top: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    counter-reset: sqc;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-steps li {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+    counter-increment: sqc;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-steps li::before {
+    content: counter(sqc);
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #dd6e1f;
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    font-size: 14px;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-cta {
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 30px;
+    border-radius: 999px;
+    background: {{ brand }};
+    color: #fff;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    box-shadow: 0 10px 24px -8px rgba(215, 40, 45, 0.55);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 30px -8px rgba(215, 40, 45, 0.6);
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-note {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-art {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    min-height: 300px;
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-art img {
+    width: 34%;
+    max-width: 170px;
+    height: auto;
+    margin-inline: -4%;
+    filter: drop-shadow(0 24px 26px rgba(0, 0, 0, 0.45));
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetQuizCta-{{ uid }} .sqc-art img:nth-child(1) { transform: rotate(-10deg) translateY(18px); }
+  #SuppetQuizCta-{{ uid }} .sqc-art img:nth-child(2) { transform: rotate(-3deg); z-index: 1; }
+  #SuppetQuizCta-{{ uid }} .sqc-art img:nth-child(3) { transform: rotate(4deg); z-index: 1; }
+  #SuppetQuizCta-{{ uid }} .sqc-art img:nth-child(4) { transform: rotate(11deg) translateY(18px); }
+
+  #SuppetQuizCta-{{ uid }} .sqc-card:hover .sqc-art img:nth-child(2) { transform: rotate(-3deg) translateY(-8px); }
+  #SuppetQuizCta-{{ uid }} .sqc-card:hover .sqc-art img:nth-child(3) { transform: rotate(4deg) translateY(-8px); }
+
+  #SuppetQuizCta-{{ uid }} .sqc-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #fff;
+    color: #0e1b33;
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    font-size: 14px;
+    box-shadow: 0 16px 30px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (max-width: 900px) {
+    #SuppetQuizCta-{{ uid }} .sqc-card {
+      grid-template-columns: 1fr;
+      padding: 36px 24px;
+      gap: 24px;
+      border-radius: 24px;
+    }
+    #SuppetQuizCta-{{ uid }} .sqc-art {
+      order: -1;
+      min-height: 0;
+      padding-top: 36px;
+    }
+    #SuppetQuizCta-{{ uid }} .sqc-art img {
+      width: 26%;
+    }
+    #SuppetQuizCta-{{ uid }} .sqc-btn {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #SuppetQuizCta-{{ uid }} .sqc-art img,
+    #SuppetQuizCta-{{ uid }} .sqc-btn {
+      transition: none;
+    }
+  }
+</style>
+
+<section
+  id="SuppetQuizCta-{{ uid }}"
+  style="position: relative;"
+  class="bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}"
+  data-color-scheme="{{ section.settings.color_scheme }}"
+>
+  <span id="ajuda-para-escolher" class="visually-hidden" tabindex="-1" style="top: 0; scroll-margin-top: var(--header-height, 0px);"></span>
+  <div class="section-content px-section py-section-vertical-spacing">
+    <div class="sqc-container">
+      <div class="sqc-card">
+        <div class="sqc-copy">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="sqc-eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+          {%- if section.settings.title != blank -%}
+            <h2 class="sqc-title">{{ section.settings.title }}</h2>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <p class="sqc-lead">{{ section.settings.text }}</p>
+          {%- endif -%}
+          {%- if steps.size > 0 -%}
+            <ol class="sqc-steps">
+              {%- for block in steps -%}
+                <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+              {%- endfor -%}
+            </ol>
+          {%- endif -%}
+          <div class="sqc-cta">
+            <a href="#quiz" class="sqc-btn" data-suppet-quiz-open>{{ section.settings.button_label }}</a>
+            {%- if section.settings.note != blank -%}
+              <span class="sqc-note">⏱ {{ section.settings.note }}</span>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="sqc-art" aria-hidden="true">
+          {%- if section.settings.badge != blank -%}
+            <span class="sqc-badge">{{ section.settings.badge }}</span>
+          {%- endif -%}
+          <img src="{{ 'pack-vitaforca.webp' | asset_url }}" alt="" width="170" height="224" loading="lazy">
+          <img src="{{ 'pack-condroprotetor.webp' | asset_url }}" alt="" width="170" height="224" loading="lazy">
+          <img src="{{ 'pack-anticopro.webp' | asset_url }}" alt="" width="170" height="224" loading="lazy">
+          <img src="{{ 'pack-estresse.webp' | asset_url }}" alt="" width="170" height="224" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Suppet ajuda p/ escolher",
+  "class": "suppet-quiz-cta",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Selo", "default": "Ajuda para escolher" },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Qual superpoder seu pet precisa ativar?"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texto",
+      "default": "Descubra em poucos passos qual cuidado pode fazer parte da rotina do seu pet."
+    },
+    { "type": "text", "id": "button_label", "label": "Botão", "default": "Fazer o quiz" },
+    { "type": "text", "id": "note", "label": "Nota ao lado do botão", "default": "Leva menos de 3 minutos!" },
+    { "type": "text", "id": "badge", "label": "Selo sobre as embalagens", "default": "🎁 15% OFF no final" },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura máxima do conteúdo",
+      "min": 960,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    { "type": "color", "id": "brand_color", "label": "Cor do botão", "default": "#D7282D" },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de cores",
+      "default": "scheme1"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_background",
+      "label": "Usar fundo gradiente",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Passo",
+      "settings": [{ "type": "text", "id": "text", "label": "Texto", "default": "Passo" }]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Suppet ajuda p/ escolher",
+      "blocks": [
+        { "type": "step", "settings": { "text": "Conte sobre a idade, o porte e a rotina do seu pet" } },
+        { "type": "step", "settings": { "text": "Marque o que chamou sua atenção no comportamento dele" } },
+        { "type": "step", "settings": { "text": "Receba o superpoder indicado e um presente" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

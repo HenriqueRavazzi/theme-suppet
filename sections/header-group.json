@@ -111,7 +111,7 @@
     "suppet-header-skin": {
       "type": "suppet-header-skin",
       "settings": {
-        "content_max_width": 1240,
+        "content_max_width": 1480,
         "header_height": 82,
         "enable_shrink": true,
         "shrink_height": 62,

@@ -200,6 +200,41 @@
         </div>
       </li>
       {%- endif -%}
+      {%- comment -%}
+        Suppet: itens fixos do tema (não vêm do menu da Shopify).
+        "Ajuda para escolher" abre o quiz (sections/suppet-quiz.liquid) e
+        "Quero revender" leva à página de revenda. Os dois entram juntos
+        depois do item nº `suppet_fixed_position` do menu (0 = no início).
+      {%- endcomment -%}
+      {%- capture suppet_fixed_items -%}
+        {%- if section.settings.suppet_quiz_label != blank -%}
+          <li class="no-js-focus-wrapper inline-block h-full">
+            <a href="#quiz" class="{{ link_classes }} suppet-nav-quiz" data-suppet-quiz-open>
+              {{ section.settings.suppet_quiz_label }}
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if section.settings.suppet_reseller_label != blank -%}
+          <li class="no-js-focus-wrapper inline-block h-full">
+            <a
+              href="{{ section.settings.suppet_reseller_url | default: '/pages/quero-revender' }}"
+              class="{{ link_classes }}"
+            >
+              {{ section.settings.suppet_reseller_label }}
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endcapture -%}
+      {%- liquid
+        assign suppet_fixed_position = section.settings.suppet_fixed_position | default: 0
+        assign suppet_menu_size = section.settings.main_linklist.links.size
+        if suppet_fixed_position > suppet_menu_size
+          assign suppet_fixed_position = suppet_menu_size
+        endif
+        if suppet_fixed_position == 0
+          echo suppet_fixed_items
+        endif
+      -%}
       {% for link in section.settings.main_linklist.links %}
         <li
           class="no-js-focus-wrapper inline-block h-full"
@@ -427,6 +462,7 @@
             </a>
           {% endif %}
         </li>
+        {%- if forloop.index == suppet_fixed_position -%}{{ suppet_fixed_items }}{%- endif -%}
       {% endfor %}
     </ul>
   </nav>
@@ -985,6 +1021,35 @@
       "id": "main_linklist",
       "label": "t:sections.header.settings.main_linklist.label",
       "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "suppet_quiz_label",
+      "label": "Botão do quiz",
+      "info": "Abre o quiz Suppet. Deixe em branco para esconder.",
+      "default": "Ajuda para escolher"
+    },
+    {
+      "type": "range",
+      "id": "suppet_fixed_position",
+      "label": "Posição dos botões fixos no menu",
+      "info": "Os botões do quiz e de revenda entram juntos depois deste item do menu (0 = no início).",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "suppet_reseller_label",
+      "label": "Botão de revenda",
+      "default": "Quero revender"
+    },
+    {
+      "type": "url",
+      "id": "suppet_reseller_url",
+      "label": "Link da página de revenda",
+      "info": "Padrão: /pages/quero-revender"
     },
     {
       "type": "select",

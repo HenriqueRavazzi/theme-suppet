@@ -1,0 +1,354 @@
+{%- comment -%}
+  Suppet reseller ("Quero revender Suppet") — página de cadastro de parceiros.
+  Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
+
+  Usa o formulário de contato nativo da Shopify (o cadastro chega no e-mail
+  da loja) e, no envio, dispara o evento `suppet:reseller:lead` com os dados
+  — é nele que a integração com o RD Station (conversão separada do quiz)
+  vai se conectar.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = section.id
+  assign form_id = 'SuppetResellerForm-' | append: uid
+-%}
+
+<style>
+  #SuppetReseller-{{ uid }} .sr-container {
+    max-width: {{ section.settings.content_max_width | default: 1240 }}px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--heading-font-stack);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: #dd6e1f;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 3px;
+    border-radius: 3px;
+    background: currentColor;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-title {
+    margin-top: 12px;
+    font-family: var(--heading-font-stack);
+    font-size: clamp(30px, 4.4vw, 48px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-subtitle {
+    margin-top: 14px;
+    font-family: var(--heading-font-stack);
+    font-size: 20px;
+    font-weight: 700;
+    color: #dd6e1f;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-text {
+    margin-top: 16px;
+    font-size: 17px;
+    line-height: 1.7;
+    opacity: 0.8;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-text p + p {
+    margin-top: 12px;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-audience {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-audience span {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(221, 110, 31, 0.12);
+    color: #dd6e1f;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-card {
+    padding: 36px 36px 32px;
+    border-radius: 28px;
+    background: #fff;
+    color: #0e1b33;
+    box-shadow: 0 30px 60px -30px rgba(14, 27, 51, 0.45);
+    border: 1px solid rgba(14, 27, 51, 0.08);
+  }
+
+  #SuppetReseller-{{ uid }} .sr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 16px;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-field {
+    display: block;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-field--full {
+    grid-column: 1 / -1;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-field b {
+    display: block;
+    margin-bottom: 6px;
+    font-family: var(--heading-font-stack);
+    font-size: 14px;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-field input,
+  #SuppetReseller-{{ uid }} .sr-field textarea {
+    width: 100%;
+    padding: 13px 18px;
+    border: 2px solid rgba(14, 27, 51, 0.12);
+    border-radius: 16px;
+    font-size: 16px;
+    color: #0e1b33;
+    background: #fff;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-field textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-field input:focus,
+  #SuppetReseller-{{ uid }} .sr-field textarea:focus {
+    outline: none;
+    border-color: #dd6e1f;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 16px 30px;
+    border-radius: 999px;
+    background: {{ section.settings.brand_color | default: '#D7282D' }};
+    color: #fff;
+    font-family: var(--heading-font-stack);
+    font-weight: 800;
+    font-size: 16px;
+    box-shadow: 0 14px 28px -12px rgba(215, 40, 45, 0.7);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetReseller-{{ uid }} .sr-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  #SuppetReseller-{{ uid }} .sr-legal {
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #5b6b84;
+    text-align: center;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-success,
+  #SuppetReseller-{{ uid }} .sr-errors {
+    margin-bottom: 18px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-weight: 600;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-success {
+    background: rgba(47, 163, 156, 0.12);
+    color: #1f7a74;
+  }
+
+  #SuppetReseller-{{ uid }} .sr-errors {
+    background: rgba(215, 40, 45, 0.1);
+    color: #d7282d;
+  }
+
+  @media (max-width: 900px) {
+    #SuppetReseller-{{ uid }} .sr-container {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    #SuppetReseller-{{ uid }} .sr-card {
+      padding: 26px 20px;
+      border-radius: 22px;
+    }
+    #SuppetReseller-{{ uid }} .sr-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<section
+  id="SuppetReseller-{{ uid }}"
+  class="bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}"
+  data-color-scheme="{{ section.settings.color_scheme }}"
+>
+  <div class="section-content px-section py-section-vertical-spacing">
+    <div class="sr-container">
+      <div class="sr-copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sr-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h1 class="sr-title">{{ section.settings.title }}</h1>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="sr-subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="sr-text">{{ section.settings.text }}</div>
+        {%- endif -%}
+        {%- if section.settings.audience != blank -%}
+          <div class="sr-audience">
+            {%- assign audience = section.settings.audience | split: ',' -%}
+            {%- for item in audience -%}
+              <span>{{ item | strip }}</span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="sr-card">
+        {% form 'contact', id: form_id, data-suppet-reseller-form: '' %}
+          {%- if form.posted_successfully? -%}
+            <p class="sr-success" tabindex="-1" autofocus>{{ section.settings.success_message }}</p>
+          {%- elsif form.errors -%}
+            <div class="sr-errors">{{ form.errors | default_errors }}</div>
+          {%- endif -%}
+
+          <input type="hidden" name="contact[Origem]" value="Quero revender Suppet">
+          <div class="sr-grid">
+            <label class="sr-field sr-field--full">
+              <b>Nome</b>
+              <input type="text" name="contact[name]" autocomplete="name" required value="{{ form.name }}">
+            </label>
+            <label class="sr-field">
+              <b>E-mail</b>
+              <input type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}">
+            </label>
+            <label class="sr-field">
+              <b>Telefone</b>
+              <input type="tel" name="contact[phone]" autocomplete="tel" required value="{{ form.phone }}">
+            </label>
+            <label class="sr-field sr-field--full">
+              <b>Cidade</b>
+              <input type="text" name="contact[Cidade]" autocomplete="address-level2" required>
+            </label>
+            <label class="sr-field sr-field--full">
+              <b>{{ section.settings.about_label }}</b>
+              <textarea name="contact[body]" required>{{ form.body }}</textarea>
+            </label>
+          </div>
+          <button type="submit" class="sr-btn">{{ section.settings.button_label }}</button>
+          {%- if section.settings.legal != blank -%}
+            <p class="sr-legal">{{ section.settings.legal }}</p>
+          {%- endif -%}
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var form = document.getElementById({{ form_id | json }});
+    if (!form || form.dataset.ready) return;
+    form.dataset.ready = 'true';
+    form.addEventListener('submit', function () {
+      var data = new FormData(form);
+      var lead = {
+        conversion_identifier: 'quero-revender-suppet',
+        name: (data.get('contact[name]') || '').trim(),
+        email: (data.get('contact[email]') || '').trim(),
+        phone: (data.get('contact[phone]') || '').trim(),
+        city: (data.get('contact[Cidade]') || '').trim(),
+        about: (data.get('contact[body]') || '').trim(),
+        page_url: window.location.href
+      };
+      window.SuppetReseller = { lastLead: lead };
+      document.dispatchEvent(new CustomEvent('suppet:reseller:lead', { detail: lead }));
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Suppet quero revender",
+  "class": "suppet-reseller",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Selo", "default": "Seja parceiro" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Quero revender Suppet" },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Seu negócio também pode ativar o super em cada pet. 🐾"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>A Suppet está expandindo sua rede de parceiros.</p><p>Se você é pet shop, clínica veterinária, profissional do mercado pet ou empreendedor, cadastre-se para conhecer nossas condições comerciais e fazer parte da rede Suppet.</p>"
+    },
+    {
+      "type": "text",
+      "id": "audience",
+      "label": "Público (separado por vírgula)",
+      "default": "Pet shops, Clínicas veterinárias, Profissionais pet, Empreendedores"
+    },
+    { "type": "header", "content": "Formulário" },
+    {
+      "type": "text",
+      "id": "about_label",
+      "label": "Pergunta sobre o negócio",
+      "default": "Nos conte sobre você e seu negócio: você já vende produtos para pets?"
+    },
+    { "type": "text", "id": "button_label", "label": "Botão", "default": "Quero ser parceiro Suppet" },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Mensagem de sucesso",
+      "default": "Cadastro recebido! Em breve nosso time comercial entra em contato."
+    },
+    {
+      "type": "text",
+      "id": "legal",
+      "label": "Texto abaixo do botão",
+      "default": "Seus dados serão usados apenas para o contato comercial da Suppet."
+    },
+    { "type": "header", "content": "Aparência" },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Largura máxima do conteúdo",
+      "min": 960,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    { "type": "color", "id": "brand_color", "label": "Cor do botão", "default": "#D7282D" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Esquema de cores", "default": "scheme1" },
+    { "type": "checkbox", "id": "use_gradient_background", "label": "Usar fundo gradiente", "default": false }
+  ],
+  "presets": [{ "name": "Suppet quero revender" }]
+}
+{% endschema %}

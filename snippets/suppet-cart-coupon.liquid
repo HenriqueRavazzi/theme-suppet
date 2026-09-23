@@ -1,0 +1,145 @@
+{%- comment -%}
+  Suppet cart coupon — aplica automaticamente o cupom de primeira compra
+  (SUPERPODER) sempre que algo entra no carrinho, e expõe a troca de cupom
+  usada pelo campo do rodapé do carrinho (snippets/cart-footer.liquid).
+
+  Regras (validadas com o cliente):
+  - 1ª compra: SUPERPODER (25%). A partir da 2ª: ATIVESEUPET (15%).
+    Cliente logado com pedidos → só ATIVESEUPET (o tema sabe que não é a 1ª).
+    Sem login não dá pra saber no tema: vão os dois códigos. Eles não se
+    somam — a Shopify aplica só o maior (SUPERPODER) e, se o checkout recusar
+    o SUPERPODER para um e-mail que já comprou, sobra o ATIVESEUPET.
+  - O cupom automático só entra se o carrinho não tiver NENHUM código. Se o
+    cliente escolheu um no campo do carrinho, ele é respeitado.
+  - Trocar de cupom substitui o anterior: /cart/update.js com `discount`
+    sobrescreve a lista de códigos (os cupons não se somam).
+  - "Só na primeira compra" é validado pela Shopify no checkout (desconto
+    configurado como "uma utilização por cliente").
+
+  Cobre os dois jeitos de adicionar ao carrinho do tema:
+  - AJAX (quick buy, quiz, apps): intercepta fetch em /cart/add.
+  - Form nativo (página de produto redireciona para /cart): checagem no
+    carregamento de toda página com itens no carrinho (/cart.js diz se já
+    há cupom — `cart.discount_codes` não vem preenchido no Liquid).
+{%- endcomment -%}
+
+{%- liquid
+  assign auto_code = 'SUPERPODER,ATIVESEUPET'
+  if customer and customer.orders_count > 0
+    assign auto_code = 'ATIVESEUPET'
+  endif
+-%}
+
+<script>
+  (function () {
+    if (window.SuppetCart) return;
+
+    var AUTO_CODE = {{ auto_code | json }};
+    var SECTIONS = 'cart-items,cart-footer,cart-item-count,cart-live-region';
+    var root = {{ routes.root_url | json }}.replace(/\/$/, '');
+    var nativeFetch = window.fetch.bind(window);
+    var pending = null;
+
+    function post(path, body) {
+      return nativeFetch(root + path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(body)
+      }).then(function (res) {
+        return res.json();
+      });
+    }
+
+    // Aplica (ou troca) o cupom e redesenha o carrinho do tema com as
+    // seções devolvidas — mesmo evento que o tema usa ao mudar quantidades.
+    function applyCode(code) {
+      return post('/cart/update.js', {
+        discount: code,
+        sections: SECTIONS,
+        sections_url: window.location.pathname
+      }).then(function (cart) {
+        if (cart && cart.sections) {
+          document.body.dispatchEvent(
+            new CustomEvent('shapes:cart:update', { bubbles: true, detail: { response: cart } })
+          );
+        }
+        return cart;
+      });
+    }
+
+    function ensureAutoCode() {
+      if (pending) return pending;
+      pending = nativeFetch(root + '/cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (cart) {
+          var codes = cart.discount_codes || [];
+          if (cart.item_count > 0 && codes.length === 0) return applyCode(AUTO_CODE);
+          return cart;
+        })
+        .catch(function () {})
+        .then(function (result) {
+          pending = null;
+          return result;
+        });
+      return pending;
+    }
+
+    window.fetch = function (input, init) {
+      var url = typeof input === 'string' ? input : (input && input.url) || '';
+      var promise = nativeFetch(input, init);
+      if (/\/cart\/add(\.js)?(\?|$)/.test(url)) {
+        promise.then(function (res) {
+          if (res.ok) setTimeout(ensureAutoCode, 0);
+        });
+      }
+      return promise;
+    };
+
+    window.SuppetCart = { applyCode: applyCode, ensureAutoCode: ensureAutoCode, autoCode: AUTO_CODE };
+
+    // Campo "Trocar cupom" do rodapé do carrinho. Delegado no document porque
+    // o rodapé é redesenhado (Alpine.morph) a cada mudança no carrinho.
+    document.addEventListener('submit', function (event) {
+      var form = event.target.closest && event.target.closest('[data-suppet-coupon-form]');
+      if (!form) return;
+      event.preventDefault();
+      var input = form.querySelector('input[name="suppet_coupon"]');
+      var code = (input.value || '').trim().toUpperCase();
+      if (!code) return;
+      form.setAttribute('aria-busy', 'true');
+      var previous = [];
+      nativeFetch(root + '/cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (cart) {
+          previous = (cart.discount_codes || []).map(function (d) {
+            return d.code;
+          });
+          return applyCode(code);
+        })
+        .then(function (cart) {
+          var applied = (cart.discount_codes || []).filter(function (d) {
+            return d.code.toUpperCase() === code;
+          })[0];
+          if (applied && applied.applicable) return;
+          // Cupom inválido não pode deixar o carrinho sem desconto: volta
+          // o(s) código(s) de antes (ou o automático).
+          return applyCode(previous.length ? previous.join(',') : AUTO_CODE).then(function () {
+            var message = document.querySelector('[data-suppet-coupon-message]');
+            if (message) message.textContent = 'O cupom ' + code + ' não é válido para este carrinho.';
+          });
+        })
+        .catch(function () {})
+        .then(function () {
+          form.removeAttribute('aria-busy');
+        });
+    });
+
+    {%- if cart.item_count > 0 %}
+      ensureAutoCode();
+    {%- endif %}
+  })();
+</script>
