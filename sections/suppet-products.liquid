@@ -141,6 +141,33 @@
     transform: scale(1.05) rotate(-1deg);
   }
 
+  /* Segunda imagem (opcional): sobreposta à do pack e revelada no hover. */
+  #SuppetProducts-{{ uid }} .sp-card__media img.sp-card__img-hover {
+    /* Mesma caixa da imagem do pack: 90% da área interna (descontado o
+       padding de 28px), alinhada ao topo do conteúdo e centralizada. */
+    position: absolute;
+    top: 28px;
+    left: 0;
+    right: 0;
+    width: calc((100% - 56px) * 0.9);
+    height: calc((100% - 28px) * 0.9);
+    margin: 0 auto;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card__media--has-hover img:not(.sp-card__img-hover) {
+    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card:hover .sp-card__media--has-hover img:not(.sp-card__img-hover) {
+    opacity: 0;
+  }
+
+  #SuppetProducts-{{ uid }} .sp-card:hover .sp-card__media img.sp-card__img-hover {
+    opacity: 1;
+  }
+
   #SuppetProducts-{{ uid }} .sp-card__body {
     padding: 22px 24px 26px;
     display: flex;
@@ -287,7 +314,7 @@
   class="bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}"
   data-color-scheme="{{ section.settings.color_scheme }}"
 >
-  <span id="produtos" class="visually-hidden" tabindex="-1"></span>
+  <span id="produtos" class="visually-hidden" tabindex="-1" style="scroll-margin-top: calc(var(--header-group-height, 0px) + 16px);"></span>
   <div class="section-content px-section py-section-vertical-spacing">
     <div class="sp-container">
       {%- if section.settings.eyebrow != blank -%}
@@ -333,7 +360,7 @@
                 assign card_image = block.settings.image
               -%}
               <article class="sp-card" style="--sp-accent: {{ block.settings.accent }};" {{ block.shopify_attributes }}>
-                <div class="sp-card__media">
+                <div class="sp-card__media{% if block.settings.image_hover != blank %} sp-card__media--has-hover{% endif %}">
                   {%- if card_image != blank -%}
                     {{
                       card_image
@@ -357,6 +384,18 @@
                       width="1497"
                       height="1974"
                     >
+                  {%- endif -%}
+                  {%- if block.settings.image_hover != blank -%}
+                    {{
+                      block.settings.image_hover
+                      | image_url: width: 500
+                      | image_tag:
+                        widths: '250, 350, 500',
+                        sizes: '280px',
+                        alt: '',
+                        loading: 'lazy',
+                        class: 'sp-card__img-hover'
+                    }}
                   {%- endif -%}
                 </div>
                 <div class="sp-card__body">
@@ -510,6 +549,12 @@
         },
         { "type": "header", "content": "Sobrescrever produto (opcional)" },
         { "type": "image_picker", "id": "image", "label": "Imagem do pack" },
+        {
+          "type": "image_picker",
+          "id": "image_hover",
+          "label": "Imagem ao passar o mouse",
+          "info": "Opcional. Substitui a imagem do pack enquanto o mouse está sobre o card."
+        },
         { "type": "text", "id": "name", "label": "Nome" },
         { "type": "text", "id": "price", "label": "Preço (se não houver produto selecionado)" },
         { "type": "text", "id": "price_note", "label": "Legenda do preço", "default": "caixa com 30 sachês" },
