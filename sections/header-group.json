@@ -118,7 +118,7 @@
         "override_background": true,
         "header_background": "#0e1b33",
         "header_opacity": 75,
-        "nav_align_left": true,
+        "nav_align_left": false,
         "nav_gap": 34,
         "nav_font_size": 15,
         "nav_color": "#e6e7ea",

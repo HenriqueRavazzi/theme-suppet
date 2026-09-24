@@ -18,9 +18,10 @@
   RD Station: o código de monitoramento do RD (layout/theme.liquid) captura
   este <form> sozinho no clique de "Revelar meu resultado" e envia a
   conversão com identificador = atributo name do form ("quiz-suppet"). Por
-  isso: os produtos indicados vão num input oculto atualizado a cada
-  resposta (o RD lê os campos no clique, antes do submit), e o consentimento
-  usa data-privacy (o RD envia 1/0). Também dispara `suppet:quiz:lead`.
+  isso: comportamentos e produtos indicados vão em inputs ocultos, como
+  texto, atualizados a cada resposta (o RD lê os campos no clique, antes do
+  submit), e o consentimento usa data-privacy (o RD envia 1/0). Também
+  dispara `suppet:quiz:lead`.
 {%- endcomment -%}
 
 {%- liquid
@@ -640,8 +641,7 @@
         <span></span><span></span><span></span><span></span>
       </div>
 
-      <form name="quiz-suppet" data-sq-form novalidate>
-        <input type="hidden" name="produtos_indicados" value="" data-sq-products-field>
+      <div data-sq-body>
         {%- comment -%} Passo 0 — abertura {%- endcomment -%}
         <div class="sq-step is-active" data-sq-step="0">
           <p class="sq-eyebrow">{{ section.settings.eyebrow }}</p>
@@ -672,7 +672,7 @@
               {%- assign options = 'Filhote,Adulto,Sênior' | split: ',' -%}
               {%- for option in options -%}
                 <label class="sq-option">
-                  <input type="radio" name="idade" value="{{ option }}" required>
+                  <input type="radio" name="pet_idade" value="{{ option }}" data-sq-radio="idade">
                   <span>{{ option }}</span>
                 </label>
               {%- endfor -%}
@@ -685,7 +685,7 @@
               {%- assign options = 'Pequeno,Médio,Grande' | split: ',' -%}
               {%- for option in options -%}
                 <label class="sq-option">
-                  <input type="radio" name="porte" value="{{ option }}" required>
+                  <input type="radio" name="pet_porte" value="{{ option }}" data-sq-radio="porte">
                   <span>{{ option }}</span>
                 </label>
               {%- endfor -%}
@@ -698,7 +698,7 @@
               {%- assign options = 'Baixo,Moderado,Alto' | split: ',' -%}
               {%- for option in options -%}
                 <label class="sq-option">
-                  <input type="radio" name="atividade" value="{{ option }}" required>
+                  <input type="radio" name="pet_atividade" value="{{ option }}" data-sq-radio="atividade">
                   <span>{{ option }}</span>
                 </label>
               {%- endfor -%}
@@ -731,7 +731,7 @@
                 <label class="sq-option">
                   <input
                     type="checkbox"
-                    name="comportamentos"
+                    data-sq-behavior
                     value="{{ parts[0] }}"
                     data-product="{{ parts[1] }}"
                     {% if forloop.last %}data-sq-none{% endif %}
@@ -750,6 +750,17 @@
 
         {%- comment -%} Passo 3 — captura do lead {%- endcomment -%}
         <div class="sq-step" data-sq-step="3">
+          {%- comment -%}
+            Só este passo é um <form>: é ele que o RD captura. As respostas
+            dos passos 1 e 2 entram nos campos ocultos (texto), assim o RD
+            recebe exatamente estes campos, sem os radios/checkboxes soltos.
+          {%- endcomment -%}
+          <form name="quiz-suppet" data-sq-form novalidate>
+          <input type="hidden" name="idade" value="" data-sq-hidden="idade">
+          <input type="hidden" name="porte" value="" data-sq-hidden="porte">
+          <input type="hidden" name="atividade" value="" data-sq-hidden="atividade">
+          <input type="hidden" name="comportamentos" value="" data-sq-behaviors-field>
+          <input type="hidden" name="produtos_indicados" value="" data-sq-products-field>
           <p class="sq-eyebrow">Passo 3 de 3</p>
           <h3>🐾 Descobrimos os superpoderes que seu pet pode ativar!</h3>
           <p class="sq-lead" style="margin-bottom: 22px;">Só falta um detalhe para mostrar o resultado.</p>
@@ -772,6 +783,7 @@
             <button type="button" class="sq-back" data-sq-prev>← Voltar</button>
             <button type="submit" class="sq-btn">Revelar meu resultado</button>
           </div>
+          </form>
         </div>
 
         {%- comment -%} Passo 4 — resultado {%- endcomment -%}
@@ -798,7 +810,7 @@
             <p class="sq-error" data-sq-cart-error aria-live="polite"></p>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
@@ -855,6 +867,10 @@
 
     function reset() {
       form.reset();
+      root.querySelectorAll('[data-sq-radio], [data-sq-behavior]').forEach(function (input) {
+        input.checked = false;
+      });
+      syncHiddenFields();
       recommended = [];
       root.querySelector('[data-sq-results]').innerHTML = '';
       root.querySelectorAll('.sq-error').forEach(function (el) {
@@ -888,10 +904,10 @@
       var ok = true;
       if (current === 1) {
         ok = ['idade', 'porte', 'atividade'].every(function (name) {
-          return form.querySelector('input[name="' + name + '"]:checked');
+          return root.querySelector('[data-sq-radio="' + name + '"]:checked');
         });
       } else if (current === 2) {
-        ok = !!form.querySelector('input[name="comportamentos"]:checked');
+        ok = !!root.querySelector('[data-sq-behavior]:checked');
       }
       next.disabled = !ok;
     }
@@ -920,15 +936,9 @@
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
 
-    function values(name) {
-      return Array.prototype.map.call(form.querySelectorAll('input[name="' + name + '"]:checked'), function (input) {
-        return input.value;
-      });
-    }
-
     function computeRecommended() {
       var picked = {};
-      form.querySelectorAll('input[name="comportamentos"]:checked').forEach(function (input) {
+      root.querySelectorAll('[data-sq-behavior]:checked').forEach(function (input) {
         picked[input.dataset.product] = true;
       });
       return ORDER.filter(function (key) {
@@ -970,7 +980,7 @@
         pet_idade: data.get('idade'),
         pet_porte: data.get('porte'),
         pet_atividade: data.get('atividade'),
-        comportamentos: values('comportamentos'),
+        comportamentos: checkedBehaviors(),
         produtos_indicados: recommended.map(function (key) {
           return PRODUCTS[key].name;
         }),
@@ -979,23 +989,37 @@
     }
 
     // "Nenhuma anterior" é exclusiva.
-    form.addEventListener('change', function (event) {
+    root.addEventListener('change', function (event) {
       var input = event.target;
-      if (input.name === 'comportamentos' && input.checked) {
-        var none = form.querySelector('[data-sq-none]');
+      if (input.hasAttribute('data-sq-behavior') && input.checked) {
+        var none = root.querySelector('[data-sq-none]');
         if (input === none) {
-          form.querySelectorAll('input[name="comportamentos"]').forEach(function (other) {
+          root.querySelectorAll('[data-sq-behavior]').forEach(function (other) {
             if (other !== none) other.checked = false;
           });
         } else if (none) {
           none.checked = false;
         }
       }
-      if (input.name === 'comportamentos') syncProductsField();
+      syncHiddenFields();
       validate();
     });
 
-    function syncProductsField() {
+    function checkedBehaviors() {
+      return Array.prototype.map.call(root.querySelectorAll('[data-sq-behavior]:checked'), function (input) {
+        return input.value;
+      });
+    }
+
+    // Campos ocultos lidos pelo RD no clique de envio. Os checkboxes de
+    // comportamento ficam sem name de propósito: com name, o RD mandaria
+    // uma lista (["a", "b"]); aqui vai texto separado por vírgula.
+    function syncHiddenFields() {
+      ['idade', 'porte', 'atividade'].forEach(function (name) {
+        var picked = root.querySelector('[data-sq-radio="' + name + '"]:checked');
+        form.querySelector('[data-sq-hidden="' + name + '"]').value = picked ? picked.value : '';
+      });
+      form.querySelector('[data-sq-behaviors-field]').value = checkedBehaviors().join(', ');
       form.querySelector('[data-sq-products-field]').value = computeRecommended()
         .map(function (key) {
           return PRODUCTS[key].name;

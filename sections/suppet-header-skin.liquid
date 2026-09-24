@@ -160,14 +160,26 @@
   }
 
   @media (min-width: 1024px) {
-    /* A logo não disputa o espaço livre: ele vai todo para entre o menu e
-       os ícones/CTA, que ficam encostados no canto direito. */
-    .shopify-section-group-header-group .w-1\/3.grow:has(.site-header__logo-link) {
-      min-width: 96px;
+    /* Menu centralizado na tela: a linha do header vira uma grade de 3
+       colunas — logo | menu | ícones+CTA — com as laterais do mesmo
+       tamanho (1fr), então o menu fica no centro exato. O mínimo
+       max-content impede que logo/ícones sejam espremidos em telas
+       estreitas (aí o menu desloca um pouco, mas não quebra). */
+    .shopify-section-group-header-group .flex.items-center.justify-items-center:has(> .w-1\/3.grow .site-header__logo-link) {
+      display: grid;
+      grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
+      column-gap: clamp(16px, 2.5vw, 40px);
+    }
+
+    .shopify-section-group-header-group .flex.items-center.justify-items-center:has(> .w-1\/3.grow .site-header__logo-link) > * {
       width: auto;
-      flex-grow: 0;
-      flex-shrink: 0;
-      margin-right: clamp(16px, 3vw, 56px);
+      min-width: 0;
+    }
+
+    /* Logo encostada à esquerda da coluna dela (sem isto ela centraliza). */
+    .shopify-section-group-header-group .w-1\/3.grow:has(.site-header__logo-link) {
+      justify-self: start;
+      text-align: left;
     }
 
     /* Sem o bloco crescendo, a logo (width: 100% do pai) encolheria até o
