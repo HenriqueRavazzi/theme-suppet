@@ -3,9 +3,9 @@
   Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
 
   Usa o formulário de contato nativo da Shopify (o cadastro chega no e-mail
-  da loja) e, no envio, dispara o evento `suppet:reseller:lead` com os dados
-  — é nele que a integração com o RD Station (conversão separada do quiz)
-  vai se conectar.
+  da loja). O código de monitoramento do RD Station captura o mesmo envio
+  como conversão "quero-revender-suppet" (atributo name do form), separada
+  do quiz. Também dispara o evento `suppet:reseller:lead`.
 {%- endcomment -%}
 
 {%- liquid
@@ -227,7 +227,7 @@
       </div>
 
       <div class="sr-card">
-        {% form 'contact', id: form_id, data-suppet-reseller-form: '' %}
+        {% form 'contact', id: form_id, name: 'quero-revender-suppet', data-suppet-reseller-form: '' %}
           {%- if form.posted_successfully? -%}
             <p class="sr-success" tabindex="-1" autofocus>{{ section.settings.success_message }}</p>
           {%- elsif form.errors -%}

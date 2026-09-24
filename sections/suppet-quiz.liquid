@@ -15,9 +15,12 @@
   marcado indica um produto; vários grupos marcados indicam vários produtos.
   Idade, porte e atividade não mudam o resultado — só vão junto no lead.
 
-  Lead: ao revelar o resultado dispara o evento `suppet:quiz:lead` (detail =
-  dados do lead) e guarda em window.SuppetQuiz.lastLead. A integração com o
-  RD Station escuta esse evento (etapa separada).
+  RD Station: o código de monitoramento do RD (layout/theme.liquid) captura
+  este <form> sozinho no clique de "Revelar meu resultado" e envia a
+  conversão com identificador = atributo name do form ("quiz-suppet"). Por
+  isso: os produtos indicados vão num input oculto atualizado a cada
+  resposta (o RD lê os campos no clique, antes do submit), e o consentimento
+  usa data-privacy (o RD envia 1/0). Também dispara `suppet:quiz:lead`.
 {%- endcomment -%}
 
 {%- liquid
@@ -637,7 +640,8 @@
         <span></span><span></span><span></span><span></span>
       </div>
 
-      <form data-sq-form novalidate>
+      <form name="quiz-suppet" data-sq-form novalidate>
+        <input type="hidden" name="produtos_indicados" value="" data-sq-products-field>
         {%- comment -%} Passo 0 — abertura {%- endcomment -%}
         <div class="sq-step is-active" data-sq-step="0">
           <p class="sq-eyebrow">{{ section.settings.eyebrow }}</p>
@@ -759,7 +763,7 @@
             <input type="email" name="email" autocomplete="email" placeholder="Seu melhor e-mail" required>
           </label>
           <label class="sq-consent">
-            <input type="checkbox" name="consentimento" value="sim">
+            <input type="checkbox" name="consentimento_comunicacao" value="1" data-privacy="true">
             <span>Quero receber meu resultado e dicas de cuidados para o meu pet por e-mail.</span>
           </label>
           <p class="sq-error" data-sq-error aria-live="polite"></p>
@@ -962,7 +966,7 @@
         conversion_identifier: 'quiz-suppet',
         name: (data.get('nome') || '').trim(),
         email: (data.get('email') || '').trim(),
-        marketing_consent: data.get('consentimento') === 'sim',
+        marketing_consent: form.querySelector('input[name="consentimento_comunicacao"]').checked,
         pet_idade: data.get('idade'),
         pet_porte: data.get('porte'),
         pet_atividade: data.get('atividade'),
@@ -987,8 +991,17 @@
           none.checked = false;
         }
       }
+      if (input.name === 'comportamentos') syncProductsField();
       validate();
     });
+
+    function syncProductsField() {
+      form.querySelector('[data-sq-products-field]').value = computeRecommended()
+        .map(function (key) {
+          return PRODUCTS[key].name;
+        })
+        .join(', ');
+    }
 
     root.addEventListener('click', function (event) {
       var target = event.target.closest('button');
