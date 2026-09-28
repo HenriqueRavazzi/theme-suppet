@@ -3,9 +3,9 @@
   Arquivo NOVO: não é sobrescrito por atualizações do tema Shapes.
 
   Usa o formulário de contato nativo da Shopify (o cadastro chega no e-mail
-  da loja). O código de monitoramento do RD Station captura o mesmo envio
-  como conversão "quero-revender-suppet" (atributo name do form), separada
-  do quiz. Também dispara o evento `suppet:reseller:lead`.
+  da loja). O monitoramento do RD captura a conversão "quero-revender-suppet"
+  quando o script não está bloqueado; com adblocker, `suppet-rd-leads.js`
+  envia via API a partir do evento `suppet:reseller:lead`.
 {%- endcomment -%}
 
 {%- liquid

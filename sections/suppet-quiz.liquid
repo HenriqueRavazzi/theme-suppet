@@ -15,13 +15,11 @@
   marcado indica um produto; vários grupos marcados indicam vários produtos.
   Idade, porte e atividade não mudam o resultado — só vão junto no lead.
 
-  RD Station: o código de monitoramento do RD (layout/theme.liquid) captura
-  este <form> sozinho no clique de "Revelar meu resultado" e envia a
-  conversão com identificador = atributo name do form ("quiz-suppet"). Por
-  isso: comportamentos e produtos indicados vão em inputs ocultos, como
-  texto, atualizados a cada resposta (o RD lê os campos no clique, antes do
-  submit), e o consentimento usa data-privacy (o RD envia 1/0). Também
-  dispara `suppet:quiz:lead`.
+  RD Station: o monitoramento do RD (layout/theme.liquid) captura este
+  <form> no clique quando o script não está bloqueado. Com adblocker, o
+  asset `suppet-rd-leads.js` escuta `suppet:quiz:lead` e posta a conversão
+  na API. Identificador: "quiz-suppet". Campos ocultos + data-privacy
+  alimentam a captura automática; o envio explícito usa o mesmo lead.
 {%- endcomment -%}
 
 {%- liquid

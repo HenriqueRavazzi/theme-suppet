@@ -304,6 +304,17 @@
     {%- endif -%}
 
     <script src="{{ 'global.bundle.js' | asset_url }}" type="module"></script>
+    {%- comment -%}
+      Envio explícito de leads (quiz / quero revender) para o RD Station.
+      Cobre o caso em que o adblocker bloqueia o Form Integration abaixo.
+    {%- endcomment -%}
+    <script>
+      window.SuppetRdConfig = {
+        publicToken: {{ settings.suppet_rd_public_token | default: '9984912ee9585bbbfb7a34b4a5449ab7' | json }},
+        apiKey: {{ settings.suppet_rd_api_key | json }}
+      };
+    </script>
+    <script src="{{ 'suppet-rd-leads.js' | asset_url }}" defer></script>
     <script
       type="text/javascript"
       async

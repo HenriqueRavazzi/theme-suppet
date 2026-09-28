@@ -3720,5 +3720,27 @@
         "info": "t:settings_schema.favicon.settings.favicon.info"
       }
     ]
+  },
+  {
+    "name": "Suppet RD Station",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Envio explícito dos leads do quiz e do Quero revender quando o adblocker bloqueia o script de Form Integration do RD. Sem isso, conversões só chegam com o monitoramento liberado."
+      },
+      {
+        "type": "text",
+        "id": "suppet_rd_public_token",
+        "label": "Token público RD",
+        "default": "9984912ee9585bbbfb7a34b4a5449ab7",
+        "info": "Mesmo token da conta ligada ao código de monitoramento."
+      },
+      {
+        "type": "text",
+        "id": "suppet_rd_api_key",
+        "label": "API Key RD (opcional, recomendada)",
+        "info": "No RD: App Store → App Publisher → Gerar chave de API. Usa api.rd.services e costuma passar melhor por adblockers do que event-api.rdstation.com.br."
+      }
+    ]
   }
 ]
