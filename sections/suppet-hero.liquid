@@ -357,11 +357,18 @@
     background: var(--sh-brand);
   }
 
-  #SuppetHero-{{ uid }} .sh-badge {
+  #SuppetHero-{{ uid }} .sh-badges {
     position: absolute;
     left: -6px;
     top: 6px;
     z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  #SuppetHero-{{ uid }} .sh-badge {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -376,6 +383,15 @@
     animation: sh-floaty-{{ uid }} 4.5s ease-in-out infinite;
   }
 
+  #SuppetHero-{{ uid }} .sh-badge--offer {
+    gap: 8px;
+    padding: 10px 16px;
+    margin-left: 28px;
+    box-shadow: 0 14px 28px -12px rgb(0 0 0 / 0.35);
+    animation-duration: 5.2s;
+    animation-delay: -1.8s;
+  }
+
   #SuppetHero-{{ uid }} .sh-badge span {
     display: block;
     font-size: 11px;
@@ -387,6 +403,14 @@
     font-size: 20px;
     color: var(--sh-accent);
     transition: color 1.1s var(--sh-ease);
+  }
+
+  #SuppetHero-{{ uid }} .sh-badge--offer span {
+    font-size: 10px;
+  }
+
+  #SuppetHero-{{ uid }} .sh-badge--offer b {
+    font-size: 14px;
   }
 
   @keyframes sh-spin-{{ uid }} {
@@ -425,9 +449,13 @@
     #SuppetHero-{{ uid }} .sh-stats {
       justify-content: center;
     }
-    #SuppetHero-{{ uid }} .sh-badge {
+    #SuppetHero-{{ uid }} .sh-badges {
       left: 50%;
       transform: translateX(-50%);
+      align-items: center;
+    }
+    #SuppetHero-{{ uid }} .sh-badge--offer {
+      margin-left: 0;
     }
   }
 
@@ -435,15 +463,24 @@
     #SuppetHero-{{ uid }} .sh-showcase {
       width: min(420px, 88%);
     }
-    #SuppetHero-{{ uid }} .sh-badge {
+    #SuppetHero-{{ uid }} .sh-badges {
       left: 50%;
       top: -4px;
       transform: translateX(-50%);
+      gap: 8px;
+    }
+    #SuppetHero-{{ uid }} .sh-badge {
       gap: 10px;
       padding: 14px 18px;
     }
     #SuppetHero-{{ uid }} .sh-badge b {
       font-size: 17px;
+    }
+    #SuppetHero-{{ uid }} .sh-badge--offer {
+      padding: 8px 14px;
+    }
+    #SuppetHero-{{ uid }} .sh-badge--offer b {
+      font-size: 13px;
     }
   }
 
@@ -490,7 +527,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     #SuppetHero-{{ uid }} .sh-ring,
-    #SuppetHero-{{ uid }} .sh-badge {
+    #SuppetHero-{{ uid }} .sh-badge,
+    #SuppetHero-{{ uid }} .sh-badge--offer {
       animation: none;
     }
     #SuppetHero-{{ uid }} .sh-slide {
@@ -558,12 +596,24 @@
       </div>
 
       <div class="sh-art">
-        {%- if section.settings.badge_value != blank -%}
-          <div class="sh-badge">
-            {%- if section.settings.badge_kicker != blank -%}
-              <span>{{ section.settings.badge_kicker }}</span>
+        {%- if section.settings.badge_value != blank or section.settings.badge_offer_value != blank -%}
+          <div class="sh-badges">
+            {%- if section.settings.badge_value != blank -%}
+              <div class="sh-badge">
+                {%- if section.settings.badge_kicker != blank -%}
+                  <span>{{ section.settings.badge_kicker }}</span>
+                {%- endif -%}
+                <b>{{ section.settings.badge_value }}</b>
+              </div>
             {%- endif -%}
-            <b>{{ section.settings.badge_value }}</b>
+            {%- if section.settings.badge_offer_value != blank -%}
+              <div class="sh-badge sh-badge--offer">
+                {%- if section.settings.badge_offer_kicker != blank -%}
+                  <span>{{ section.settings.badge_offer_kicker }}</span>
+                {%- endif -%}
+                <b>{{ section.settings.badge_offer_value }}</b>
+              </div>
+            {%- endif -%}
           </div>
         {%- endif -%}
 
@@ -867,9 +917,21 @@
       "type": "text",
       "id": "badge_kicker",
       "label": "Texto pequeno",
-      "default": "Primeira compra"
+      "default": "Use o cupom"
     },
-    { "type": "text", "id": "badge_value", "label": "Destaque", "default": "Cupom SUPPET10" },
+    { "type": "text", "id": "badge_value", "label": "Código do cupom", "default": "SUPERPODER" },
+    {
+      "type": "text",
+      "id": "badge_offer_kicker",
+      "label": "Texto do selo menor",
+      "default": "O cupom dá"
+    },
+    {
+      "type": "text",
+      "id": "badge_offer_value",
+      "label": "Destaque do selo menor",
+      "default": "25% OFF"
+    },
     { "type": "header", "content": "Carrossel e animações" },
     {
       "type": "checkbox",
